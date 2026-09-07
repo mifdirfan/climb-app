@@ -1,0 +1,8140 @@
+Title: Sharing and embeding (API) | theCrag
+URL: https://www.thecrag.com/en/article/api
+================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Please note that we use cookies to improve the use of this website. By continuing to browse the site, you accept 
+theCrag Site Usage Policy
+
+
+I Agree
+
+
+
+
+
+
+Please note that we use cookies to improve the use of this website. By continuing to browse the site, you accept 
+theCrag Site Usage Policy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Embed and API
+Sharing and embeding (API)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Crags
+Map
+
+
+Germany map
+
+
+ World map
+
+
+
+
+Climbers
+
+
+Germany
+
+
+Contributors
+
+
+Trad rating
+
+
+Sport rating
+
+
+Boulder rating
+
+
+World
+
+
+World contributors
+
+
+Trad rating
+
+
+Sport rating
+
+
+Boulder rating
+
+
+
+
+Forum
+
+
+Germany
+
+
+Forum
+
+
+General
+
+
+World Forum
+
+
+ Gyms forum
+
+
+ Release forum
+
+
+ How to forum
+
+
+
+
+Photos
+
+
+Germany
+
+
+Photos
+
+
+Topos
+
+
+Web-Covers
+
+
+World
+
+
+Photos
+
+
+Topos
+
+
+Web-Covers
+
+
+
+
+Logbook
+
+
+Germany
+
+
+Ascents
+
+
+World
+
+
+Ascents
+
+
+Competitions
+
+
+Climbing Film Tour Australia & New Zealand Volume 6 - 2025 
+
+
+Who Climbed Most this Month
+
+
+Who Climbed Hardest this Month
+
+
+
+
+Guidebooks
+
+
+Germany
+
+
+Guidebooks in Germany
+
+
+Guidebooks above Germany
+
+
+General
+
+
+World
+
+
+
+
+Help
+
+
+
+
+Homepage
+
+
+
+
+
+
+
+
+About theCrag
+
+
+
+
+
+
+Contact Us
+
+
+
+
+
+
+Mission and Vision
+
+
+
+
+
+
+Media resources
+
+
+
+
+
+
+Merchandise Shop
+
+
+
+
+
+
+Policies
+
+
+
+
+
+
+Supporting theCrag
+
+
+
+
+
+
+Supporter Benefits
+
+
+
+
+
+
+Perks
+
+
+
+
+
+
+New Features and Bugs
+
+
+
+
+
+
+theCrag on Topo Guru App
+
+
+
+
+
+
+theCrag on your Apple Watch
+
+
+
+
+
+
+Credit and Thanks
+
+
+
+
+
+
+Help for the  payment process
+
+
+
+
+
+
+Help
+
+
+
+
+
+
+
+
+
+
+Climbing Knowledge
+
+
+
+
+
+
+Introduction to Rock Climbing
+
+
+
+
+
+
+Grades and Grade Conversions
+
+
+
+
+
+
+Route Gear Styles
+
+
+
+
+
+
+Tick Types
+
+
+
+
+
+
+Rock Types and Geology for Climbers
+
+
+
+
+
+
+Hardest Routes
+
+
+
+
+
+
+Hardest Trad Routes
+
+
+
+
+
+
+Hardest Boulders
+
+
+
+
+
+
+Climbing World Ranking
+
+
+
+
+
+
+Climbing Terms Glossary
+
+
+
+
+
+
+
+
+
+
+Getting started
+
+
+
+
+
+
+Searching
+
+
+
+
+
+
+Grades on theCrag
+
+
+
+
+
+
+grAId
+
+
+
+
+
+
+Stars and route quality
+
+
+
+
+
+
+Nearby iconic routes
+
+
+
+
+
+
+Classic crags
+
+
+
+
+
+
+PDF Crag Guide
+
+
+
+
+
+
+Seasonality
+
+
+
+
+
+
+Profile Badges and Account Types
+
+
+
+
+
+
+Code of Etiquette
+
+
+
+
+
+
+
+
+
+
+Ticking and logbook
+
+
+
+
+
+
+Logging ascents
+
+
+
+
+
+
+Climber Performance Rating (CPR)
+
+
+
+
+
+
+CPR timeline explained
+
+
+
+
+
+
+Calculating tick shift
+
+
+
+
+
+
+Check your local and global ranking
+
+
+
+
+
+
+Import your logbook
+
+
+
+
+
+
+Export your logbook
+
+
+
+
+
+
+Export ascent data from 8a.nu / Vertical-Life
+
+
+
+
+
+
+Log Ascents For Community Managed Accounts
+
+
+
+
+
+
+
+
+
+
+Share and Connect
+
+
+
+
+
+
+Favorite crags
+
+
+
+
+
+
+Publish your profile
+
+
+
+
+
+
+Watching discussions
+
+
+
+
+
+
+Lists
+
+
+
+
+
+
+
+
+
+
+Adding content
+
+
+
+
+
+
+User permissions
+
+
+
+
+
+
+Karma
+
+
+
+
+
+
+Become a Data Contributor and Unlock Premium Features
+
+
+
+
+
+
+Warnings
+
+
+
+
+
+
+Adding and Editing Routes
+
+
+
+
+
+
+Adding and Editing Areas
+
+
+
+
+
+
+Naming Policy
+
+
+
+
+
+
+Drawing topos
+
+
+
+
+
+
+Taking photos for topos
+
+
+
+
+
+
+Hash tagging
+
+
+
+
+
+
+Maps and geolocations
+
+
+
+
+
+
+Structured tagging
+
+
+
+
+
+
+Private, sensitive and closed crags
+
+
+
+
+
+
+Creating Web-Covers
+
+
+
+
+
+
+
+
+
+
+Advanced editing
+
+
+
+
+
+
+Embedding photos and videos
+
+
+
+
+
+
+Formatting Text
+
+
+
+
+
+
+Moving and sorting
+
+
+
+
+
+
+Merging and deleting
+
+
+
+
+
+
+Mixed copyright
+
+
+
+
+
+
+Publisher participation
+
+
+
+
+
+
+
+
+
+
+Gym Solution by theCrag
+
+
+
+
+
+
+Add your Gym to theCrag
+
+
+
+
+
+
+Register your Gym
+
+
+
+
+
+
+Indoor Gym Ascents
+
+
+
+
+
+
+Climbing Contests & Competitions on theCrag
+
+
+
+
+
+
+Managing Gym Permissions
+
+
+
+
+
+
+Archiving a Gym Route
+
+
+
+
+
+
+
+
+
+
+Partner with us
+
+
+
+
+
+
+Advocacy Groups
+
+
+
+
+
+
+Crag Developers & Guidebook Editors
+
+
+
+
+
+
+Local business
+
+
+
+
+
+
+Business sponsorship
+
+
+
+
+
+
+Ad specifications
+
+
+
+
+
+
+
+
+
+
+Embed and API
+
+
+
+
+
+
+Sharing and embeding (API)
+
+
+
+
+
+
+Embed theCrag
+
+
+
+
+
+
+Personal API Keys - Logbook Read Access
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Log in
+
+
+
+
+
+
+
+
+
+
+Username
+
+
+
+
+
+
+Password
+
+
+
+
+
+
+
+
+Login
+
+
+Forgot your login details?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Create an account
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Homepage
+
+
+
+
+
+
+About theCrag
+
+
+
+
+Contact Us
+
+
+Mission and Vision
+
+
+Media resources
+
+
+Merchandise Shop
+
+
+Policies
+
+
+Supporting theCrag
+
+
+Supporter Benefits
+
+
+Perks
+
+
+New Features and Bugs
+
+
+theCrag on Topo Guru App
+
+
+theCrag on your Apple Watch
+
+
+Credit and Thanks
+
+
+Help for the  payment process
+
+
+Help
+
+
+
+
+
+
+
+
+Climbing Knowledge
+
+
+
+
+Introduction to Rock Climbing
+
+
+Grades and Grade Conversions
+
+
+Route Gear Styles
+
+
+Tick Types
+
+
+Rock Types and Geology for Climbers
+
+
+Hardest Routes
+
+
+Hardest Trad Routes
+
+
+Hardest Boulders
+
+
+Climbing World Ranking
+
+
+Climbing Terms Glossary
+
+
+
+
+
+
+
+
+Getting started
+
+
+
+
+Searching
+
+
+Grades on theCrag
+
+
+grAId
+
+
+Stars and route quality
+
+
+Nearby iconic routes
+
+
+Classic crags
+
+
+PDF Crag Guide
+
+
+Seasonality
+
+
+Profile Badges and Account Types
+
+
+Code of Etiquette
+
+
+
+
+
+
+
+
+Ticking and logbook
+
+
+
+
+Logging ascents
+
+
+Climber Performance Rating (CPR)
+
+
+CPR timeline explained
+
+
+Calculating tick shift
+
+
+Check your local and global ranking
+
+
+Import your logbook
+
+
+Export your logbook
+
+
+Export ascent data from 8a.nu / Vertical-Life
+
+
+Log Ascents For Community Managed Accounts
+
+
+
+
+
+
+
+
+Share and Connect
+
+
+
+
+Favorite crags
+
+
+Publish your profile
+
+
+Watching discussions
+
+
+Lists
+
+
+
+
+
+
+
+
+Adding content
+
+
+
+
+User permissions
+
+
+Karma
+
+
+Become a Data Contributor and Unlock Premium Features
+
+
+Warnings
+
+
+Adding and Editing Routes
+
+
+Adding and Editing Areas
+
+
+Naming Policy
+
+
+Drawing topos
+
+
+Taking photos for topos
+
+
+Hash tagging
+
+
+Maps and geolocations
+
+
+Structured tagging
+
+
+Private, sensitive and closed crags
+
+
+Creating Web-Covers
+
+
+
+
+
+
+
+
+Advanced editing
+
+
+
+
+Embedding photos and videos
+
+
+Formatting Text
+
+
+Moving and sorting
+
+
+Merging and deleting
+
+
+Mixed copyright
+
+
+Publisher participation
+
+
+
+
+
+
+
+
+Gym Solution by theCrag
+
+
+
+
+Add your Gym to theCrag
+
+
+Register your Gym
+
+
+Indoor Gym Ascents
+
+
+Climbing Contests & Competitions on theCrag
+
+
+Managing Gym Permissions
+
+
+Archiving a Gym Route
+
+
+
+
+
+
+
+
+Partner with us
+
+
+
+
+Advocacy Groups
+
+
+Crag Developers & Guidebook Editors
+
+
+Local business
+
+
+Business sponsorship
+
+
+Ad specifications
+
+
+
+
+
+
+
+
+Embed and API
+
+
+
+
+Sharing and embeding (API)
+
+
+Embed theCrag
+
+
+Personal API Keys - Logbook Read Access
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sharing and embeding (API)
+
+
+
+
+
+
+
+
+Embed and API
+
+
+Embed theCrag
+
+
+
+
+
+
+
+
+
+
+Contents
+
+
+
+
+Projects
+
+
+Access
+
+
+
+
+How do I get API access?
+
+
+Copyright constraints
+
+
+
+
+Application key
+
+
+
+
+As URL parameter
+
+
+As HTTP header
+
+
+
+
+Protected resources
+
+
+
+
+Temporary Credentials
+
+
+User Authorization
+
+
+Access Token
+
+
+Protected Resource Access
+
+
+
+
+Read access points
+
+
+
+
+System Configuration
+
+
+Country
+
+
+Climber
+
+
+Node (Area/Route)
+
+
+Ascent
+
+
+Trip
+
+
+Photo
+
+
+Copyright
+
+
+5.9 Maps
+
+
+Interface
+
+
+Discussions
+
+
+
+
+Private discussions
+
+
+Area/route discussions
+
+
+Generic discussions
+
+
+Trip discussions
+
+
+Ascent discussions
+
+
+
+
+Markup
+
+
+Index Structure
+
+
+Facet Search
+
+
+
+
+Routes
+
+
+Areas
+
+
+Nodes
+
+
+Ascents
+
+
+Favorites
+
+
+Photos
+
+
+Topos
+
+
+Activity
+
+
+Messages
+
+
+Climbers
+
+
+
+
+Text completion
+
+
+
+
+Optimising down the wire
+
+
+Update access points
+
+
+
+
+Create Climber
+
+
+Update Climber
+
+
+Create Area
+
+
+Update Area
+
+
+Create Route
+
+
+Update Route
+
+
+Create Ascent
+
+
+Send message
+
+
+Subscribe
+
+
+
+
+Creating a subscription
+
+
+Updating a subscription
+
+
+
+
+Register Webhook Callbacks
+
+
+Topo
+
+
+
+
+Uploading the image file
+
+
+Creating the topo record
+
+
+Updating the topo record
+
+
+Tags
+
+
+
+
+
+
+Mobile app endpoints (UNDER DEVELOPMENT)
+
+
+
+
+Bulk index queries
+
+
+
+
+Index structure only
+
+
+Index detail
+
+
+
+
+Abbreviations
+
+
+Field notes
+
+
+Query from refererence node
+
+
+Geo location of all areas
+
+
+Incremental update
+
+
+Archived, merged and deleted routes
+
+
+
+
+Rate and share this article
+
+
+
+
+
+
+
+
+
+We are not accepting non-commecial API applications while we focus on other areas of the business.
+
+
+
+theCrag Application Programming Interface (API) enables sharing of rock climbing information in a programmatic way.
+
+
+The API is in Beta release, which means that it is subject to change.
+
+
+We are also developing a javascript wrapper framework for the API so you can easily integrate server data into your javascript code. See 
+https://github.com/theCrag/thecrag-javascript
+ for the pre-release version (probably too early to start using it, but worth while knowing it is there if you are planning to write an app).
+
+
+
+
+
+
+Projects
+Back to contents 
+
+
+
+
+The current API projects are underway:
+
+
+
+
+Mobile app for Android and iPhone; 
+
+
+New routes for club website; 
+
+
+Climbing geo links for outdoor sites; 
+
+
+Wordpress template for single crag; and
+
+
+theCrag website.
+
+
+
+
+
+
+
+
+Access
+Back to contents 
+
+
+
+
+Access to the API is broadly in-line with our 
+copyright
+ (Creative Commons - Attribution Non-Commercial Share Alike), but must be negotiated with us.
+
+
+Conditions of use of API:
+
+
+
+
+THE API IS CURRENTLY CLOSED FOR NON-COMMERCIAL APPLICATIONS.
+
+
+You must have an API Key which requires you to sign a legal agreement with theCrag.
+
+
+Unless otherwise negotiated with us you may only use your api-key for non-commecial purposes.
+
+
+You must use the dev api (sandpit.thecrag.com) for for application testing and development purposes and get your application approved by us before being released in production.
+
+
+You must use the api calls as advised for your application. For example if an application is inefficiently using the API calls and we identify a better way of doing so then you must change to the recommended calls. In many instances we may actually develop an API call tailored for your application. This protects thecrag from applications making hundreds of calls to get information that could be made in one call.
+
+
+All instances of your application must have a reasonable combined peak load usage. Reasonable is defined as not adversely effecting the overall performance of the server. As a guideline with a single server (our current configuration), reasonable peak load is less than 10 calls in a 10 second period but may vary depending on what API calls are made. (Note that this load is accoss all instances of your app). As we scale the system we intend to be more flexible with the definition of reasonable load.
+
+
+You must disclose whether your app is commecial or not or whether you intend to make it commercial. Commercial includes user pays, advertising and promotional applications. For example if there is advertising associated with the application then we would consider this commercial. Also if you are building the application as a promotional app (eg for Black Diamond or for a gym) then this would also be seen as commercial. Please ask us about whether or not we would view your application as commercial. If you want a commercial app then we are not greedy it's just a matter of negotiating fair compensation. It's only fair that theCrag does not bear other peoples commercial costs without being compensated (yes it does cost money for us to have an API available). We will usually negiotiate on a 50-50 revenue share basis.
+
+
+You must not use the api to build your own content from that supplied by the api. Please discuss with us any caching or storing of content on your client side, because in some instances caching or storing of content is acceptable. Unless otherwise negotiated you should assume that storing or caching of content is not acceptable.  This ensures that the final end user gets up-to-date information and also protects thecrag from bad will usage (eg using thecrag api to build lists of climbs for your own server). Typically this mean you can cache on a mobile client but not on a server.
+
+
+You must adhear to all copyright restrictions of the data you are accessing though the api. For avoidance of doubt, access to information through the API does not give you any additional rights to copyright material. Information from third parties may be passed through the api, in which case they will have their own copyright tag. If data is not tagged with a copyright then you can assume it falls under 
+theCrag copyright
+.
+
+
+There is no quality of service or continuity of service guarantee.
+
+
+The api is in early beta stage so you should only use it if you are able to deal with the frustrations of a beta product. We are willing and eager to make changes to supporter client applications efficiently, however we cannot commit to any timelines. 
+
+
+You must document the specific use of all your api end-points for us to review before going into production.
+
+
+
+
+
+
+
+
+How do I get API access?
+Back to contents 
+
+
+
+
+In order to get access to the API you must:
+
+
+
+
+Contact us
+
+
+Get us to allocate an API key
+
+
+Trial application on the development server (sandpit.thecrag.com)
+
+
+
+
+
+
+
+
+Copyright constraints
+Back to contents 
+
+
+
+
+Please note that API implementations are bound by the copyright restrictions of theCrag or the contributing publisher. theCrag's copyright requires attribution under the 
+Creative Commons - Attribution Non-Commercial Share Alike
+ licence. As a guide, for areas where contributions have come from lots of users we allow you to attribute the highest 
+Karma
+ contributors and reference how to get the original information from theCrag. Specific information like photos, or grade contributions should reference the particular user. Please note that we reserve the right to ask you to make additional attributions in your application (it's only fair that climbers spending their time and effort for the benefit of the whole climbing community get properly attributed).
+
+
+Where the API is providing information under a third party publisher then you are bound by their copyright not theCrag's copyright. This information will be tagged with a copyright ID. You may retieve details of the publishers copyright through a separate copyright api call.
+
+
+You must check for publisher tagged copyright for the following entities:
+
+
+
+
+Area descriptions
+
+
+Route descriptions
+
+
+Photos
+
+
+Topos
+
+
+
+
+
+
+
+
+Application key
+Back to contents 
+
+
+
+
+All access to the API must use an API key. The API key may be supplied as a URL parameter ‘key=abc’ or though a custom HTTP header item ‘X-CData-Key: key=abc;’.
+
+
+Developer style note
+: you should provide a global variable for setting the application key, and standardise the way you access the API. This will minimise the headaches if you have to change API keys for some reason.
+
+
+
+
+
+
+As URL parameter
+Back to contents 
+
+
+
+
+If the api key is supplied as a URL parameter the API call would look something like:
+
+
+
+  www.thecrag.com/api/area/id/1234?key=abc
+
+
+
+
+
+
+
+As HTTP header
+Back to contents 
+
+
+
+
+If the api key is supplied as a HTTP header then the http GET call would look something like:
+
+
+
+  GET www.thecrag.com/api/area/id/1234 HTTP/1.1
+  X-CData-Key: key=abc;
+
+
+
+
+
+
+
+Protected resources
+Back to contents 
+
+
+
+
+An application may get access to protected resources (ie private account data) using 
+OAuth
+ protocol. OAuth is an Internet standard protocol and is fairly well supported in popular development software. You will need to use OAuth for:
+
+
+
+
+Access to private account data; and
+
+
+Updating account data including logging ticks.
+
+
+
+
+theCrag’s OAuth implementation uses the following end points in the production system:
+
+
+
+
+Temporary Credentials
+: https://www.thecrag.com/oauth/request_token
+
+
+User Authorization
+: https://www.thecrag.com/oauth/authorize
+
+
+Access Token
+: https://www.thecrag.com/oauth/access_token
+
+
+
+
+In the development system use the following similar end points:
+
+
+
+
+Temporary Credentials
+: https://sandpit.thecrag.com/oauth/request_token
+
+
+User Authorization
+: https://sandpit.thecrag.com/oauth/authorize
+
+
+Access Token
+: https://sandpit.thecrag.com/oauth/access_token
+
+
+
+
+Developer style note
+: As you will have to test the application in the development system you should create a global variable for the server and set it to either 'https://www.thecrag.com' or 'https://sandpit.thecrag.com'. This will eliminate the painful problems of only half cutting over from the development to production server. Please note also that we do intend to cut over to https in the near term.
+
+
+For all OAuth end points use HMAC-SHA1 as the oauth_signature_method. The 
+OAuth
+ spec has a nice explicit example of the information flow for Auth. The following discussion should be read in conjuction with the spec example to show how OAuth works on theCrag.
+
+
+
+
+
+
+Temporary Credentials
+Back to contents 
+
+
+
+
+When you apply for an API access key you will be given the Application key and secret. Use these as the consumer_key and consumer_secret for getting temporary token.
+
+
+
+  https://www.thecrag.com/oauth/request_token
+  (note that Authorization fields must be included in the HTTP header request)
+
+
+
+Temporary credentials request requires the following OAuth fields in the Authorization header:
+
+
+
+
+oauth_consumer_key
+
+
+oauth_signature_method
+
+
+oauth_timestamp
+
+
+oauth_nonce
+
+
+oauth_callback
+
+
+oauth_signature
+
+
+
+
+A temporary oauth_token and oauth_secret will be returned if the signature is verified.
+
+
+
+  HTTP/1.1 200 OK
+  Content-Type: application/x-www-form-urlencoded
+
+  oauth_token=ijk&oauth_token_secret=qrs&oauth_callback_confirmed=true
+
+
+
+
+
+
+
+User Authorization
+Back to contents 
+
+
+
+
+After you are given temporary credentials the client application must redirect to theCrag’s authorization URL using the oauth_token (returned by the Temporary Credentials step above) as a URL parameter. You may also supply the user login if this is already known. For example:
+
+
+
+  https://www.thecrag.com/oauth/authorize?oauth_token=abc&login=XYZ
+
+
+
+Don’t worry if the login is not known then the user will be prompted for their login. Also note that if the user is already logged into thecrag via cookie sessions then this will be used to identify the default user for authorizing access.
+
+
+The user will be prompted for an account login name and a password. If the login and password are successfully verified by theCrag server then the client will be redirected to the oauth_callback (supplied in the Temporary Credentials step) using with URL parameters oauth_token, oauth_verifier and accountID.
+
+
+
+  oauth_callback_url?oauth_token=abc&oauth_verifier=efg&accountID=1234
+
+
+
+Please note the use of oauth_verifier, as this is a more recent change to the OAuth protocol. Please be aware that some of OAuth implementations may not include this.
+
+
+
+
+
+
+Access Token
+Back to contents 
+
+
+
+
+After the user has authorized access then the client API can get an access token for ongoing access to the account data.
+
+
+
+  https://www.thecrag.com/oauth/access_token
+  (note that Authorization fields must be included in the HTTP header request)
+
+
+
+Access Token request request requires the following OAuth fields in the Authorization header:
+
+
+
+
+oauth_consumer_key
+
+
+oauth_token
+
+
+oauth_signature_method
+
+
+oauth_timestamp
+
+
+oauth_nonce
+
+
+oauth_verifier
+
+
+oauth_signature
+
+
+
+
+A full oauth_token and oauth_secret will be returned if the signature is verified.
+
+
+
+  HTTP/1.1 200 OK
+  Content-Type: application/x-www-form-urlencoded
+
+  oauth_token=tuv&oauth_token_secret=wxy&oauth_callback_confirmed=true&account_id=1234
+
+
+
+
+
+
+
+Protected Resource Access
+Back to contents 
+
+
+
+
+Once a client app has the full access token the client will be able to access the protected resource (ie private account data associated with the account) by using the token in the Authorization header. For example
+
+
+
+  https://www.thecrag.com/api/account/id/1234
+  (with the Authorization item included in the header)
+
+
+
+OAuth fields for access to a protected resource:
+
+
+
+
+oauth_consumer_key
+
+
+oauth_token
+
+
+oauth_signature_method
+
+
+oauth_timestamp
+
+
+oauth_nonce
+
+
+oauth_signature
+
+
+
+
+Note
+ that generating the signature uses the uri of the protected resource. This must be the 'https://www.thecrag.com/api/some/endpoint' (or https) without any url parameters.
+
+
+
+
+
+
+Read access points
+Back to contents 
+
+
+
+
+The API top level access point is:
+
+
+
+  https://www.thecrag.com/api
+
+
+
+There are some secondary access points you may be able to use if you need web page style access. These secondary access points are not documented but replicate the data used by the website templates (note that these are not to be generally used by client apps without special permissions, and hence remain undocumented).
+
+
+Full definitions of the API access points may be found here:
+
+
+
+
+
+
+thecrag API endpoint reference
+
+
+Unless otherwise stated all API read access points return utf8 encoded text.
+
+
+The API returns JSON data (mime type of application/json). If you are using Firefox then you may find a plugin which displays this nicely.
+
+
+If you wish to return JSONP for a javascript function you use the URL paramater jsonp=myFunction. If JSONP is used then the API will return MIME type text/javascript. For example:
+
+
+
+  https://www.thecrag.com/api/area/id/1234?jsonp=processArea
+
+
+
+Some of the read api functions return JSON data which contains 
+thecrag flavored markdown
+. Normally for the website this markdown text is automatically marked up to HTML for website display, however with the API you may sometimes want it marked up as text or as html. For thecrag flavored markdown to be marked up as text use the URL parameter markupType=text, otherwise use markupType=html. Please note that the default is 'none' (ie the API does not do any conversion of markdown text and leaves that up to the client.
+
+
+For example if you wanted to convert area beta markdown into HTML you would use:
+
+
+
+  https://www.thecrag.com/api/area/id/1234/beta?markupType=html
+
+
+
+The following sections outline some examples of api read calls.
+
+
+If general error was encountered with the API call then JSON data is returned indicating what the error was, for example:
+
+
+
+  {
+    error: "bad uri",
+  }
+
+
+
+
+
+
+
+System Configuration
+Back to contents 
+
+
+
+
+
+
+https://sandpit.thecrag.com/api/config/grade/context
+
+
+https://sandpit.thecrag.com/api/config/grade/type
+
+
+https://sandpit.thecrag.com/api/config/grade/system
+
+
+https://sandpit.thecrag.com/api/config/ascent/ticktypes
+
+
+https://sandpit.thecrag.com/api/config/ascent/relativedifficulty
+
+
+https://sandpit.thecrag.com/api/config/ascent/quality
+
+
+https://sandpit.thecrag.com/api/config/structured-tags
+
+
+
+
+Grade context configuration is essentially used to resolve conflicts when parsing grades into potentially conflicting grades from grading systems around the world.
+
+
+Grade type configuration aggregates the grading systems to like types.
+
+
+Grade system configuration defines the grading systems used by thecrag. It includes variables for parsing, displaying and converting to an internal score (0-500+).
+
+
+
+
+
+
+Country
+Back to contents 
+
+
+
+
+Note that you must also use an application if you were to implement any of the examples in this section or following sections. These examples use a application key associated with the API demo. You are not permitted to use this API key in your application. The demo API key will be changed from time to time, so your application will just stop working if you are using the demo API key.
+
+
+
+
+https://sandpit.thecrag.com/api/country/list
+
+
+https://sandpit.thecrag.com/api/country/id/7478254
+
+
+
+
+
+
+
+
+Climber
+Back to contents 
+
+
+
+
+
+
+https://sandpit.thecrag.com/api/climber/id/9068185
+
+
+https://sandpit.thecrag.com/api/climber/id/9068185/shortcuts
+
+
+https://sandpit.thecrag.com/api/climber/id/9068185/linkedto
+
+
+https://sandpit.thecrag.com/api/climber/id/9068185/linkedfrom
+
+
+https://sandpit.thecrag.com/api/climber/id/9068185/photo
+
+
+https://sandpit.thecrag.com/api/climber/id/9068185/ascents
+
+
+https://sandpit.thecrag.com/api/climber/id/9068185/ascents/onsight
+
+
+https://sandpit.thecrag.com/api/climber/id/9068185/trips
+
+
+https://sandpit.thecrag.com/api/climber/ids?id=9068185,11183449
+
+
+https://sandpit.thecrag.com/api/climber/search?search=simon
+
+
+https://sandpit.thecrag.com/api/climber/id/9068185/subscriptions/156291588
+
+
+https://sandpit.thecrag.com/api/climber/id/9068185/subscriptions/thecrag?days-since-expired=31
+
+
+
+
+If an account is public then you may access their data, however if an account is private then you need to use OAuth to access the data.
+
+
+You may substiture the alias 'user' or 'account' for the word 'climber' in the climber end points.
+
+
+Please note that the 'days-since-expired' field for subscriptions is optional. If it is specified then the recently expired subscriptions are included as well as valid subscriptions in the return data.
+
+
+
+
+
+
+Node (Area/Route)
+Back to contents 
+
+
+
+
+
+
+https://sandpit.thecrag.com/api/node/id/11737699
+
+
+https://sandpit.thecrag.com/api/area/id/11737699?show=info&show=ancestors&show=children&show=topo&show=tags&show=karma&show=location
+
+
+https://sandpit.thecrag.com/api/area/ids?id=11743723,11743795&show=routeswithhistorysince,karma&since=1998&key=abc
+
+
+https://sandpit.thecrag.com/api/area/id/11737699/children
+
+
+https://sandpit.thecrag.com/api/area/id/11737699/children/area
+
+
+https://sandpit.thecrag.com/api/area/id/11737699/photos
+
+
+https://sandpit.thecrag.com/api/area/id/11737699/publications
+
+
+https://sandpit.thecrag.com/api/area/id/11737699/publications/direct
+
+
+https://sandpit.thecrag.com/api/area/id/11737699/directory
+
+
+https://sandpit.thecrag.com/api/area/id/11737699/sponsor
+
+
+https://sandpit.thecrag.com/api/area/id/11737699/karma
+
+
+https://sandpit.thecrag.com/api/area/id/11737699/iconcrags
+
+
+https://sandpit.thecrag.com/api/area/id/11737699/popularareas
+
+
+https://sandpit.thecrag.com/api/area/id/11737699/beta
+
+
+https://sandpit.thecrag.com/api/area/id/11737699/search?search=bard
+
+
+https://sandpit.thecrag.com/api/area/id/11764759/topos
+
+
+https://sandpit.thecrag.com/api/route/id/11967355
+
+
+https://sandpit.thecrag.com/api/route/id/11967355/ascents
+ (this one is under review as it is expensive, so don't use it for now)
+
+
+https://sandpit.thecrag.com/api/route/id/11967355/ascents/account/9068185
+
+
+https://sandpit.thecrag.com/api/route/id/11967355/ancestors
+
+
+https://sandpit.thecrag.com/api/route/id/11967355/beta
+
+
+https://sandpit.thecrag.com/api/route/id/11967355/beta?markupType=html
+
+
+
+
+Note that you may use ‘node’ instead of ‘area’ or ‘route’. This may be useful if you don’t know if the node is an area or a route.
+
+
+Developer style note
+: You should always get only what you need in as few API calls as you need (ie use show URL parameter).
+
+
+
+
+
+
+Ascent
+Back to contents 
+
+
+
+
+
+
+https://sandpit.thecrag.com/api/ascent/id/24831619
+
+
+https://sandpit.thecrag.com/api/ascent/ids?id=24831619,23810479
+
+
+
+
+Developer style note
+: You should always consider server load when retrieving information via the API. The API has been developed for flexibility so that you can make more efficient calls. For example if you need information about alot of ascents then you should use the multiple ids method of getting ascent information.
+
+
+
+
+
+
+Trip
+Back to contents 
+
+
+
+
+
+
+https://sandpit.thecrag.com/api/trip/id/22549159
+
+
+
+
+
+
+
+
+Photo
+Back to contents 
+
+
+
+
+
+
+https://sandpit.thecrag.com/api/photo/id/25464718
+
+
+
+
+If the 'markdown' field is returned then this is a description provided by the submittor. There may be an intention for the description to be displayed withe photo.
+
+
+
+
+
+
+Copyright
+Back to contents 
+
+
+
+
+
+
+https://sandpit.thecrag.com/api/copyright/id/26096082
+
+
+
+
+
+
+
+
+5.9 Maps
+Back to contents 
+
+
+
+
+
+
+https://sandpit.thecrag.com/api/map/summary
+
+
+https://sandpit.thecrag.com/api/map/summary/11740915
+
+
+https://sandpit.thecrag.com/api/map/summary/ids?id=26194194,11740915
+
+
+https://sandpit.thecrag.com/api/map/bbox?s=141.822,-36.7501,141.823,-36.7501
+
+
+https://sandpit.thecrag.com/api/map/bbox/heirachy?s=141.83309,-36.77134,141.86079,-36.76204&f=geometry,gearStyles,numberRoutes,numberAscents,closedTag&v=0.00152587890625
+
+
+https://sandpit.thecrag.com/api/map/bbox/heirachy?s=133.23889,-38.67178,161.60558,-26.78876&v=0.1&f=geometry,gearStyles,numberRoutes,numberAscents,closedTag&o=11737675,11737699
+
+
+https://sandpit.thecrag.com/api/map/bbox/heirachy?s=141.83309,-36.77134,141.86079,-36.76204&f=geometry,userNumberAscents,userAscentCprStyle&v=0.00152587890625&a=9068185
+
+
+
+
+The first three elements in the above map summary lists are:
+
+
+
+
+NodeID
+
+
+Long, without decimal place (x1000000)
+
+
+Lat, without decimal place (x1000000)
+
+
+
+
+In the crag summary lists the next two fields are optional:
+
+
+
+
+Number routes not located (if not present then this is a leaf node of the hierarchy, area with no children or route)
+
+
+Relative depth of node from query node (the order of the list means you can use this to determine the hierarchy structure).
+
+
+
+
+The bbox returns the node(s) that fully contain the bounded box.
+
+
+The bbox/heirachy queries returned a structured hierarchy of nodes (note accidental strange spelling). If a node is returned then it's siblings are also returned. Unless the 'o' only nodes directive is specified then all parent areas of the index hierarchy is returned. The hierarchy endpoint is the one currentluy in use in theCrag maps. In the hierarchy endpoint the following params may be used:
+
+
+
+
+s: the bounded box for the focus area of the maps. If not set then the system assumes '-180,-90,180,90'.
+
+
+v: the visual angle for finding areas whos bbox is larger than specified. If not set then the system defaults to half longitude and half latitude respectively.
+
+
+f: fields to be returned. Valid fields include geometry, gearStyles, numberAscents, numberRoutes, numberFavorites, closedTag, userNumberAscents, userAscentCprStyle. Note that the userNumberAscents and userAscentCprStyle is used for personal maps and must be used in combination with the account param.
+
+
+a: account id for personal maps.
+
+
+o: only nodes directive returns only the part of the index heirachy from the specified nodes. This enables the maps to provide an incremental update as they zoom in.
+
+
+
+
+
+
+
+
+Interface
+Back to contents 
+
+
+
+
+The following are experimental features to support logging in using Facebook or other third party social networking sites.
+
+
+
+
+https://sandpit.thecrag.com/api/interface/facebook_dev/100000409624709
+
+
+
+
+
+
+
+
+Discussions
+Back to contents 
+
+
+
+
+Crag Chat discussions may be private between members or public associated with an area or route or just a general discussion. A discussion may also be linked to an ascent or a trip.
+
+
+To access a discussion you need to know the id of the root message. Accessing a discussion is done:
+
+
+
+
+https://sandpit.thecrag.com/api/discussion/191714736
+
+
+https://sandpit.thecrag.com/api/discussion/191714736?page=2
+
+
+https://sandpit.thecrag.com/api/discussion/191714736/last
+
+
+
+
+A discussion can have one or more messages associated with it. If there are more then 50 messages then the discussion is paginated (use the 'page' parameter as above). To find out if another message has been added to the discussion then use the 'last' api end point. If you use the 'last' end point please use some sort of algorithm which progressively polls at larger and larger intervals, otherwise the system will be become clogged up with polling that is essentially returning the same thing.
+
+
+Note that the 'page' parameter does not work in the example above, it is there for syntatic purposes. At some point the example will be swapped over to something that works.
+
+
+
+
+
+
+Private discussions
+Back to contents 
+
+
+
+
+In order to access private discussions you must authenticate using OAuth and be one of the accounts associated with the discussion.
+
+
+Further API work required to get the list of private discussions.
+
+
+
+
+https://sandpit.thecrag.com/api/climber/id/9068185/discussions/involved
+
+
+https://sandpit.thecrag.com/api/climber/id/9068185/discussions/subscribed
+
+
+
+
+You may provide the following URL arguments:
+
+
+
+
+unreadOnly
+: if set to 1 will return only unread messages.
+
+
+page
+: set the page number for traversing multiple pages of discussions (default 1).
+
+
+perPage
+: set the number of discussions per page (default 10).
+
+
+
+
+In addition the subscribed discussions has the following URL arguments:
+
+
+
+
+recentDays
+: sets the number of days from now to base the start date of the query (default 14).
+
+
+
+
+The subscribed discussions cover all general and area forums you are subscribed to. People are automatically subscribed to area forums when they log an ascent to the crag, mark a favorite crag or become an editor to a crag. They can control their configuration through their 'chat' tab in their thecrag web account. People can also manually subscribe to general forums and area forums.
+
+
+TODO: manage subscriptions through API.
+
+
+Please note that if somebody starts a discussion at a route level it will filter down to the crag area discussion.
+
+
+
+
+
+
+Area/route discussions
+Back to contents 
+
+
+
+
+Area/route discussions are special type of forum where the discussions are rolled up into their ancestor nodes. This means a discussion on a route will also appear in the cliff, crag and country discussions.
+
+
+
+
+https://sandpit.thecrag.com/api/forum/node/11740915
+
+
+https://sandpit.thecrag.com/api/forum/node/11740915?page=2
+
+
+https://sandpit.thecrag.com/api/forum/node/11740915?unreadOnly=1
+
+
+
+
+The unreadOnly parameter requires OAuth to have identify the account.
+
+
+
+
+
+
+Generic discussions
+Back to contents 
+
+
+
+
+API work to be completed
+
+
+
+
+
+
+Trip discussions
+Back to contents 
+
+
+
+
+API work to be completed
+
+
+
+
+
+
+Ascent discussions
+Back to contents 
+
+
+
+
+API work to be completed
+
+
+
+
+
+
+Markup
+Back to contents 
+
+
+
+
+You may POST a thecrag flavoured markdown string to an endpoint to have it marked up including internal links. The POST end point is:
+
+
+
+ POST https://www.thecrag.com/api/markup HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+     "type": "html",    # html/text
+     "markdown": "Test *bold* and internal link to 'Grotto Wall' in 'Arapiles'.",
+     "node": 11740915,
+     "token": ["tlc"],  # list of zero or more of 'tlc', 'acronym', or 'parentAcronym'.
+   }
+ }
+
+
+
+The node and token data variables tell the system the context for looking for internal links.
+
+
+
+
+
+
+Index Structure
+Back to contents 
+
+
+
+
+
+
+https://sandpit.thecrag.com/api/index/summary/world
+
+
+https://sandpit.thecrag.com/api/index/summary/11740915
+
+
+
+
+The world query returns the index structure from world node to top level crags. The id structure returns the index structure from tlc and lower. The returned structure excludes the queried node.
+
+
+The returned JSON is an ordered array of nodes optimised for minimising down the wire data bandwidth. The information returned for each node is:
+
+
+
+
+node ID
+
+
+node name
+
+
+node type: a - area, r - route, m - merged, w - world, n - annotation (you should only see 'a', 'r' and 'n').
+
+
+area type: optional, Fi - Field, U - unknown, Fe - Feature, B - Boulder, S - Sector, Cl - Cliff, Cr - Crag, R - Region, A - Area.
+
+
+parent ID: optional, if it is not there then it is the same as the previous node in the list.
+
+
+
+
+
+
+
+
+Facet Search
+Back to contents 
+
+
+
+
+Facet search provides an interface into searching thecrag data using a url query language. You are able to search the following entities using facet search:
+
+
+
+
+routes
+
+
+areas
+
+
+nodes
+
+
+ascents (thin facet available)
+
+
+favorites
+
+
+photos
+
+
+topos
+
+
+activity
+
+
+messages
+
+
+climbers
+
+
+
+
+The API facet search has the following generic endpoint structure:
+
+
+
+  /api/facet/{entity}/url/query/language  # where entity is as listed above.
+
+
+
+The url query language is a series of uri argument pairs for directive and value, for example at/1234 specifies entities at node id 1234. You may also specify multiple values using the '+' character, for example at/1234+5678.
+
+
+Results are paginated with page size settable in the url parameters, defaulting to 100 with a maximum of 5000.
+
+
+The following specific URL parameters may be set:
+
+
+
+
+page
+
+
+perPage
+
+
+sortby
+
+
+
+
+The sortby parameter is a comma separated list of pairs (field,asc/desc), for example 'at,desc'.
+
+
+Before you start using these please be aware that some faceted searches may be very resource intensive. Please discuss with site management the queries you intend to use, otherwise we may have to disable your key.
+
+
+Some of the facet queries have a thin format where the data returned is as an array and referenced resources in a inflate hash, for example:
+
+
+
+data:
+  ascents : []
+  inflate : {}
+
+
+
+To enable thin format use thin=1 parameter which changes the return format to an array. The 'withdata' parameter tells the system which fields to return in the array. Also use the 'inflate' parameter to tell the system to include inflated resources. The format for the inflate parameter is comma separted list of resource type with a level scope. For example:
+
+
+
+
+inflate=account:skeleton,node:summary
+
+
+inflate=account,node:summary
+
+
+
+
+The idea of the level is to return the level of detail you want to inflate resources. Levels will default to skeleton if not specified. Generally the following levels are accepted.
+
+
+
+
+skeleton
+
+
+summary
+
+
+full
+
+
+
+
+
+
+
+
+Routes
+Back to contents 
+
+
+
+
+The url query string may contain the following search directives:
+
+
+
+
+created-by
+
+
+by
+
+
+created-by-friends-of
+
+
+by-friends-of
+
+
+at-followed-by
+
+
+at
+
+
+after
+
+
+before
+
+
+between
+
+
+created-after
+
+
+created-before
+
+
+created-between
+
+
+with-stars
+
+
+with-grade
+
+
+with-gear-style
+
+
+is
+
+
+missing
+
+
+has-been
+
+
+length-shorter
+
+
+length-longer
+
+
+length-between
+
+
+search
+
+
+prefix-search
+
+
+
+
+The following sort by:
+
+
+
+
+when
+
+
+when-fa
+
+
+when-history # this may result in dups
+
+
+at
+
+
+stars
+
+
+length
+
+
+grade
+
+
+gear-style
+
+
+
+
+For example:
+
+
+
+
+https://sandpit.thecrag.com/api/facet/routes/at/11741371/with-grade/AU:21:39/?sortby=stars,desc
+
+
+
+
+
+
+
+
+Areas
+Back to contents 
+
+
+
+
+The url query string may contain the following search directives:
+
+
+
+
+at
+
+
+of-area-type
+
+
+created-after
+
+
+created-before
+
+
+created-between
+
+
+search
+
+
+prefix-search
+
+
+
+
+The following sort by:
+
+
+
+
+when
+
+
+at
+
+
+
+
+For example:
+
+
+
+
+https://sandpit.thecrag.com/api/facet/areas/at/11737699/of-area-type/crag/prefix-search/arap/
+
+
+
+
+
+
+
+
+Nodes
+Back to contents 
+
+
+
+
+The url query string may contain the following search directives:
+
+
+
+
+at
+
+
+of-node-type
+
+
+created-after
+
+
+created-before
+
+
+created-between
+
+
+search
+
+
+prefix-search
+
+
+fuzzy-search
+
+
+
+
+The following sort by:
+
+
+
+
+when
+
+
+at
+
+
+
+
+For example:
+
+
+
+
+https://sandpit.thecrag.com/api/facet/nodes/of-node-type/route/at/11741371/fuzzy-search/spinning/
+
+
+
+
+
+
+
+
+Ascents
+Back to contents 
+
+
+
+
+The url query string may contain the following search directives:
+
+
+
+
+by
+
+
+on
+
+
+at
+
+
+by-friends-of
+
+
+at-followed-by
+
+
+since
+
+
+after
+
+
+before
+
+
+between
+
+
+logged-after
+
+
+logged-before
+
+
+logged-between
+
+
+with-tick-group
+
+
+with-quality
+
+
+with-route-grade
+
+
+with-route-gear-style
+
+
+with-route-stars
+
+
+route-is
+
+
+route-length-shorter
+
+
+route-length-longer
+
+
+route-length-between
+
+
+search
+
+
+search-comment
+
+
+
+
+The following sort by:
+
+
+
+
+since
+
+
+when
+
+
+when-climbed
+
+
+by
+
+
+at
+
+
+tick-type
+
+
+route-stars
+
+
+route-length
+
+
+route-grade
+
+
+route-gear-style
+
+
+route-bolts
+
+
+
+
+Note that the since facet returns any ascents that have been created or updated since the epoch provided. You can also edit sort by since.
+
+
+The format for the since parameter is unix epoch. The format for other date fields is '2014-12-19' where day or day and month can be '00' for searches based on day or month.
+
+
+The ascents filter has a thin mode available, use thin=1 paramenter to enable and withdata=field1,field2,field3,... to specify which data fields to return. The fields available are:
+
+
+
+
+AscentID
+
+
+CreateDate
+
+
+Date
+
+
+LastUpdated
+
+
+AccountID: If inflate=account is specified each account is inflated.
+
+
+NodeID: The route associated with the ascent. If inflate=node is specified each node is inflated.
+
+
+Tick
+
+
+Label
+
+
+Ancestors: list of ancestor ids in depth order. If inflate=node is specified each id is inflated.
+
+
+Historical: A flag which indicates if the tick was logged historically (used in streams).
+
+
+Artificial: A flag which indicates if the route is in a gym.
+
+
+Grade: array of grade id, grade and grading system.
+
+
+AltGrade: array of grade id, grade and grading system.
+
+
+Band: experience band of route as an integer
+
+
+Height: in meters
+
+
+GradeScore: internal grade score for the route 0-500 (actually it may be open ended).
+
+
+Comment: use parameter markupType=text for text markup or markupType=html markup. If you want to markup keywords use keywordMarkup=1.
+
+
+With: Array of with string followed my account ids. Use parameter markupType=text for text markup or markupType=html markup. If inflate=account is specified each id is inflated.
+
+
+Pitch: array of pitches, each pitch is an array of [number,leadby,rating system,grade,alt rating system,alt grade,linkup].
+
+
+Quality
+
+
+Channel: the channel used to log the ascent. Eg the app will have it's own channel id.
+
+
+Competition: the competition the ascent was logged in.
+
+
+Shot
+
+
+Trip
+
+
+RelativeDifficulty
+
+
+
+
+For example:
+
+
+
+
+https://sandpit.thecrag.com/api/facet/ascents/at/11740915/by/9068185/?sortby=route-grade,desc
+
+
+https://sandpit.thecrag.com/api/facet/ascents/at/11740915/by/scd?key=abc&thin=1&withdata=AscentID,CreateDate,Date,LastUpdated,AccountID,NodeID,Tick,Label,Ancestors,Historical,Artificial,Grade,AltGrade,Band,Height,GradeScore,Comment,With,Pitch,Quality,Channel,Competition,Shot,Trip,RelativeDifficulty&inflate=node:skeleton,account:skeleton&markupType=text
+
+
+
+
+
+
+
+
+Favorites
+Back to contents 
+
+
+
+
+The url query string may contain the following search directives:
+
+
+
+
+by
+
+
+at
+
+
+by-friends-of
+
+
+after
+
+
+before
+
+
+between
+
+
+search
+
+
+
+
+The following sort by:
+
+
+
+
+when
+
+
+by
+
+
+at
+
+
+
+
+For example:
+
+
+
+
+https://sandpit.thecrag.com/api/facet/favorites/at/11740915+11741371/
+
+
+
+
+
+
+
+
+Photos
+Back to contents 
+
+
+
+
+The url query string may contain the following search directives:
+
+
+
+
+uploaded-by
+
+
+taken-by
+
+
+of
+
+
+uploaded-by-friends-of
+
+
+taken-by-friends-of
+
+
+of-friends-of
+
+
+at-followed-by
+
+
+on
+
+
+at
+
+
+after
+
+
+before
+
+
+between
+
+
+uploaded-after
+
+
+uploaded-before
+
+
+uploaded-between
+
+
+with-route-grade
+
+
+with-route-gear-style
+
+
+with-route-stars
+
+
+route-is
+
+
+route-length-shorter
+
+
+route-length-longer
+
+
+route-length-between
+
+
+search
+
+
+
+
+The following sort by:
+
+
+
+
+when
+
+
+when-taken
+
+
+uploaded-by
+
+
+taken-by
+
+
+uploaded-of
+
+
+at
+
+
+route-stars
+
+
+route-length
+
+
+route-grade
+
+
+route-gear-style
+
+
+
+
+For example:
+
+
+
+
+https://sandpit.thecrag.com/api/facet/photos/at/11740915/with-route-stars/3/
+
+
+
+
+
+
+
+
+Topos
+Back to contents 
+
+
+
+
+The url query string may contain the following search directives:
+
+
+
+
+at
+
+
+after
+
+
+before
+
+
+between
+
+
+at
+
+
+
+
+The following sort by:
+
+
+
+
+when
+
+
+
+
+For example:
+
+
+
+
+https://sandpit.thecrag.com/api/facet/topos/11740915/
+
+
+
+
+
+
+
+
+Activity
+Back to contents 
+
+
+
+
+The url query string may contain the following search directives:
+
+
+
+
+by
+
+
+at
+
+
+by-friends-of
+
+
+after
+
+
+before
+
+
+between
+
+
+with-time
+
+
+with-route-grade
+
+
+is
+
+
+for
+
+
+with-route-gear-style
+
+
+with-route-stars
+
+
+route-is
+
+
+route-length-shorter
+
+
+route-length-longer
+
+
+route-length-between
+
+
+search
+
+
+
+
+The following sort by:
+
+
+
+
+by
+
+
+at
+
+
+item
+
+
+for
+
+
+route-stars
+
+
+route-length
+
+
+route-grade
+
+
+route-gear-style
+
+
+
+
+For example:
+
+
+
+
+https://sandpit.thecrag.com/api/facet/activity/at/11740915/by-friends-of/9068185/
+
+
+
+
+
+
+
+
+Messages
+Back to contents 
+
+
+
+
+The url query string may contain the following search directives:
+
+
+
+
+at
+
+
+at-followed-by
+
+
+from
+
+
+involving
+
+
+after
+
+
+before
+
+
+between
+
+
+since-message
+
+
+search
+
+
+
+
+The following sort by:
+
+
+
+
+when
+
+
+
+
+For example:
+
+
+
+
+https://sandpit.thecrag.com/api/facet/messages/involving/9068185/since-message/218342559/
+
+
+
+
+Note that if the filter does not include an 'at' directive then only messages involving the authorised account (OAuth) will be returned.
+
+
+Use the 'markupType' parameter to markup message content - set to 'none', 'html' or 'text'. Markup includes internal links. If you do not set this parameter then the client will be responsible for the markup.
+
+
+Use the 'truncate' parameter if you want to limit the message content length. Note that because message content can include html the truncate will nicely truncate at a word boundary shorter that the length specified.
+
+
+
+
+
+
+Climbers
+Back to contents 
+
+
+
+
+Not implemented
+
+
+
+
+
+
+Text completion
+Back to contents 
+
+
+
+
+There are some fast prefix lookup end points which can be used for text completion, for example in a crag search toolbar. Text completion examples:
+
+
+
+
+https://sandpit.thecrag.com/api/lookup/crag?search=ara
+
+
+https://sandpit.thecrag.com/api/lookup/crag?search=new&mode=crag,region
+
+
+https://sandpit.thecrag.com/api/lookup/crag?search=new&mode=region&page-size=5
+
+
+https://sandpit.thecrag.com/api/lookup/climber?search=campb
+
+
+https://sandpit.thecrag.com/api/lookup/climber?search=campb&mode=name
+
+
+https://sandpit.thecrag.com/api/lookup/climber?search=campb&mode=login
+
+
+https://sandpit.thecrag.com/api/lookup/
+[email protected]
+&mode=email
+
+
+https://sandpit.thecrag.com/api/lookup/climber?search=9068185&mode=id
+
+
+https://sandpit.thecrag.com/api/lookup/
+[email protected]
+&mode=server
+
+
+
+
+For a crag search, if parameter 'mode' is set to 'region' then the search space is for regions only otherwise it is for areas identified as a Crag.
+
+
+If you don't want a long list to be returned they you should specify the 'page-size' parameter.
+
+
+For a climber search you can set the following mode behavious:
+
+
+
+
+login: The search space returns prefix matches from the persons login.
+
+
+name: The search space returns prefix matches from the persons name. Please note that because a person's name is in one field it does not prefix match somebodies last name.
+
+
+email: The search space returns exact matches for an email address. Please note that partial email addresses are not matched.
+
+
+id: The search space returns exact matches for an persons id. Please note that partial ids are not matched.
+
+
+all: Matches all of the above. This uses more server resources and is slower, please use mode=server instead.
+
+
+server: (default) This tells the server to decide which to match based on the search string. If it has an @ in the search space then it is assumed to be an email search, otherwise if all numbers then it is a login and id seach, otherwise if no spaces then it is a login and name search, otherwise a name search. This is the default search because it allows a user of an application to put in some text and the server can work out what the user meant without having the server overhead of processing 'all' modes.
+
+
+
+
+
+
+
+
+Optimising down the wire
+Back to contents 
+
+
+
+
+Because they are hash based, some of the endpoints described in this API have a heavy over-the-wire burden with unneccessary information. While this is fine for some clients, it is not ideal for others where data transfer rates are limited and/or client memory is limited.
+
+
+This section describes how you can use the 'flatten' parameter to better optimise the data transfer over the wire. The flatten variable turns the result hash structures into an array only including values associated with keys you specified. The flatten spec can be nested so you can flatten sub hashes.
+
+
+
+  flatten=key1,key2[subKeyA,subKeyB]
+
+
+
+Below are a couple of examples of how this may work:
+
+
+
+
+https://sandpit.thecrag.com/api/facet/routes/at/11741371?flatten=data[numberRoutes,routes[id,grade,name]]
+
+
+https://sandpit.thecrag.com/api/discussion/191502618?flatten=data[messages[id,markdown,subject,from[id],node[id]]]
+
+
+
+
+
+
+
+
+Update access points
+Back to contents 
+
+
+
+
+Unless otherwise stated all API update access points require utf8 encoded text.
+
+
+The update API end points require an application/json MIME type POST, with the POST content being json formatted utf8 text. The post can be a single update or multiple update. The format of a single update is:
+
+
+
+  data: {
+   …
+  }
+
+
+
+The format of a multiple update is:
+
+
+
+  data: [{
+     …
+   },{
+     …
+  }]
+
+
+
+Update API end points return either HTTP_ACCEPTED or HTTP_BAD_REQUEST, and application/json MIME type with the supplied data fields, and either an ‘ok’ or ‘error’ data field.
+
+
+If an error was encountered the error message has the same structure as the data field, for example:
+
+
+
+  error: [{
+   loginError: “not unique”,
+  }]
+
+
+
+Where the ‘loginError’ corresponds to the ‘login’ input data field.
+
+
+If the update was successful then an ‘ok’ field is returned, for example:
+
+
+
+  ok: [{
+   accountID: 1234
+   uri: ‘/climber/1234’
+  }]
+
+
+
+Note that if an entity has been created then the id of that entity and the canonical uri is returned. Core entities that can be created using the API include:
+
+
+
+
+climber
+: returns accountID if successfully created
+
+
+area
+: returns nodeID if successfully created
+
+
+route
+: returns nodeID if successfully created
+
+
+ascent
+: returns ascentID if successfully created
+
+
+trip
+: returns tripID if successfully created (not implemented yet)
+
+
+
+
+There are separate end points for each of the core entities for creating, updating and deleting. Each of these end points has a paired validate call. For example 'climber/create' is paired with 'climber/create/validate'. The paired validate API call is an end point in it's own right, but is also called internally by the update end point.
+
+
+Developer style note
+: You should always call the paired validate API end point before calling the update end point.
+
+
+Note that none of the delete API end-points are implemented yet.
+
+
+
+
+
+
+Create Climber
+Back to contents 
+
+
+
+
+Access points
+:
+
+
+
+  https://www.thecrag.com/api/climber/create
+  https://www.thecrag.com/api/climber/create/validate
+
+
+
+Data fields
+:
+
+
+
+
+login
+: mandatory, must be unique in system.
+
+
+password
+: mandatory
+
+
+email
+: mandatory
+
+
+name
+: highly recommended, but optional if you really cannot supply a name.
+
+
+countryID
+: highly recommended, but optional if you really cannot supply a country ID.
+
+
+termsVersionID
+: for web signup
+
+
+list
+: flag to indicate whether to list account in public directories (default yes)
+
+
+private
+: flag to indicate that it is a private account (default no)
+
+
+
+
+The system has tens of thousands of login names registered so there is a very high probability that a create climber API request will return an error because the login already exists.
+
+
+The countryID is the country identifier in the system. This is not the node identifier associated with the country. You may get a list of country identifiers by using the following API call (also see examples above):
+
+
+
+  https://www.thecrag.com/api/country/list
+
+
+
+The termsVersionID indicates that the user has accepted specific terms and conditions. Accepting terms and conditions is required if the user is accessing the system via thecrag.com website. If the user has not accepted the terms and conditions then they will be asked to accept them the first time they log into the website. It's good programing practice to get a user to accept terms and conditions, but from the API perspective this is seen as a client application responsibility. If you want to integrate your application to the systems terms and conditions then let us know because we will have to make some enhancements to the API.
+
+
+Examples
+:
+
+
+
+
+
+
+POST
+Response
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/climber/create/validate HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+     "email" : "bla",
+     "password" : "abc",
+     "name" : "simon dale",
+     "login" : "SCD"
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "error": {
+     "loginError" : "login already in use"
+   },
+   "data": {
+     "email" : "bla",
+     "password" : "abc",
+     "name" : "simon dale",
+     "login" : "SCD"
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/climber/create/validate HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": [{
+       "email" : "bla",
+       "password" : "abc",
+     },{
+       "email" : "bla2",
+   }]
+ }
+
+
+
+
+
+
+
+
+ {
+   "error": [{
+      "loginError" : "mandatory field",
+     },{
+      "loginError" : "mandatory field",
+      "passwordError" : "mandatory field",
+   }]
+   "data": [{
+       "email" : "bla",
+       "password" : "abc",
+     },{
+       "email" : "bla2",
+   }]
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/climber/create HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+     "email" : "bla",
+     "password" : "abc",
+     "name" : "simon dale",
+     "login" : "SOMEUNIQUENAME"
+     "list" : "yes",
+     "private" : 0,
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok": {
+     "accountID" : "1234",
+     "uri" : "/climber/1234"
+   },
+   "data": {
+     "email" : "bla",
+     "password" : "abc",
+     "name" : "simon dale",
+     "login" : "SOMEUNIQUENAME"
+     "list" : "yes",
+     "private" : 0,
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+Update Climber
+Back to contents 
+
+
+
+
+Access points
+:
+
+
+
+  https://www.thecrag.com/api/climber/update
+  https://www.thecrag.com/api/climber/update/validate
+
+
+
+Data fields
+:
+
+
+
+
+accountID
+: 
+
+
+favorite
+: hash identifying which node to (de)select as a shortcut.
+
+
+follow
+: hash identifying which account to (un)link as a linked account.
+
+
+
+
+The update climber accessp point is under development. Currently you can only (un)link to other accounts and (de)select shortcuts.
+
+
+To (de)select a node as a shortcut use the favorite variable, which has the following format:
+
+
+
+  node: 1234,
+  status: 0/1
+
+
+
+Set status to 1 to select as favorite, set to 0 to deselect as favorite.
+
+
+To (un)link to another account use the follow variable, which has the following format:
+
+
+
+  account: 1234,
+  status: 0/1
+
+
+
+Set status to 1 to follow an account, 0 to unfollow an account.
+
+
+Examples
+:
+
+
+
+
+
+
+POST
+Response
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/climber/update HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+     "accountID" : "1234",
+     "favorite" : {
+       "node": "6789",
+       "status": "1",
+     }
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok": {
+     "uri" : "/climber/1234"
+   },
+   "data": {
+     "accountID" : "1234",
+     "favorite" : {
+       "node": "6789",
+       "status": "1",
+     }
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/climber/update HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+     "accountID" : "1234",
+     "follow" : {
+       "account": "4567",
+       "status": "1",
+     }
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok": {
+     "uri" : "/climber/1234"
+   },
+   "data": {
+     "accountID" : "1234",
+     "follow" : {
+       "account": "4567",
+       "status": "1",
+     }
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+Create Area
+Back to contents 
+
+
+
+
+Access points
+:
+
+
+
+  https://www.thecrag.com/api/area/create
+  https://www.thecrag.com/api/area/create/validate
+
+
+
+Data fields
+:
+
+
+
+
+submittor
+: mandatory accountID submitting the area.
+
+
+parent
+: mandatory parent nodeID.
+
+
+name
+: mandatory name of area.
+
+
+alternateNames
+: optional hash describing alternate names.
+
+
+type
+: mandatory area type.
+
+
+insertBefore
+: optional nodeID for inserting before a sibling node.
+
+
+beta
+: optional hash for description fields.
+
+
+publisherID
+: optional publisherID if submission associated with a publisher.
+
+
+publicationID
+: optional publicationID if submission associated with a publication.
+
+
+
+
+The type variable may be one of (see 
+Area Types
+ article):
+
+
+
+
+Area
+
+
+Region
+
+
+Crag
+
+
+Cliff
+
+
+Sector
+
+
+Field
+
+
+Boulder
+
+
+Feature
+
+
+
+
+The alternateNames variable is a hash with the following format:
+
+
+
+  type: string,
+  name: string
+
+
+
+The type sub-variable may be one of:
+
+
+
+
+Offensive
+
+
+Language
+
+
+Historical
+
+
+Alternate
+
+
+
+
+The beta variable is a hash with the following format:
+
+
+
+  type: string,
+  description: string
+
+
+
+The type sub-variable may be one of (see 
+Write Descriptions
+ article):
+
+
+
+
+Description
+
+
+Access
+
+
+Approach
+
+
+Unique Features And Strengths
+
+
+Where To Stay
+
+
+Descent Notes
+
+
+Ethic
+
+
+Rest Day Activities
+
+
+History
+
+
+
+
+Examples
+:
+
+
+
+
+
+
+POST
+Response
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/area/create HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+     "name": "somecliff",
+     "type": "Cliff",
+     "alternateNames": [{
+       "type": "Historical",
+       "name": "historical name",
+     }],
+     "beta": [{
+       "type": "Description",
+       "description": "some description",
+     }],
+     "parent": 5678,
+     "submittor": 7890,
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok": {
+     "nodeID" : "1234",
+     "uri" : "/area/1234"
+   },
+   "data": {
+     "name": "somecliff",
+     "type": "Cliff",
+     "alternateNames": [{
+       "type": "Historical",
+       "name": "historical name",
+     }],
+     "beta": [{
+       "type": "Description",
+       "description": "some description",
+     }],
+     "parent": 5678,
+     "submittor": 7890,
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+Update Area
+Back to contents 
+
+
+
+
+Access points
+:
+
+
+
+  https://www.thecrag.com/api/area/update
+  https://www.thecrag.com/api/area/update/validate
+
+
+
+Data fields
+:
+
+
+
+
+submittor
+: mandatory
+
+
+node
+: mandatory
+
+
+name
+: optional, only use if updating principle name
+
+
+alternateNames
+: optional hash if updating alternate names.
+
+
+insertBefore
+: optional, only use if reordering
+
+
+type
+: optional, only use if changing area type
+
+
+beta
+: optional, only use if updating beta
+
+
+publisher
+: optional, use if you want to add/update a description for a publisher.
+
+
+publication
+: optional, only use if updating the publication an area description is associated with
+
+
+
+
+The alternateNames variable includes an 'action' sub-variable which may be set to 'add' or 'delete'.
+
+
+To update community beta then you do not include a publisher, otherwise if you include a publisher the publishers beta will be updated.
+
+
+Examples
+:
+
+
+
+
+
+
+POST
+Response
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/area/update HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+     "node": 1234,
+     "submittor": 7890,
+     "name": "new primary name",
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok": {
+     "uri" : "/area/1234"
+   },
+   "data": {
+     "node": 1234,
+     "submittor": 7890,
+     "name": "new primary name",
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/area/update HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+     "node": 1234,
+     "submittor": 7890,
+     "alternateNames": [{
+       "type": "Historical",
+       "name": "historical name",
+       "action": "delete",
+     }],
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok": {
+     "uri" : "/area/1234"
+   },
+   "data": {
+     "node": 1234,
+     "submittor": 7890,
+     "alternateNames": [{
+       "type": "Historical",
+       "name": "historical name",
+       "action": "delete",
+     }],
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+Create Route
+Back to contents 
+
+
+
+
+Access points
+:
+
+
+
+  https://www.thecrag.com/api/route/create
+  https://www.thecrag.com/api/route/create/validate
+
+
+
+Data fields
+:
+
+
+
+
+submittor
+: mandatory
+
+
+parent
+: mandatory
+
+
+name
+: mandatory
+
+
+alternateNames
+: optional hash of alternate names.
+
+
+insertBefore
+: optional
+
+
+beta
+: optional hash (same as creating area, but only 'Description' field is available).
+
+
+publisher
+: optional publisherID
+
+
+publication
+: optional publicationID
+
+
+context
+: mandatory
+
+
+heightText
+: optional
+
+
+pitches
+: optional
+
+
+bolts
+: optional
+
+
+topRopeFlag
+: optional
+
+
+isProjectFlag
+: optional
+
+
+gearStyle
+: mandatory
+
+
+history
+: optional
+
+
+lat
+: optional
+
+
+long
+: optional
+
+
+gradeText
+: optional
+
+
+citation
+: optional
+
+
+
+
+The context variable sets the context for the system to parse grades. Note that globally some grading systems confict. You may get the context from the country and the country from the ancestor list. For example:
+.
+
+
+
+  https://www.thecrag.com/api/area/id/11740915/ancestors
+  https://www.thecrag.com/api/country/id/7478254
+
+
+
+The gearStyle variable may be one of (see 
+Route Styles
+ article):
+
+
+
+
+Unknown
+
+
+Trad
+
+
+Sport
+
+
+DWS
+
+
+Aid
+
+
+Via ferrata
+
+
+Boulder
+
+
+Ice
+
+
+Alpine
+
+
+Top rope
+
+
+
+
+The history variable is a hash with the following format:
+
+
+
+  type: string,
+  date: YYYY-MM-DD
+  climbers: string,
+  diary: string
+
+
+
+The type sub-variable may be one of:
+
+
+
+
+First Ascent
+
+
+First Free Ascent
+
+
+
+
+The date sub-variable may have either DD as '00' or both MM and DD as '00'.
+
+
+The heightText variable is a text string describing the height. If it is a single number it is assumed to be in metres. You may input using feet by using ft units (eg '100ft') or you may input multiple pitches using comma (eg '20,45,27').
+
+
+The gradeText variable is a text string describing the grade as it would be seen in a guidebook. This may be fairly complex and could include grade ranges, stars, protection ratings, partial grades, and aid. For example in the US context the system would understand the following grade texts:
+
+
+
+
+5.10a
+
+
+5.10
+
+
+10a
+
+
+5.11b-d
+
+
+5.11c/d
+
+
+5.11a A3
+
+
+5.9, 5.10a, 5.10d, 5.8
+
+
+5.10
+
+
+5.10d X
+
+
+5.10d **
+
+
+
+
+The citation variable must be used with a publicationID and describes references where the route grade may be found in the publication (can be a URL or page number) depending on the nature of the publication.
+
+
+Examples
+:
+
+
+
+
+
+
+POST
+Response
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/route/create HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+     "name": "some route",
+     "beta": [{
+       "type": "Description",
+       "description": "some description",
+     }],
+     "parent": 82079136,
+     "submittor": 9068185,
+     "context": "AU",
+     "gearStyle": "Trad",
+     "heightText": "24,26",
+     "pitches": "3",
+     "bolts": "4",
+     "gradeText": "12,22M1",
+     "history": [{
+         "type" : "First Ascent",
+         "date" : "2011-02-09",
+         "climbers" : "some climber",
+         "diary" : "diary entry"
+       },{
+         "type" : "First Free Ascent",
+         "date" : "2011-00-00",
+         "climbers" : "another climber",
+         "diary" : "another entry"
+     }],
+     "lat": 45.45,
+     "long": -22.45,
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok": {
+     "nodeID" : "1234",
+     "uri" : "/route/1234"
+   },
+   "data": {
+     "name": "some route",
+     "beta": [{
+       "type": "Description",
+       "description": "some description",
+     }],
+     "parent": 82079136,
+     "submittor": 9068185,
+     "context": "AU",
+     "gearStyle": "Trad",
+     "heightText": "24,26",
+     "pitches": "3",
+     "bolts": "4",
+     "gradeText": "12,22M1",
+     "history": [{
+         "type" : "First Ascent",
+         "date" : "2011-02-09",
+         "climbers" : "some climber",
+         "diary" : "diary entry"
+       },{
+         "type" : "First Free Ascent",
+         "date" : "2011-00-00",
+         "climbers" : "another climber",
+         "diary" : "another entry"
+     }],
+     "lat": 45.45,
+     "long": -22.45,
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+Update Route
+Back to contents 
+
+
+
+
+Access points
+:
+
+
+
+  https://www.thecrag.com/api/route/create
+  https://www.thecrag.com/api/route/create/validate
+
+
+
+Data fields
+:
+
+
+
+
+submittor
+: mandatory
+
+
+node
+: mandatory
+
+
+name
+: optional, use only if changing name
+
+
+alternateNames
+: optional hash as per update area end point
+
+
+insertBefore
+: optional, use if reordering
+
+
+beta
+: optional hash as per update area end point (only the Description type is available for routes)
+
+
+publisher
+: optional publisherID to be used with beta
+
+
+publication
+: optional publicationID to be used with beta or citation
+
+
+context
+: optional unless gradeText is used
+
+
+heightText
+: optional, use if changing height
+
+
+pitches
+: optional, use if changing pitches
+
+
+bolts
+: optional, use if changing bolts
+
+
+topRopeFlag
+: optional, use if changing top rope flag
+
+
+isProjectFlag
+: optional, use if changing project flag
+
+
+gearStyle
+: optional, use if changing gear style
+
+
+lat
+: optional, use if changing latidude and longitude
+
+
+long
+: optional, use if changing latidude and longitude
+
+
+citation
+: optional, use if changing publicication citation
+
+
+gradeText
+: optional, use if changing/adding grade contribution from a user or publication.
+
+
+registeredGrade
+: optional hash that you can use to add/update the registered grade of the route.
+
+
+
+
+Note that multiple users and/or publications may contribute a grade contribution. When you create a route it will initially have at most one grade contribution. To add multiple grade contributions you must use the update route end point. If a publication is provided with gradeText then then it is assumed that it is a publication contribution, otherwise the contribution is assumed to be a user contribution. If the publisher/user has already made a grade contribution then their entry is updated, otherwise a new entry is added.
+
+
+Updating gradeText will not update the registered grade for the climb unless there are no existing grade contributions.
+
+
+To update the registered grade for a route you must use the registeredGrade variable. This will not be associated with a user or publisher. The registeredGrade hash has the following format:
+
+
+
+  system: string,
+  lower: grade,
+  upper: grade
+
+
+
+The system sub-variable should be one the system labels defined by the following configuration end point:
+
+
+
+  https://sandpit.thecrag.com/api/config/grade/system
+
+
+
+The upper grade is optional and is used to specify a grade range.
+
+
+If the lower grade is not specified then the registered grade is removed from the system, otherwise the registered grade is either updated or added to the system.
+
+
+Both the lower and upper grades must exactly match the grade type (as defined by the grade system configuration end point above).
+
+
+A route may have registered grades for multiple systems (eg French and Australian registered grades in Thailand).
+
+
+Examples
+:
+
+
+
+
+
+
+POST
+Response
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/route/update HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+     "node": 1234,
+     "submittor": 5678,
+     "registeredGrade": [{
+       "system": "YDS",
+       "lower": "5.10a",
+     }],
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok": {
+     "uri" : "/route/1234"
+   },
+   "data": {
+     "node": 1234,
+     "submittor": 5678,
+     "registeredGrade": [{
+       "system": "YDS",
+       "lower": "5.10a",
+     }],
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/route/update HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+     "node": 1234,
+     "submittor": 5678,
+     "context": "YDS",
+     "gradeText": "5.11a,5.11d,5.9,5.10",
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok": {
+     "uri" : "/route/1234"
+   },
+   "data": {
+     "node": 1234,
+     "submittor": 5678,
+     "context": "YDS",
+     "gradeText": "5.11a,5.11d,5.9,5.10",
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+Create Ascent
+Back to contents 
+
+
+
+
+Access points
+:
+
+
+
+  https://www.thecrag.com/api/ascent/create
+  https://www.thecrag.com/api/ascent/create/validate
+
+
+
+Data fields
+:
+
+
+
+
+account
+: mandatory accountID
+
+
+node
+: mandatory nodeID
+
+
+version
+: mandatory set to 2
+
+
+climbedGearStyle
+: gear style that it was climbed as
+
+
+tick
+: optional tick type (defaults to 'tick')
+
+
+date
+: optional, YYYY-MM-DD
+
+
+label
+: optional, use if you want to label the ascent with something other then the route name of the given node.
+
+
+shot
+: optional shot number
+
+
+quality
+: optional quality rating
+
+
+gradeSystem
+: optional but mandatory if using grade
+
+
+grade
+: optional, defaults to route grade of the given node.
+
+
+relativeDifficulty
+: optional relative difficulty rating (relative to given grade)
+
+
+trip
+: optional tripID
+
+
+comment
+: optional markdown comment
+
+
+difficultyFeedback
+: optional 
+
+
+externalUuid
+: optional 
+
+
+numberAttempts
+: optional 
+
+
+pitch
+: optional array of pitches
+
+
+
+
+Pitch is:
+
+
+
+
+number
+: mandatory 
+
+
+climbedGearStyle
+: optional 
+
+
+tick
+: optional 
+
+
+heightText
+: optional 
+
+
+gradeSystem
+: optional 
+
+
+grade
+: optional 
+
+
+altGradeSystem
+: optional 
+
+
+altGrade
+: optional 
+
+
+leadby
+: optional 
+
+
+comment
+: optional 
+
+
+
+
+The tick variable should be restricted to climbed gear style.
+
+
+For Trad climbed gear style:
+
+
+
+
+onsight
+
+
+flash
+
+
+redpoint
+
+
+pinkpoint
+
+
+greenpointonsight
+
+
+greenpointflash
+
+
+greenpoint
+
+
+dog
+
+
+allfreewithrest
+
+
+groundupredpoint
+
+
+leadsolo
+
+
+working
+
+
+attempt
+
+
+retreat
+
+
+tick
+
+
+
+
+For Sport climbed gear style:
+
+
+
+
+onsight
+
+
+flash
+
+
+redpoint
+
+
+pinkpoint
+
+
+dog
+
+
+allfreewithrest
+
+
+groundupredpoint
+
+
+leadsolo
+
+
+working
+
+
+attempt
+
+
+retreat
+
+
+tick
+
+
+
+
+For Boulder climbed gear style:
+
+
+
+
+onsight
+
+
+flash
+
+
+send
+
+
+repeat
+
+
+dab
+
+
+working
+
+
+attempt
+
+
+
+
+For Top rope climbed gear style:
+
+
+
+
+onsight
+
+
+flash
+
+
+clean
+
+
+dog
+
+
+ropedsolo
+
+
+attempt
+
+
+tick
+
+
+
+
+For Second climbed gear style:
+
+
+
+
+onsight
+
+
+flash
+
+
+clean
+
+
+dog
+
+
+attempt
+
+
+tick
+
+
+
+
+For Solo climbed gear style:
+
+
+
+
+onsight
+
+
+flash
+
+
+redpoint
+
+
+attempt
+
+
+retreat
+
+
+tick
+
+
+
+
+For Deep Water Solo climbed gear style:
+
+
+
+
+onsight
+
+
+flash
+
+
+redpoint
+
+
+working
+
+
+attempt
+
+
+retreat
+
+
+tick
+
+
+
+
+For Aid climbed gear style:
+
+
+
+
+onsight
+
+
+flash
+
+
+tick
+
+
+aidsolo
+
+
+working
+
+
+attempt
+
+
+retreat
+
+
+
+
+For Ice climbed gear style:
+
+
+
+
+onsight
+
+
+flash
+
+
+redpoint
+
+
+working
+
+
+attempt
+
+
+retreat
+
+
+tick
+
+
+
+
+For Alpine climbed gear style:
+
+
+
+
+tick
+
+
+attempt
+
+
+retreat
+
+
+
+
+For Via Ferrata climbed gear style:
+
+
+
+
+tick
+
+
+attempt
+
+
+retreat
+
+
+
+
+The quality variable may be one of:
+
+
+
+
+crap
+
+
+poor
+
+
+average
+
+
+good
+
+
+excellent
+
+
+classic
+
+
+megaclassic
+
+
+
+
+The relativeDifficulty variable may be one of:
+
+
+
+
+soft
+
+
+easy
+
+
+average
+
+
+hard
+
+
+sand
+
+
+
+
+Examples
+:
+
+
+
+
+
+
+POST
+Response
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/ascent/create HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+     "account": 1234,
+     "submittor": 5678,
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok": {
+     "ascentID" : "3344"
+     "uri" : "/ascent/3344"
+   },
+   "data": {
+     "account": 1234,
+     "submittor": 5678,
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/ascent/create HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+     "account": 1234,
+     "submittor": 5678,
+     "tick": "onsight",
+     "quality": "classic",
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok": {
+     "ascentID" : "3344"
+     "uri" : "/ascent/3344"
+   },
+   "data": {
+     "account": 1234,
+     "submittor": 5678,
+     "tick": "onsight",
+     "quality": "classic",
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+Send message
+Back to contents 
+
+
+
+
+Access points
+:
+
+
+
+  https://www.thecrag.com/api/message/send
+  https://www.thecrag.com/api/message/send/validate
+
+
+
+Data fields
+:
+
+
+
+
+fromAccount
+: accountID - mandatory.
+
+
+content
+: abc - optional, max 5096, either 'subject' or 'content' mandatory.
+
+
+subject
+: abc - optional.
+
+
+toAccount
+: [accountID] - optional, either 'toAccount', 'toGroup' or 'createGroup' mandatory. You cannot send to both an account and group.
+
+
+toGroups
+: [groupID] - optional - groupID is synonym for forumID.
+
+
+createGroup
+: {name:xyz, type:'Area Forum', prn:nodeID} - optional, if an area forum does not exist for a node then one can be created on-the-fly.
+
+
+node
+: node - optional, this should be used when posting to an area forum as an additional field. It determines the 'rollup'.
+
+
+ascent
+: ascentID - optional.
+
+
+trip
+: tripID - optional - note you can post to a node, trip or and ascent, but not more than one of these.
+
+
+responseTo
+: root message of a discussion thread - optional, if you are starting a new discussion then you omit this, otherwise you must use the root message id for discussion responses.
+
+
+
+
+The create group type variable may be one of:
+
+
+
+
+Area Forum
+
+
+Global Forum
+
+
+
+
+Examples
+:
+
+
+
+
+
+
+POST
+Response
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/message/send HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+     "fromAccount": 9068185,
+     "content": "some test message",
+     "toAccounts": [9068185],
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok": {
+     "messageID=>1234,
+     "subject" => undef,
+     "surrogate" => "some test message",
+     "markupHTML" => "<p>some test message</p>",
+   },
+   "data": {
+     "fromAccount": 9068185,
+     "content": "some test message",
+     "toAccounts": [9068185],
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/message/create HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+     "fromAccount": 9068185,
+     "subject": "test subject",
+     "content": "test message",
+     "toGroups": [172682874],
+     "node": 11740915,
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok": {
+     "messageID=>1234,
+     "subject" => "test subject",
+     "surrogate" => "test subject",
+     "markupHTML" => "<p>test message</p>",
+   },
+   "data": {
+     "fromAccount": 9068185,
+     "subject": "test subject",
+     "content": "test message",
+     "toGroups": [172682874],
+     "node": 11740915,
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/message/create HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+     "fromAccount": 9068185,
+     "content": "test response",
+     "responseTo": 176966451,
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok": {
+     "messageID=>1234,
+     "subject" => undef,
+     "surrogate" => "test response",
+     "markupHTML" => "<p>test response</p>",
+   },
+   "data": {
+     "fromAccount": 9068185,
+     "content": "test response",
+     "responseTo": 176966451,
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+Subscribe
+Back to contents 
+
+
+
+
+Thecrag offers third party apps an account subscription service for app charging. The third party app creates the subscription record. Subscriptions may be associated with a node. Account subscriptions can be queried by the app, which allows a developer to refresh an account or share subscriptions between apps.
+
+
+Access points
+:
+
+
+
+  https://www.thecrag.com/api/subscribe/create
+  https://www.thecrag.com/api/subscribe/create/validate
+  https://www.thecrag.com/api/subscribe/update
+  https://www.thecrag.com/api/subscribe/update/validate
+
+
+
+
+
+
+
+Creating a subscription
+Back to contents 
+
+
+
+
+Data fields
+:
+
+
+
+
+account
+: accountID - mandatory.
+
+
+developer
+: developerID - mandatory.
+
+
+tag
+: optional developer tag for managing subscriptions between a particular developers apps.
+
+
+access
+: optional access label for managing subscriptions between developers. Currently the only valid non-null setting is 'thecrag' which allows a developer to share the subscriptions as an official thecrag app.
+
+
+node
+: optional nodeID for associating a subscription with a crag.
+
+
+type
+: optional subscription type for multiple subscriptions for a particular account.
+
+
+expires
+: optional expires date (YYYY-MM-DD). A subscription without an expires should be interpreted as a once off payment.
+
+
+currency
+: optional currency code.
+
+
+payment
+: optional payment for audit purposes. Should be included if there was a payment associated with the subscription.
+
+
+discount
+: optional discount if there was a discount associated with the payment.
+
+
+trial
+: optional flag to indicate a trial subscription.
+
+
+complementary
+: optional flag to indicate a complementary subscription.
+
+
+transactionReference
+: optional third party transaction reference.
+
+
+notes
+: notes associated with the subscription.
+
+
+
+
+Examples
+:
+
+
+
+
+
+
+POST
+Response
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/subscribe/create HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+    "account": 9068185,
+    "developer": 156291588,
+    "tag": "googleapp",
+    "access": "thecrag",
+    "node": 11740915,
+    "type": "myapp category A",
+    "expires": "2012-10-22",
+    "currency": "AUD",
+    "payment": "4.51",
+    "discount": ".49",
+    "transactionReference": "AA-THIRD-PARTY-ID",
+    "notes": "test the notes functionality"
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok" : {
+      "subscriptionID" : 209424667
+   },
+   "data" : {
+      "payment" : "4.51",
+      "access" : "thecrag",
+      "account" : 9068185,
+      "discount" : ".49",
+      "node" : 11740915,
+      "currency" : "AUD",
+      "notes" : "test the notes functionality",
+      "developer" : 156291588,
+      "tag" : "googleapp",
+      "type" : "myapp category A",
+      "expires" : "2012-10-22"
+      "transactionReference": "AA-THIRD-PARTY-ID",
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+Updating a subscription
+Back to contents 
+
+
+
+
+Data fields
+:
+
+
+
+
+account
+: accountID - mandatory.
+
+
+subscription
+: subscriptionID - mandatory.
+
+
+transactionReference
+: optional third party transaction reference.
+
+
+
+
+Examples
+:
+
+
+
+
+
+
+POST
+Response
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/subscribe/update HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+    "account": 9068185,
+    "subscription" : 251188651,
+    "transactionReference" : "1234-B",
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok" : {
+      "subscriptionID" : 251188651
+   },
+   "data" : {
+      "transactionReference" : "1234-B",
+      "account" : 9068185,
+      "subscription" : 251188651
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+Register Webhook Callbacks
+Back to contents 
+
+
+
+
+You may register webhook callbacks. This is where thecrag server tells you about changes to the database. The following webhook samples are currently available for developers:
+
+
+
+  /climber/1234/profile
+  /climber/1234/messages/involved/all
+  /climber/1234/ascent
+  /climber/1234/ascent/following
+  /climber/1234/favorite
+  /climber/1234/following
+  /climber/1234/followed-by
+  /climber/1234/subscription
+  /node/6789/update
+  /node/6789/descendant/update
+
+
+
+If you want to use webhook callbacks you must contact us and let us know your url stub, something like 'https://somedeveloper.com/callbacks', in which case the callbacks will be POST'ed to https://somedeveloper.com/callbacks/climber/1234/messages/involved/all' for example.
+
+
+You register a callback for a context (eg climber 1234, or node 6789) and a known identifer (eg /messages/involved/all). Registering a callback for the context will overwrite the callbacks for the developer/context.
+
+
+Note that you will only get subscription callbacks for your developerID or if the subscription has a cross developer identifier.
+
+
+Data fields
+:
+
+
+
+
+developer
+: developerID - mandatory.
+
+
+climber
+: accountID - optional (but either climber or node is mandatory).
+
+
+node
+: nodeID - optional (but either climber or node is mandatory).
+
+
+callbacks
+: ["/callback/label",...] mandatory, but may be an empty array to reset all callbacks for that developer/entity.
+
+
+
+
+Examples
+:
+
+
+
+
+
+
+POST
+Response
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/subscribe/create HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+    "developer": 156291588,
+    "climber": 9068185,
+    "callbacks": [
+      "/climber/9068185/messages/involved/all",
+      "/climber/9068185/following"
+    ]
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok" : {},
+   "data" : {
+      "callbacks" : [
+         "/climber/9068185/messages/involved/all",
+         "/climber/9068185/following"
+      ],
+      "developer" : 156291588,
+      "climber" : 9068185
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+Topo
+Back to contents 
+
+
+
+
+You may create topos using thecrag API. Creating topos is a two step process:
+
+
+
+
+Upload the image file into a temporary file on the server.
+
+
+Create the topo record, using the name parameter to process the file you just uploaded.
+
+
+
+
+
+
+
+
+Uploading the image file
+Back to contents 
+
+
+
+
+This may be done by using a standard web POST with 'name' and 'file' form parameters to the following end point:
+
+
+
+  https://www.thecrag.com/upload
+
+
+
+For example you could use curl to upload the file like following:
+
+
+  curl --form name=some-rand-name --form 
+[email protected]
+ https://www.thecrag.com/upload
+
+
+
+NOTE server limitation
+: The uploaded file 'name' must be unique in a temporary directory on the server, so you should put a random hash/number/string in the 'name' parameter when uploading the file, otherwise you may clash with already uploaded files.
+
+
+The 'name' parameter will be used in the JSON data for creating the actual topo record.
+
+
+The upload endpoint returns JSON, you should check for error messages. For example if the upload was unsuccessful it may look like:
+
+
+
+{
+  "jsonrpc": "2.0",
+  "error" : {
+    "code": "101",
+    "message": "no upload content"
+  },
+  "id" : "id"
+}
+
+
+
+
+
+
+
+Creating the topo record
+Back to contents 
+
+
+
+
+Access points
+:
+
+
+
+  https://www.thecrag.com/api/topo/create
+  https://www.thecrag.com/api/topo/create/validate
+
+
+
+Developers please note you should be uploading topos to the cliff node, and linking to routes as objects. The sourceType should almost always be 'API Client' and source your developer id. The apiUploadFilename should be the same as that which was use in the 'name' parameter for the upload endpoint.
+
+
+Data fields
+:
+
+
+
+
+submittor
+: accountID - mandatory.
+
+
+node
+: nodeID - mandatory node ID of the cliff.
+
+
+sourceType
+: string - mandatory one of 'Inhouse Photo', 'Uploaded', 'URL', 'API Client'.
+
+
+source
+: string - mandatory should be the developer ID for API Client.
+
+
+apiUploadFilename
+: string - mandatory when using sourceType='API Client', and should match the 'name' parameter used in the uploade POST endpoint.
+
+
+label
+: string - optional string used to label the topo.
+
+
+object
+: list of objectRefs [{id:routeID,number:topo-object-number,store:points},...].
+
+
+publisher
+: optional publisherID to be used with beta
+
+
+publication
+: optional publicationID to be used with beta or citation
+
+
+
+
+
+
+
+
+Updating the topo record
+Back to contents 
+
+
+
+
+Access points
+:
+
+
+
+  https://www.thecrag.com/api/topo/update
+  https://www.thecrag.com/api/topo/update/validate
+
+
+
+Data fields
+:
+
+
+
+
+submittor
+: accountID - mandatory.
+
+
+topo
+: topoID - mandatory.
+
+
+node
+: nodeID - optional, used to change the cliff the topo is associated with.
+
+
+overhead
+: flag - optional, used to indicate that the topo is an overhead topo.
+
+
+name
+: string - optional.
+
+
+linkObject
+: list of objectRefs [{id:routeID,number:topo-object-number},...]. Used to link a topo to a route,area,annotation,topo or anything.
+
+
+unlinkObject
+: list of objectRefs [{id:routeID},...]. Used to unlink a topo object from the topo (eg the route is no longer needed in the topo).
+
+
+object
+: list of objectRefs [{id:routeID,store:points},...]. Used to draw topo lines representing the object in the topo.
+
+
+
+
+Examples
+:
+
+
+
+
+
+
+POST
+Response
+
+
+
+
+
+
+
+
+
+ curl --form name=some-rand-name --form 
+[email protected]
+ https://www.thecrag.com/upload
+ POST https://www.thecrag.com/api/topo/create HTTP/1.1
+  === header stuff === 
+
+ {
+   "data": {
+    "submittor": 9068185,
+    "node": 11960467,
+    "sourceType": "API Client",
+    "source": "1111",
+    "apiUploadFilename": "some-rand-name",
+    "object": [{
+      "id": 12859423,
+      "store": "9 15,49 55",
+    }]
+   }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok" : {
+     "topoID" : "210081091",
+   },
+   "data" : {
+      "source" : "1111",
+      "object" : [
+         {
+            "store" : "9 15,49 55",
+            "id" : 12859423
+         }
+      ],
+      "sourceType" : "API Client",
+      "apiUploadFilename" : "somerandname",
+      "submittor" : 9068185,
+      "node" : 11960467
+   }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+Tags
+Back to contents 
+
+
+
+
+You may assign or remove tags using thecrag API.:
+
+
+
+  https://www.thecrag.com/api/tag/assign
+  https://www.thecrag.com/api/tag/assign/validate
+
+
+
+Data fields
+:
+
+
+
+
+by
+: accountID - mandatory.
+
+
+to
+: nodeID - mandatory.
+
+
+tag
+: structe of tags to assign/unassign grouped by tag type - mandatory. Use tag value of 0/1 to assign/unassign
+
+
+
+
+Examples
+:
+
+
+
+
+
+
+POST
+Response
+
+
+
+
+
+
+
+
+
+ POST https://www.thecrag.com/api/subscribe/create HTTP/1.1
+  === header stuff === 
+
+ {
+   "data" : {
+    "by" : 190453269,
+    "tag" : {
+      "Legality" : {
+        "Closed" : 1,
+        "Illegal": 0
+      }
+    },
+    "to" : 86724252
+  }
+ }
+
+
+
+
+
+
+
+
+ {
+   "ok" : {},
+   "data" : {
+    "by" : 190453269,
+    "tag" : {
+      "Legality" : {
+        "Closed" : 1,
+        "Illegal": 0
+      }
+    },
+    "to" : 86724252
+  }
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mobile app endpoints (UNDER DEVELOPMENT)
+Back to contents 
+
+
+
+
+This section is under development to support mobile app clients. The following requires prototyping and documentation:
+
+
+
+
+Server availible, heartbeat message
+
+Server announcement (eg 'Server will be unavailable for 2 hours due to an upgrade')
+
+API version supported
+
+Disable app instance (??? maybe this has nothing to do with API)
+
+Force app upgrade (??? maybe this has nothing to do with API)
+
+Force content re-sync for area
+
+Create account and login (inc facebook login, etc)
+
+Get index structure
+
+Get crag details
+
+Callbacks for changed crag info
+
+
+
+Some of these are partially covered in other parts of this document, but some have not been developed. This section requires significant development, prototyping and testing.
+
+
+
+
+
+    
+
+
+
+
+Bulk index queries
+Back to contents 
+
+
+
+
+Generally speaking an app needs the worldwide structure down to crag level, in a single call. Then from crag to routes in subsequent calls.
+
+
+
+
+    
+
+
+
+
+Index structure only
+Back to contents 
+
+
+
+
+If you just want index level information then use the following workflow.
+
+
+1. Get the top level structure (index level information to top level crag):
+
+
+https://sandpit.thecrag.com/api/index/summary/world
+
+
+2. For each crag, get the index level information. For example Arapiles:
+
+
+https://sandpit.thecrag.com/api/index/summary/11740915
+
+
+
+
+
+
+Index detail
+Back to contents 
+
+
+
+
+1. Get index detail down to top level crag
+
+
+https://sandpit.thecrag.com/api/index/detail/world?withdata=NodeID,ParentID,LastUpdated,SiblingSequence,NodeType,Name,Point,CountryNodeID,AreaType,NumberAscents,NumberRoutes,NumberTopos,Popularity,TLC,BandProfile,AscentBandProfile,AlternateName,Description,Tag
+
+
+Note that you should just query for the information you want to reduce bandwidth and processing time.
+
+
+2. For each crag, get the index detail. For example Arapiles:
+
+
+https://sandpit.thecrag.com/api/index/detail/11740915?withdata=NodeID,ParentID,LastUpdated,SiblingSequence,NodeType,Name,Archived,Point,BoundedBox,Fence,CountryNodeID,AreaType,Price,GearStyle,Grade,Stars,NumberAscents,NumberRoutes,NumberTopos,Popularity,Seasonality,TLC,AlternateName,Description,History,Topo,Tag,GradeContribution,RegisteredGrades
+
+
+
+
+
+
+Abbreviations
+Back to contents 
+
+
+
+
+In order to save bandwidth some fields have been abbreviated. The saving is probably not significant so you can not use abbreviations by setting parameter abbr=0.
+
+
+Node type
+
+
+
+
+l: link (not currently in use)
+ 
+m: merged (the node has been merged with another node)
+ 
+d: deleted (the node has been merged with another node)
+ 
+w: root (root node, without a parent - typically this is the worldID, but could be extensible in the future)
+ 
+n: annotation (text between routes, the node name can be ignored or used as a sub heading)
+ 
+a: area (see area type for further discrimination)
+ 
+r: route (route node, these are always leaf nodes)
+
+
+
+Area type
+
+
+
+
+U: Unknown
+ 
+Fi: Field
+ 
+Fe: Feature
+ 
+G: Gym
+ 
+Ar: Artificial
+ 
+B: Boulder
+ 
+S: Sector
+ 
+Cl: Cliff
+ 
+Cr: Crag
+ 
+R: Region
+ 
+A: Area
+
+
+
+Gear style
+
+
+
+
+U: Unknown
+ 
+Tr: Trad
+ 
+To: Top rope
+ 
+Trav: Traverse
+ 
+S: Sport
+ 
+D: DWS
+ 
+Ai: Aid
+ 
+Al: Alpine
+ 
+V: Via ferrata
+ 
+B: Boulder
+ 
+I: Ice
+
+
+
+Route history type
+
+
+
+
+fa: First Ascent
+ 
+ffa: First Free Ascent
+ 
+rs: Route Setter
+
+
+
+Node name designation
+
+
+
+
+S: Short
+ 
+P: Principle
+ 
+O: Offensive
+ 
+L: Language
+ 
+H: Historical
+ 
+A: Alternative
+
+
+
+Description fields
+
+
+
+
+Ac: Access
+ 
+Ap: Approach
+ 
+U: Unique Features And Strengths
+ 
+W: Where To Stay
+ 
+De: Descent Notes
+ 
+E: Ethic
+ 
+H: History
+ 
+D: Description
+
+
+
+Note that if the stubs=1 field is set then the Node Type and Description fields are returned using transtation key stubs.
+
+
+Node Type stubs (translation key: dbconfig.category.node-type.{stub})
+
+
+
+
+link
+  
+merged
+  
+deleted
+  
+root
+  
+annotation
+  
+area
+  
+route
+
+
+
+Description stubs (translation key: dbconfig.category.description-type.{stub})
+
+
+
+
+description
+ 
+access-issues
+ 
+approach
+ 
+unique-features-and-strengths
+ 
+where-to-stay
+ 
+descent-notes
+ 
+ethic
+ 
+history
+
+
+
+
+
+
+
+Field notes
+Back to contents 
+
+
+
+
+The 
+withdata
+ query param specifies the array fields that will be returned in field order.
+
+
+NodeID
+: Is the node ID for the record.
+
+
+ParentID
+: Is the parent node ID. If no parent then returns null.
+
+
+LastUpdated
+: Epoch time of when the node was last updated. If it has not been updated since it was created then it will return null.
+
+
+SiblingSequence
+: An integer number for sequence order amoung sibling nodes.
+
+
+NodeType
+: The node type - see abbreviations above.
+
+
+URL
+: The url (excluding domain) for accessing the node via the web.
+
+
+CountryNodeID
+: The node ID of the country ancestor node.
+
+
+Archived
+: Flag for achived routes. Mostly used for gyms as a normal operational process for replacing routes.
+
+
+Name
+: The name of the node.
+
+
+Grade
+: Returns the grade according to the systems 500+ point grades scale. This is an absolute scale that grading systems map to in order to translate the actual difficulty from one grading system to another. All grading systems in theCrag are treated as a range. For translations to specific grading systems see:
+
+
+https://www.thecrag.com/api/config/grade/system
+
+
+If you want to use the actual grade & grading system assigned to the route then use Grade Contributions.
+
+
+Stars
+: Returns two fields, 0-3 star rating and a 0-100 quality rating for further discimination.
+
+
+Popularity
+: For routes returns one field (0-100 busyness score) and for areas two fields (average busyness score for all routes and max busyness score for any route).
+
+
+TLC
+: Top Level Crag. Pragmatically the index is divided into two levels - firstly everything from world down to top level crag and secondly everything from top level crag to routes. The index is far to big to deal with as a single entity. All queries must take this into account or the system/app is going to have problems. Please note that top level crags change all the time and is technically defined as the first area which is not a region, area or unknown area type. 
+
+
+Description
+: An array of publisher description records. Each record is itself an array which inludes a hash of decriptions, the submittor (theCrag climber account id), the publisher and attribution. See the abbreviations above for possible description values in the hash. Note that a route and annotation will only ever have the Description field set.
+
+
+Topo
+: 9 fields
+
+
+
+topo ID
+  
+objects to be drawn on topo
+  
+width of the original topo upload
+  
+height of the original topo upload
+  
+hash ID, used to generate the static image lookup
+  
+rotation, used as part of image url generation
+  
+submittor user id
+  
+publisher id - must refer to copyright before using if set
+  
+attribution id - TODO
+
+
+
+Generating an image url is done as follows: TODO
+
+
+GradeContribution
+: 7 fields
+
+
+
+primary flag (0/1), indicates whether the grade is a primary (ie official system registered grade) or a user contribution.
+  
+publication source, the id of the guidebook / website where the publication came from. Note that you should not use any contributions with this set without getting the copyright terms from the publication source.
+  
+citation, the page number or url where you find the grade cited
+  
+user, the account id of the user who made the contribution.
+  
+grade system
+  
+lower grade
+  
+upper grade (mostly this will be null, but all grades in the system are defined as ranges)
+
+
+
+Mostly you could just skip the non-primary fields. Also note that star contributions are seen by the system as another rating system so user star contributions are also included here. If you are not interested in all user and publisher contributions then just stick to the registered grades below.
+
+
+RegisteredGrades
+: 3 fields
+
+
+
+grade system
+  
+lower grade
+  
+upper grade (mostly this will be null, but all grades in the system are defined as ranges)
+
+
+
+Note that there may be multiple registered grades because a grade may have multiple components (eg aid grades '12 M1') or multiple grading systems are registered for that route. 
+
+
+Point
+: Array of two fields for the long, lat geo location. For a route this will be the actual geo location but for the area it will be the centre of the bounded box.
+
+
+BoundedBox
+: The bounded box for the geo location of an area.
+
+
+Fence
+: The geo fence for locating an area.
+
+
+Styles
+: hash for the gear styles stats for the area.
+
+
+
+
+sport
+  
+trad
+  
+toprope
+  
+dws
+  
+aid
+  
+boulder
+  
+alpine
+  
+ice
+  
+viaferrata
+  
+traverse
+  
+unknown
+
+
+
+AreaType
+: The area type for the record. See abbreviations above for a list of area types. Null if a route or annotation.
+
+
+
+Price
+: Historical field used for assessing the value of a crag.
+
+
+GearStyle
+: Gear style for a route. See abbreviations above for a list of gear styles.
+
+
+Pitches
+:  Number of pitches for the route.
+
+
+Bolts
+: Number of bolts for the route.
+
+
+Height
+: Length of the route in meters.
+
+
+Band
+: Band level (1-5) for the general level of difficulty of the route.
+
+
+
+
+1: Beginner
+  
+2: Intermediate
+  
+3: Experienced
+  
+4: Expert
+  
+5: Elite
+
+
+
+NumberAscents
+: Number of ascents in an area.
+
+
+NumberRoutes
+: Number of routes in an area.
+
+
+NumberTopos
+: Number of topos in an area.
+
+
+Kudos
+: Kudos for an area. This is a metric for comparing the importance of a crag for climbers. It is based on ascents and ascent feedback, so it does depend on how long a crag has been listed on theCrag.
+
+
+BandProfile
+: Array of routes by band level.
+
+
+AscentBandProfile
+: Array of ascents by band level.
+
+
+NumberChildAreas
+: Number of child areas in an area.
+
+
+AlternateName
+: Alternate names for a route or area.
+
+
+History
+: An array of route history records (eg first ascent). Each history record includes type, date, and climbers. See abbreviations above for a list of possible route history types.
+
+
+Warnings
+: An array of warning records. Each warning record contains the following:
+
+
+
+
+Warning ID
+  
+Message ID
+  
+Create Date
+  
+Category
+  
+Status
+  
+Title
+  
+Description
+  
+DateResolved
+  
+Resolution
+
+
+
+Tag
+: A list of tag IDs for the area or route. To get a list of structured tags use the following end point.
+
+
+https://www.thecrag.com/api/config/structured-tags
+
+
+Webcover
+: An array of web cover records. Web covers are images with a defined focus. The idea of a web cover is to use the set focus point to best fit the image in pre defined size and aspect ratio.
+
+
+
+  activeFocus: {
+    top: number
+    bottom: number
+    left: number
+    right: number
+  }
+  id: id for the photo
+  origHeight: number
+  origWidth: number
+  description: optional description
+  hashID: hash id for the image
+  aspectFlipped: optional indicated for flipping the aspect, due to EXIF errors from cameras
+  rotate: degree rotation for the image
+  images: [{
+    width: 
+    height: 
+    reqWidth: 
+    reqHeight: 
+    url: 
+    isDefault:
+  }]
+
+
+
+The images array is returned based on your specified 
+webcover-dimensions
+ query param. For example 'webcover-dimensions=\[\[12001,4001\],\[12000,4000\],\[600,200\],\[324,108\]\]'
+
+
+Ghosts
+: list of ghost nodes. These are nodes which have been moved to another area, merged or deleted since your last query. The Ghost nodes are used only for incremental updates where you are quering the area for changes since you last made an API call to the area.
+
+
+    
+
+
+
+
+Query from refererence node
+Back to contents 
+
+
+
+
+When doing an index detail query you can specify which nodes relative to the reference node, that you want details for. This is done with the 
+to
+ field.
+
+
+
+
+dynamic: system chooses either leaf or tlc depending on the reference node.
+  
+tlc: retreives to TLC (Top Level Crag).
+  
+leaf: retreives to leaf node (route or area).
+  
+arealeaf: retrieves to area leaf node.
+  
+self: just get reference node.
+  
+child: get all child nodes of reference node.
+  
+siblings: get all sibling nodes of reference node.
+  
+ancestors: get all ancestor nodes of reference node.
+  
+ancestor-siblings: get all ancestor nodes and their siblings.
+  
+ancestor-country-siblings: get all ancestor nodes and their siblings down to country level.
+
+
+
+
+
+
+
+Geo location of all areas
+Back to contents 
+
+
+
+
+The geolocation of all areas is available in the queries above. However there will be a lot of extra information which is not needed. The following filter will get the geo location of all areas in the world:
+
+
+https://sandpit.thecrag.com/api/index/detail/world?withdata=NodeID,ParentID,LastUpdated,NodeType,Name,Point&to=arealeaf
+
+
+And this one will get all the geo locations of areas in a Arapiles:
+
+
+https://sandpit.thecrag.com/api/index/detail/11740915?withdata=NodeID,ParentID,LastUpdated,NodeType,Name,Point&to=arealeaf
+
+
+
+
+
+
+Incremental update
+Back to contents 
+
+
+
+
+The system is set up so that you can get just changed data since your last query. To do that pass in the 'since' parameter using the unix epoch timestamp. You can use the LastUpdated field in a previous call to get this value. For example, incremental update of Arapiles:
+
+
+https://sandpit.thecrag.com/api/index/detail/11740915?withdata=NodeID,ParentID,LastUpdated,SiblingSequence,NodeType,Name,Point,CountryNodeID,AreaType,Price,GearStyle,Grade,Stars,NumberAscents,NumberRoutes,NumberTopos,Popularity,TLC,AlternateName,Description,History,Topo,Tag,GradeContribution,RegisteredGrades&since=1459146212
+
+
+
+
+
+
+Archived, merged and deleted routes
+Back to contents 
+
+
+
+
+
+Archived, merged and deleted routes will not be returned in baseline mode (ie without the since parameter) but will be returned in delta mode (ie with the since parameter). 
+
+This means an app getting a new crag does not have to worry about archived, merged or deleted routes. However if the app is getting updates then the app should check if a route or area meets one of these conditions and remove it from the local data copy. The archived status is determined by the Archived returned field, which is null or has the archived date. The merged and deleted status is discovered by the NodeType field.
+
+
+
+
+
+
+
+
+
+Rate and share this article
+Back to contents 
+
+
+
+
+
+
+Did this help? Rate this page
+ 
+
+
+
+
+
+
+
+
+Share this
+
+
+
+
+
+
+ Facebook
+
+
+ Twitter
+
+
+ Link
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ WhatsApp
+
+
+ Email
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+General information
+
+
+
+
+Policies
+
+
+
+
+theCrag Site Usage Policy and Licensing of IP User Content
+
+
+Data Protection Declaration
+
+
+Code of Etiquette
+
+
+Naming Policy
+
+
+
+
+
+
+
+
+About theCrag
+
+
+
+
+Contact us
+
+
+Our mission and vision
+
+
+Credit and Thanks
+
+
+Merchandise Shop
+
+
+
+
+
+
+
+
+Contribute
+
+
+
+
+Adding content
+
+
+Pay as you feel
+
+
+Business sponsorship
+
+
+Feature requests
+
+
+
+
+
+
+
+
+Follow theCrag
+
+
+
+
+
+
+
+
+Facebook
+
+
+Instagram
+
+
+LinkedIn
+
+
+YouTube
+
+
+WeChat
+
+
+
+
+
+
+Last updated: Thu Aug 27 06:17:01 2026 GMT
+
+
+
+
+
+
+
+
+Deutsch
+
+
+English
+
+
+Español
+
+
+Français
+
+
+Italiano
+
+
+한국어
+
+
+Português
+
+
+中文
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

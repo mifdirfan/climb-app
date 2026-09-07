@@ -1,0 +1,18 @@
+# Supabase
+.branches
+.temp
+
+# Supabase temporary files and keys
+**/supabase/.temp/
+.temp/
+
+# Environment files
+*.env
+docker.env
+.env*
+!.env.example
+
+# dotenvx
+.env.keys
+.env.local
+.env.*.local
