@@ -4,8 +4,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 // Android Emulator maps host localhost (127.0.0.1) to 10.0.2.2.
 // Use 127.0.0.1 for Windows/Desktop/iOS Simulator.
-const supabaseUrl = 'http://127.0.0.1:54321';
-const supabaseAnonKey = 'sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH';
+const supabaseUrl = 'https://npbpyzoiphzfcjxfuniz.supabase.co';
+const supabaseAnonKey = 'sb_publishable_8YafDV_-3X4fYY2EEAiL5Q_JuH7Ji41';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
