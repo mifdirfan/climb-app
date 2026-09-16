@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:climbmy/core/theme/app_theme.dart';
+import 'package:climbmy/screens/mainscreen/HomeScreen.dart';
 
 // Android Emulator maps host localhost (127.0.0.1) to 10.0.2.2.
 // Use 127.0.0.1 for Windows/Desktop/iOS Simulator.
@@ -12,7 +14,7 @@ Future<void> main() async {
 
   await Supabase.initialize(
     url: supabaseUrl,
-    anonKey: supabaseAnonKey,
+    anonKey: supabaseAnonKey, // ignore: deprecated_member_use
   );
 
   runApp(
@@ -37,11 +39,8 @@ class ClimbMYApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ClimbMY',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
-        useMaterial3: true,
-      ),
-      home: const ConnectionTestScreen(),
+      theme: AppTheme.darkTheme,
+      home: const HomeScreen(),
     );
   }
 }
