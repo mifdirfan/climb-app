@@ -1,0 +1,45 @@
+name: Flutter Code Quality
+
+on:
+  # Triggers on every push to any branch
+  push:
+    branches:
+      - '**'
+
+  # Triggers whenever a Pull Request targeting main is opened, updated, or reopened
+  pull_request:
+    branches:
+      - main
+
+# Auto-cancel older running jobs when you push new commits rapidly
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Verify Code Formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze Project Syntax & Types
+        run: flutter analyze
