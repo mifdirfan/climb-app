@@ -7,6 +7,7 @@ import '../../widgets/crag_card.dart';
 import '../../widgets/route_item_card.dart';
 import '../../widgets/hazard_alert_banner.dart';
 import '../../widgets/filter_chip_bar.dart';
+import '../../widgets/floating_bottom_nav_bar.dart';
 
 /// Main Home screen of ClimbApp matching the Figma 'Home' frame (Node 5315:2).
 class HomeScreen extends ConsumerStatefulWidget {
@@ -40,6 +41,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final alertsAsync = ref.watch(hazardAlertsProvider);
 
     return Scaffold(
+      extendBody: true,
       backgroundColor: theme.scaffoldBackgroundColor,
       // Top Navigation App Bar
       appBar: AppBar(
@@ -306,43 +308,22 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 24),
+                // Spacing to ensure content is fully scrollable above the floating nav bar
+                const SizedBox(height: 88),
               ],
             ),
           ),
         ),
       ),
 
-      // Bottom Navigation Bar (Figma BottomNavBar)
-      bottomNavigationBar: BottomNavigationBar(
+      // Floating Bottom Navigation Bar
+      bottomNavigationBar: FloatingBottomNavBar(
         currentIndex: _currentNavIndex,
         onTap: (index) {
           setState(() {
             _currentNavIndex = index;
           });
         },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore_outlined),
-            activeIcon: Icon(Icons.explore),
-            label: 'Crags',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map_outlined),
-            activeIcon: Icon(Icons.map),
-            label: 'Map',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.check_circle_outline_rounded),
-            activeIcon: Icon(Icons.check_circle_rounded),
-            label: 'Ticks',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline_rounded),
-            activeIcon: Icon(Icons.person_rounded),
-            label: 'Profile',
-          ),
-        ],
       ),
     );
   }
