@@ -1,24 +1,31 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/theme/app_theme.dart';
+import '../../models/crag.dart';
+import '../../models/route_item.dart';
+import '../../models/hazard_alert.dart';
 import '../../providers/home_providers.dart';
 import '../../widgets/crag_card.dart';
 import '../../widgets/route_item_card.dart';
 import '../../widgets/hazard_alert_banner.dart';
 import '../../widgets/filter_chip_bar.dart';
-import '../../widgets/floating_bottom_nav_bar.dart';
 
 /// Main Home screen of ClimbApp matching the Figma 'Home' frame (Node 5315:2).
 class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({super.key});
+  final int initialIndex;
+
+  const HomeScreen({
+    super.key,
+    this.initialIndex = 0,
+  });
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  int _currentNavIndex = 0;
   late final TextEditingController _searchController;
 
   @override
@@ -41,36 +48,46 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final alertsAsync = ref.watch(hazardAlertsProvider);
 
     return Scaffold(
-      extendBody: true,
       backgroundColor: theme.scaffoldBackgroundColor,
-      // Top Navigation App Bar
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.menu_rounded),
+      appBar: _buildCragsAppBar(),
+      body: _buildCragsHomeContent(theme, cragsAsync, routesAsync, alertsAsync),
+    );
+  }
+
+  AppBar _buildCragsAppBar() {
+    return AppBar(
+      leading: IconButton(
+        icon: const Icon(Icons.menu_rounded),
+        onPressed: () {
+          // Placeholder for navigation drawer or menu
+        },
+      ),
+      title: Text(
+        'Crag',
+        style: AppTextStyles.displayLarge.copyWith(
+          fontSize: 28,
+          color: AppColors.primaryContainer,
+        ),
+      ),
+      centerTitle: false,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.notifications_none_rounded),
           onPressed: () {
-            // Placeholder for navigation drawer or menu
+            // Placeholder for notifications
           },
         ),
-        title: Text(
-          'Crag',
-          style: AppTextStyles.displayLarge.copyWith(
-            fontSize: 28,
-            color: AppColors.primaryContainer,
-          ),
-        ),
-        centerTitle: false,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_none_rounded),
-            onPressed: () {
-              // Placeholder for notifications
-            },
-          ),
-        ],
-      ),
+      ],
+    );
+  }
 
-      // Responsive Flex Auto-Layout Body
-      body: SafeArea(
+  Widget _buildCragsHomeContent(
+    ThemeData theme,
+    AsyncValue<List<Crag>> cragsAsync,
+    AsyncValue<List<RouteItem>> routesAsync,
+    AsyncValue<List<HazardAlert>> alertsAsync,
+  ) {
+    return SafeArea(
         child: RefreshIndicator(
           color: AppColors.primary,
           onRefresh: () async {
@@ -120,19 +137,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 // 2. Horizontal State Filter Chips
                 const FilterChipBar(),
 
-                const SizedBox(height: 12),
-
                 // 3. Active Hazard Alert Banner (Riverpod bound)
                 alertsAsync.when(
                   data: (alerts) {
                     if (alerts.isEmpty) {
-                      // Placeholder hazard alert if table has no active records yet
-                      return const HazardAlertBanner(
-                        customMessage: '⚠️ Wasps reported at Damai Wall',
-                      );
+                      return const SizedBox.shrink();
                     }
-                    return HazardAlertBanner(
-                      alert: alerts.first,
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: HazardAlertBanner(
+                        alert: alerts.first,
+                      ),
                     );
                   },
                   loading: () => const SizedBox.shrink(),
@@ -298,7 +313,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   width: double.infinity,
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      // Placeholder for submit new route
+                      context.go('/ticks');
                     },
                     icon: const Icon(Icons.add, size: 18),
                     label: const Text('SUBMIT NEW ROUTE'),
@@ -308,23 +323,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                 ),
 
-                // Spacing to ensure content is fully scrollable above the floating nav bar
-                const SizedBox(height: 88),
+                // Spacing to ensure content is fully scrollable above the floating action button & nav bar
+                const SizedBox(height: 110),
               ],
             ),
           ),
         ),
-      ),
-
-      // Floating Bottom Navigation Bar
-      bottomNavigationBar: FloatingBottomNavBar(
-        currentIndex: _currentNavIndex,
-        onTap: (index) {
-          setState(() {
-            _currentNavIndex = index;
-          });
-        },
-      ),
-    );
+      );
   }
 }

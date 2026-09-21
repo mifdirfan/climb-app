@@ -37,10 +37,6 @@ class FilterChipBar extends ConsumerWidget {
               decoration: BoxDecoration(
                 color: isSelected ? AppColors.primary : AppColors.surfaceInput,
                 borderRadius: AppRadius.borderSm,
-                border: Border.all(
-                  color: isSelected ? AppColors.primary : AppColors.border,
-                  width: 1.0,
-                ),
               ),
               child: Center(
                 child: Text(
