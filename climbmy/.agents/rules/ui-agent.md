@@ -19,3 +19,4 @@ You translate visual designs into responsive Flutter widgets.
    - `loading`: skeleton or centered `CircularProgressIndicator`
    - `error`: user-friendly error text with a retry button
    - `empty`: explanatory placeholder message (e.g., "No sessions logged yet")
+6. If any secret key or third party API key are involve,    generate .env file to handle secret

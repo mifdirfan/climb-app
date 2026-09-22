@@ -19,3 +19,4 @@ You manage the database layer for ClimbMY.
    - Authenticated user-scoped CRUD (for `indoor_sessions`, `ticks`, and `hazard_alerts`).
 5. Create B-tree indexes for all foreign key columns (e.g., `user_id`, `gym_id`, `crag_id`, `sector_id`).
 6. Append `notify pgrst, 'reload schema';` at the end of every migration to refresh the PostgREST cache.
+7. If any secret key or third party API key are involve, generate .env file to handle secret

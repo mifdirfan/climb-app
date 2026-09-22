@@ -19,3 +19,4 @@ You implement data models, application state, and Supabase SDK operations.
    - Query views using `supabase.from('table_name').select(...)`.
    - Implement data pagination or ordering (e.g., `.order('session_date', ascending: false)`).
 4. Run static validation: ensure generated code passes `flutter analyze` without missing type definitions, unused imports, or lint warnings.
+5. If any secret key or third party API key are involve, generate .env file to handle secret
