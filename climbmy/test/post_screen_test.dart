@@ -71,46 +71,13 @@ void main() {
       expect(find.text('SELECT CLIMBING GYM *'), findsOneWidget);
       expect(find.text('SESSION DATE'), findsOneWidget);
       expect(find.text('DURATION (MIN)'), findsOneWidget);
-      expect(find.text('BOULDER SENDS TALLY'), findsOneWidget);
-      expect(find.text('PERCEIVED EFFORT / INTENSITY'), findsOneWidget);
+      expect(find.text('INTENSITY'), findsOneWidget);
       expect(find.text('SESSION RATING'), findsOneWidget);
       expect(find.text('SESSION NOTES & DRILLS'), findsOneWidget);
 
       // Outdoor elements should now be gone
       expect(find.text('SELECT CRAG / LOCATION *'), findsNothing);
       expect(find.text('POST SEND'), findsNothing);
-    });
-
-    testWidgets('Indoor tally counter increments and decrements correctly', (tester) async {
-      await tester.pumpWidget(buildTestWidget());
-      await tester.pumpAndSettle();
-
-      // Switch to indoor
-      await tester.tap(find.text('Indoor'));
-      await tester.pumpAndSettle();
-
-      // Initially 0 sends total
-      expect(find.text('0 sends total'), findsOneWidget);
-
-      // Tap + on V0
-      final addIcons = find.byIcon(Icons.add_rounded);
-      expect(addIcons, findsWidgets);
-      await tester.tap(addIcons.first);
-      await tester.pumpAndSettle();
-
-      // Count for V0 is now 1, and total sends is 1
-      expect(find.text('1 send total'), findsOneWidget);
-
-      // Tap + on V0 again
-      await tester.tap(addIcons.first);
-      await tester.pumpAndSettle();
-      expect(find.text('2 sends total'), findsOneWidget);
-
-      // Tap - on V0
-      final removeIcons = find.byIcon(Icons.remove_rounded);
-      await tester.tap(removeIcons.first);
-      await tester.pumpAndSettle();
-      expect(find.text('1 send total'), findsOneWidget);
     });
 
     testWidgets('Perceived effort selector toggles options', (tester) async {
@@ -152,14 +119,13 @@ void main() {
       await tester.pumpWidget(buildTestWidget());
       await tester.pumpAndSettle();
 
-      // Switch to indoor and tally a send
+      // Switch to indoor and select 'Hard' effort
       await tester.tap(find.text('Indoor'));
       await tester.pumpAndSettle();
 
-      final addIcons = find.byIcon(Icons.add_rounded);
-      await tester.tap(addIcons.first); // +1 on V0
+      final hardOption = find.text('Hard');
+      await tester.tap(hardOption);
       await tester.pumpAndSettle();
-      expect(find.text('1 send total'), findsOneWidget);
 
       // Switch back to Outdoor
       await tester.tap(find.text('Outdoor'));
@@ -170,8 +136,69 @@ void main() {
       await tester.tap(find.text('Indoor'));
       await tester.pumpAndSettle();
 
-      // Verify tally is preserved
-      expect(find.text('1 send total'), findsOneWidget);
+      // Verify selected effort is preserved
+      expect(find.text('Hard'), findsOneWidget);
+    });
+
+    testWidgets('OutdoorForm uses VenuePickerBottomSheet for selecting crag and route', (tester) async {
+      await tester.pumpWidget(buildTestWidget());
+      await tester.pumpAndSettle();
+
+      // Open venue picker bottom sheet
+      final pickerTrigger = find.byKey(const Key('crag_picker_trigger'));
+      expect(pickerTrigger, findsOneWidget);
+      await tester.tap(pickerTrigger);
+      await tester.pumpAndSettle();
+
+      // Sheet is visible and filters outdoor only: Batu Caves is shown, Camp5 is filtered out
+      expect(find.text('Select Crag & Route'), findsOneWidget);
+      expect(find.text('Batu Caves'), findsOneWidget);
+      expect(find.text('Camp5 1 Utama'), findsNothing);
+
+      // Select Batu Caves
+      await tester.tap(find.text('Batu Caves'));
+      await tester.pumpAndSettle();
+
+      // Route dropdown section appears
+      final routeDropdown = find.byKey(const Key('crag_route_dropdown'));
+      expect(routeDropdown, findsOneWidget);
+
+      // Open route dropdown and choose 'Banana Jam'
+      await tester.tap(routeDropdown);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Banana Jam'), findsWidgets);
+      await tester.tap(find.text('Banana Jam').last);
+      await tester.pumpAndSettle();
+
+      // Tap confirmation button
+      final confirmBtn = find.text('SELECT CRAG & ROUTE');
+      expect(confirmBtn, findsOneWidget);
+      await tester.tap(confirmBtn);
+      await tester.pumpAndSettle();
+
+      // Crag & route are displayed in Section B
+      expect(find.text('Batu Caves (Selangor)'), findsOneWidget);
+      expect(find.textContaining('Banana Jam'), findsWidgets);
+      expect(find.textContaining('6b+'), findsWidgets);
+
+      // Section C Route name text field is auto-populated
+      final routeInputFinder = find.byKey(const Key('route_name_input'));
+      await tester.ensureVisible(routeInputFinder);
+      final routeField = tester.widget<TextFormField>(routeInputFinder);
+      expect(routeField.controller?.text, 'Banana Jam');
+
+      // Grade dropdown reflects the selected route grade ('6b+')
+      expect(find.text('6b+'), findsOneWidget);
+
+      // Browse routes link and route picker button are visible when a crag is selected
+      expect(find.byKey(const Key('browse_routes_link')), findsOneWidget);
+      expect(find.byKey(const Key('route_picker_button')), findsOneWidget);
+
+      // Tapping route picker button re-opens picker with existing selection
+      await tester.tap(find.byKey(const Key('route_picker_button')));
+      await tester.pumpAndSettle();
+      expect(find.text('Select Crag & Route'), findsOneWidget);
     });
   });
 }

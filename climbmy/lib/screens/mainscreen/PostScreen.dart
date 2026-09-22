@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/theme/app_theme.dart';
 import '../../providers/home_providers.dart';
 import '../../providers/post_form_providers.dart';
-import '../../widgets/foam/foam.dart';
+import '../../widgets/form/form.dart';
 import '../../widgets/post_type_selector.dart';
 
 /// Alias to support both PostScreen and PostPage naming.
@@ -73,7 +73,7 @@ class _PostPageState extends ConsumerState<PostPage> {
           isOutdoor ? 'LOG A SEND' : 'LOG GYM SESSION',
           style: AppTextStyles.displayLarge.copyWith(
             fontSize: 28,
-            color: AppColors.primaryContainer,
+            color: AppColors.textPrimary,
           ),
         ),
         centerTitle: false,

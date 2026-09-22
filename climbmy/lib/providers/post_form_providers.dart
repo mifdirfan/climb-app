@@ -25,6 +25,7 @@ final postTypeProvider = NotifierProvider<PostTypeNotifier, ClimbPostType>(
 /// State for the Outdoor send logging form.
 class OutdoorPostFormState {
   final Crag? selectedCrag;
+  final String? selectedRouteId;
   final String routeName;
   final String grade;
   final String routeType; // 'boulder' | 'sport' | 'trad'
@@ -36,6 +37,7 @@ class OutdoorPostFormState {
 
   OutdoorPostFormState({
     this.selectedCrag,
+    this.selectedRouteId,
     this.routeName = '',
     this.grade = 'V3',
     this.routeType = 'boulder',
@@ -49,6 +51,8 @@ class OutdoorPostFormState {
   OutdoorPostFormState copyWith({
     Crag? selectedCrag,
     bool clearCrag = false,
+    String? selectedRouteId,
+    bool clearRouteId = false,
     String? routeName,
     String? grade,
     String? routeType,
@@ -60,6 +64,8 @@ class OutdoorPostFormState {
   }) {
     return OutdoorPostFormState(
       selectedCrag: clearCrag ? null : (selectedCrag ?? this.selectedCrag),
+      selectedRouteId:
+          clearRouteId ? null : (selectedRouteId ?? this.selectedRouteId),
       routeName: routeName ?? this.routeName,
       grade: grade ?? this.grade,
       routeType: routeType ?? this.routeType,
@@ -78,7 +84,21 @@ class OutdoorPostFormNotifier extends Notifier<OutdoorPostFormState> {
   OutdoorPostFormState build() => OutdoorPostFormState();
 
   void setSelectedCrag(Crag? crag) {
-    state = state.copyWith(selectedCrag: crag);
+    if (crag?.id != state.selectedCrag?.id) {
+      state = state.copyWith(
+        selectedCrag: crag,
+        clearRouteId: true,
+      );
+    } else {
+      state = state.copyWith(selectedCrag: crag);
+    }
+  }
+
+  void setSelectedRouteId(String? routeId) {
+    state = state.copyWith(
+      selectedRouteId: routeId,
+      clearRouteId: routeId == null,
+    );
   }
 
   void setRouteName(String name) {

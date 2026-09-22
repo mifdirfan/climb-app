@@ -25,7 +25,7 @@ class FeltGradeSelector extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'PERCEIVED EFFORT / INTENSITY',
+          'INTENSITY',
           style: AppTextStyles.labelSmall.copyWith(
             color: AppColors.textMuted,
             letterSpacing: 1.0,

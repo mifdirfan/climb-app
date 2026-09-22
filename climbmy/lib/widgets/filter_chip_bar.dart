@@ -9,7 +9,9 @@ class FilterChipBar extends ConsumerWidget {
 
   const FilterChipBar({
     super.key,
-    this.states = const ['All', 'Selangor', 'Perak', 'Perlis', 'Johor', 'Pahang'],
+    this.states = const [
+      'All', 'Selangor', 'Perak', 'Perlis', 'Johor', 'Pahang', 'Kedah', 'Kelantan', 'Terengganu', 'Negeri Sembilan', 'Melaka', 'Penang', 'Sabah', 'Sarawak', 'WP Kuala Lumpur', 'WP Labuan', 'WP Putrajaya'
+      ],
   });
 
   @override

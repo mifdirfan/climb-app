@@ -84,6 +84,40 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
     }
   }
 
+  void _openVenuePicker(BuildContext context) {
+    final outdoorState = ref.read(outdoorPostFormProvider);
+    final outdoorNotifier = ref.read(outdoorPostFormProvider.notifier);
+    final crags = ref.read(outdoorCragsProvider).value ?? ref.read(cragsProvider).value ?? [];
+    final outdoorVenues = crags.where((c) => c.isOutdoor).toList();
+
+    showVenuePickerSheet(
+      context: context,
+      title: 'Select Crag & Route',
+      venues: outdoorVenues,
+      outdoorOnly: true,
+      selectedVenueId: outdoorState.selectedCrag?.id,
+      selectedRouteId: outdoorState.selectedRouteId,
+      onSelected: (crag) {
+        outdoorNotifier.setSelectedCrag(crag);
+      },
+      onRouteSelected: (route) {
+        if (route != null) {
+          outdoorNotifier.setSelectedRouteId(route.id);
+          outdoorNotifier.setRouteName(route.name);
+          _routeNameController.text = route.name;
+          if (route.grade.isNotEmpty) {
+            outdoorNotifier.setGrade(route.grade);
+          }
+          if (route.routeType.isNotEmpty) {
+            outdoorNotifier.setRouteType(route.routeType);
+          }
+        } else {
+          outdoorNotifier.setSelectedRouteId(null);
+        }
+      },
+    );
+  }
+
   void _handleSubmit() {
     final outdoorState = ref.read(outdoorPostFormProvider);
     final outdoorNotifier = ref.read(outdoorPostFormProvider.notifier);
@@ -107,7 +141,10 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
       'type': 'outdoor',
       'crag_id': outdoorState.selectedCrag!.id,
       'crag_name': outdoorState.selectedCrag!.name,
+      'route_id': outdoorState.selectedRouteId,
       'route_name': _routeNameController.text.trim(),
+      'grade': outdoorState.grade,
+      'route_type': outdoorState.routeType,
       'ascent_style': outdoorState.ascentStyle,
       'date': outdoorState.date.toIso8601String(),
       'video_url': _videoUrlController.text.trim(),
@@ -148,6 +185,13 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
     final outdoorState = ref.watch(outdoorPostFormProvider);
     final outdoorNotifier = ref.read(outdoorPostFormProvider.notifier);
     final outdoorCragsAsync = ref.watch(outdoorCragsProvider);
+
+    ref.listen<OutdoorPostFormState>(outdoorPostFormProvider, (prev, next) {
+      if (prev?.routeName != next.routeName &&
+          _routeNameController.text != next.routeName) {
+        _routeNameController.text = next.routeName;
+      }
+    });
 
     return Form(
       key: _formKey,
@@ -226,51 +270,79 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                   ),
                 ),
                 data: (crags) {
+                  final isSelected = outdoorState.selectedCrag != null;
+                  final hasRoute = isSelected && outdoorState.routeName.isNotEmpty;
+
                   return InkWell(
-                    onTap: () => showVenuePickerSheet(
-                      context: context,
-                      title: 'Select Outdoor Crag',
-                      venues: crags,
-                      selectedVenueId: outdoorState.selectedCrag?.id,
-                      onSelected: outdoorNotifier.setSelectedCrag,
-                    ),
+                    key: const Key('crag_picker_trigger'),
+                    onTap: () => _openVenuePicker(context),
                     borderRadius: BorderRadius.circular(AppRadius.lg),
                     child: Container(
-                      height: 52,
+                      constraints: const BoxConstraints(minHeight: 52),
                       width: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
                         color: AppColors.surface,
                         borderRadius: BorderRadius.circular(AppRadius.lg),
                         border: Border.all(
-                          color: outdoorState.selectedCrag != null
+                          color: isSelected
                               ? AppColors.primary.withValues(alpha: 0.6)
                               : AppColors.borderSubtle,
                         ),
                       ),
                       child: Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.location_on_outlined,
-                            size: 18,
-                            color: AppColors.textMuted,
+                            size: 20,
+                            color: isSelected ? AppColors.primary : AppColors.textMuted,
                           ),
                           const SizedBox(width: 12),
                           Expanded(
-                            child: Text(
-                              outdoorState.selectedCrag != null
-                                  ? '${outdoorState.selectedCrag!.name} (${outdoorState.selectedCrag!.state})'
-                                  : 'Select Climbing Area...',
-                              style: AppTextStyles.bodyMedium.copyWith(
-                                color: outdoorState.selectedCrag != null
-                                    ? AppColors.textPrimary
-                                    : AppColors.textMuted,
-                                fontWeight: outdoorState.selectedCrag != null
-                                    ? FontWeight.w600
-                                    : FontWeight.w400,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  isSelected
+                                      ? '${outdoorState.selectedCrag!.name} (${outdoorState.selectedCrag!.state})'
+                                      : 'Select Climbing Area & Route...',
+                                  style: AppTextStyles.bodyMedium.copyWith(
+                                    color: isSelected
+                                        ? AppColors.textPrimary
+                                        : AppColors.textMuted,
+                                    fontWeight: isSelected
+                                        ? FontWeight.w600
+                                        : FontWeight.w400,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                if (hasRoute) ...[
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.route_outlined,
+                                        size: 14,
+                                        color: AppColors.primary,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Expanded(
+                                        child: Text(
+                                          'Route: ${outdoorState.routeName} • ${outdoorState.grade}',
+                                          style: AppTextStyles.caption.copyWith(
+                                            color: AppColors.textSecondary,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ],
                             ),
                           ),
                           const Icon(
@@ -291,23 +363,43 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
 
           // Section C: Route Name & Grade (Optional Details)
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'ROUTE / PROBLEM NAME',
-                      style: AppTextStyles.labelSmall.copyWith(
-                        color: AppColors.textMuted,
-                        letterSpacing: 1.0,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'ROUTE / PROBLEM NAME',
+                          style: AppTextStyles.labelSmall.copyWith(
+                            color: AppColors.textMuted,
+                            letterSpacing: 1.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        if (outdoorState.selectedCrag != null)
+                          GestureDetector(
+                            key: const Key('browse_routes_link'),
+                            onTap: () => _openVenuePicker(context),
+                            child: Text(
+                              'Browse routes',
+                              style: AppTextStyles.labelSmall.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                     const SizedBox(height: 6),
                     TextFormField(
+                      key: const Key('route_name_input'),
                       controller: _routeNameController,
+                      onChanged: outdoorNotifier.setRouteName,
                       style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
                       decoration: InputDecoration(
                         hintText: 'e.g. Tak Boleh Tahan',
@@ -315,6 +407,18 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                         filled: true,
                         fillColor: AppColors.surface,
                         contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                        suffixIcon: outdoorState.selectedCrag != null
+                            ? IconButton(
+                                key: const Key('route_picker_button'),
+                                icon: const Icon(
+                                  Icons.arrow_drop_down_circle_outlined,
+                                  size: 20,
+                                  color: AppColors.primary,
+                                ),
+                                tooltip: 'Choose route from crag',
+                                onPressed: () => _openVenuePicker(context),
+                              )
+                            : null,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppRadius.lg),
                           borderSide: const BorderSide(color: AppColors.borderSubtle),
@@ -360,8 +464,22 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                           style: AppTextStyles.titleSmall.copyWith(color: AppColors.textPrimary),
                           items: const [
                             'V0', 'V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10',
-                            '5a', '5b', '5c', '6a', '6a+', '6b', '6b+', '6c', '7a', '7b', '7c', '8a'
-                          ].map((g) => DropdownMenuItem(value: g, child: Text(g))).toList(),
+                            '5a', '5b', '5c', '6a', '6a+', '6b', '6b+', '6c', '6c+', '7a', '7a+', '7b', '7b+', '7c', '8a'
+                          ].contains(outdoorState.grade)
+                              ? const [
+                                  'V0', 'V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10',
+                                  '5a', '5b', '5c', '6a', '6a+', '6b', '6b+', '6c', '6c+', '7a', '7a+', '7b', '7b+', '7c', '8a'
+                                ].map((g) => DropdownMenuItem(value: g, child: Text(g))).toList()
+                              : [
+                                  DropdownMenuItem(
+                                    value: outdoorState.grade,
+                                    child: Text(outdoorState.grade),
+                                  ),
+                                  ...const [
+                                    'V0', 'V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10',
+                                    '5a', '5b', '5c', '6a', '6a+', '6b', '6b+', '6c', '6c+', '7a', '7a+', '7b', '7b+', '7c', '8a'
+                                  ].map((g) => DropdownMenuItem(value: g, child: Text(g))),
+                                ],
                           onChanged: (val) {
                             if (val != null) outdoorNotifier.setGrade(val);
                           },
@@ -373,8 +491,6 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
               ),
             ],
           ),
-
-          const SizedBox(height: 20),
 
           // Section D: Ascent Style / Status Pills
           AscentStyleSelector(
@@ -453,13 +569,6 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                       color: AppColors.textMuted,
                       letterSpacing: 1.0,
                       fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    'Markdown supported',
-                    style: AppTextStyles.caption.copyWith(
-                      color: AppColors.textMuted,
-                      fontSize: 10,
                     ),
                   ),
                 ],

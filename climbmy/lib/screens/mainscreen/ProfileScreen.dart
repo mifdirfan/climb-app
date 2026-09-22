@@ -25,7 +25,7 @@ class ProfileScreen extends StatelessWidget {
           'Profile',
           style: AppTextStyles.displayLarge.copyWith(
             fontSize: 28,
-            color: AppColors.primaryContainer,
+            color: AppColors.textPrimary,
           ),
         ),
         centerTitle: false,

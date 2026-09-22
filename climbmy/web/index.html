@@ -31,6 +31,46 @@
 
   <title>climbmy</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- Dynamically load Google Maps JavaScript API using key from .env -->
+  <script>
+    window._gmapsPromise = (async function() {
+      try {
+        let response = await fetch('assets/.env');
+        if (!response.ok) {
+          response = await fetch('.env');
+        }
+        if (response.ok) {
+          const content = await response.text();
+          const match = content.match(/^\s*GOOGLE_MAPS_API_KEY\s*=\s*([^\r\n#]+)/m);
+          if (match && match[1]) {
+            const apiKey = match[1].trim().replace(/^["']|["']$/g, '');
+            await new Promise((resolve) => {
+              const script = document.createElement('script');
+              script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places,marker`;
+              script.async = true;
+              script.defer = true;
+              script.onload = () => {
+                console.log('Google Maps JavaScript SDK initialized successfully from .env');
+                resolve();
+              };
+              script.onerror = (e) => {
+                console.error('Failed to load Google Maps script', e);
+                resolve(); // Resolve to avoid hanging app startup
+              };
+              document.head.appendChild(script);
+            });
+          } else {
+            console.warn('GOOGLE_MAPS_API_KEY not found in .env');
+          }
+        } else {
+          console.warn('Could not fetch .env for Google Maps SDK');
+        }
+      } catch (err) {
+        console.error('Error fetching .env or initializing Google Maps SDK:', err);
+      }
+    })();
+  </script>
 </head>
 <body>
   <!--

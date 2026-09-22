@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:climbmy/main.dart';
 import 'package:climbmy/providers/home_providers.dart';
+import 'package:climbmy/screens/mainscreen/MapScreen.dart';
 
 void main() {
   group('GoRouter Navigation Tests', () {
@@ -31,9 +32,10 @@ void main() {
       await tester.tap(mapIcon);
       await tester.pumpAndSettle();
 
-      // Verify MapScreen is active
-      expect(find.text('Crags Map'), findsOneWidget);
-      expect(find.text('INTERACTIVE CRAG MAP'), findsOneWidget);
+      // Verify MapScreen is active with GoogleMap and sliding boulder sheet
+      expect(find.byType(MapScreen), findsOneWidget);
+      expect(find.byKey(const Key('google_map')), findsOneWidget);
+      expect(find.byKey(const Key('boulder_list_sheet')), findsOneWidget);
 
       // 3. Tap 'Ticks' nav item (index 2) -> /ticks (PostScreen)
       final ticksIcon = find.byIcon(Icons.check_circle_outline_rounded);
@@ -90,7 +92,7 @@ void main() {
       expect(find.text('POST SEND'), findsOneWidget);
     });
 
-    testWidgets('Back button on MapScreen navigates back to /crags', (tester) async {
+    testWidgets('Tapping Crags in bottom nav on MapScreen routes back to /crags', (tester) async {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
@@ -107,12 +109,13 @@ void main() {
       // Navigate to /map
       await tester.tap(find.byIcon(Icons.map_outlined));
       await tester.pumpAndSettle();
-      expect(find.text('Crags Map'), findsOneWidget);
+      expect(find.byType(MapScreen), findsOneWidget);
+      expect(find.byKey(const Key('google_map')), findsOneWidget);
 
-      // Tap back button
-      final backButton = find.byIcon(Icons.arrow_back_rounded);
-      expect(backButton, findsOneWidget);
-      await tester.tap(backButton);
+      // Tap Crags nav item in bottom nav
+      final cragsIcon = find.byIcon(Icons.explore_outlined);
+      expect(cragsIcon, findsOneWidget);
+      await tester.tap(cragsIcon);
       await tester.pumpAndSettle();
 
       // Returns to Crags

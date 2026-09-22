@@ -45,7 +45,7 @@ class FloatingBottomNavBar extends StatelessWidget {
     ),
     FloatingNavItem(
       icon: Icons.check_circle_outline_rounded,
-      activeIcon: Icons.check_circle_rounded,
+      activeIcon: Icons.post_add_rounded,
       label: 'Ticks',
     ),
     FloatingNavItem(

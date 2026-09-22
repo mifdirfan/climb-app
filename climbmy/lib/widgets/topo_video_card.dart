@@ -16,8 +16,7 @@ class TopoVideoCard extends StatelessWidget {
   static const List<String> supportedPlatforms = [
     'YouTube',
     'Instagram Reels',
-    'TikTok',
-    'Vimeo',
+    'TikTok'
   ];
 
   @override

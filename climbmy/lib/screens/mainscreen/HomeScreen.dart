@@ -57,7 +57,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   AppBar _buildCragsAppBar() {
     return AppBar(
       leading: IconButton(
-        icon: const Icon(Icons.menu_rounded),
+        icon: const Icon(Icons.terrain_rounded),
         onPressed: () {
           // Placeholder for navigation drawer or menu
         },
@@ -65,8 +65,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       title: Text(
         'Crag',
         style: AppTextStyles.displayLarge.copyWith(
-          fontSize: 28,
-          color: AppColors.primaryContainer,
+          fontSize: 28, 
+          color: AppColors.textPrimary
         ),
       ),
       centerTitle: false,
@@ -244,12 +244,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     IconButton(
                       icon: const Icon(
-                        Icons.filter_list_rounded,
+                        Icons.add,
                         color: AppColors.textSecondary,
                         size: 20,
                       ),
                       onPressed: () {
-                        // Placeholder for route filters
+                        // Placeholder for submitting a new route
                       },
                     ),
                   ],
@@ -308,20 +308,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
                 const SizedBox(height: 16),
 
-                // 6. Submit New Route CTA Button
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      context.go('/ticks');
-                    },
-                    icon: const Icon(Icons.add, size: 18),
-                    label: const Text('SUBMIT NEW ROUTE'),
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
-                  ),
-                ),
+                
 
                 // Spacing to ensure content is fully scrollable above the floating action button & nav bar
                 const SizedBox(height: 110),

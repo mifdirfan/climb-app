@@ -41,7 +41,9 @@ class ClimbMYApp extends ConsumerWidget {
 
     return MaterialApp.router(
       title: 'ClimbMY',
-      theme: AppTheme.darkTheme,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
       routerConfig: router,
     );
   }

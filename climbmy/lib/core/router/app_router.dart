@@ -5,7 +5,10 @@ import '../../screens/mainscreen/HomeScreen.dart';
 import '../../screens/mainscreen/MapScreen.dart';
 import '../../screens/mainscreen/PostScreen.dart';
 import '../../screens/mainscreen/ProfileScreen.dart';
-import '../../widgets/floating_bottom_nav_bar.dart';
+import '../../screens/hazard_report/select_hazard_type_screen.dart';
+import '../../screens/hazard_report/report_hazard_form_screen.dart';
+import '../../screens/hazard_report/report_confirmation_screen.dart';
+import '../../widgets/bottom_nav_bar.dart';
 import '../../widgets/report_hazard_button.dart';
 
 /// Global navigator key for the root GoRouter.
@@ -17,6 +20,9 @@ class AppRoutes {
   static const String map = '/map';
   static const String ticks = '/ticks';
   static const String profile = '/profile';
+  static const String reportHazardSelect = '/report-hazard/select';
+  static const String reportHazardForm = '/report-hazard/form';
+  static const String reportHazardConfirmation = '/report-hazard/confirmation';
 }
 
 /// Riverpod provider exposing the application-wide GoRouter instance.
@@ -91,6 +97,26 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
+
+      // Top-level Hazard Reporting routes (hiding bottom navigation bar)
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRoutes.reportHazardSelect,
+        name: 'report-hazard-select',
+        builder: (context, state) => const SelectHazardTypeScreen(),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRoutes.reportHazardForm,
+        name: 'report-hazard-form',
+        builder: (context, state) => const ReportHazardFormScreen(),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRoutes.reportHazardConfirmation,
+        name: 'report-hazard-confirmation',
+        builder: (context, state) => const ReportConfirmationScreen(),
+      ),
     ],
   );
 });
@@ -124,7 +150,7 @@ class MainScaffold extends StatelessWidget {
       // Contextual Report Hazard FAB shown on Crags tab
       floatingActionButton: isHomeTab
           ? ReportHazardButton(
-              onPressed: () => ReportHazardButton.showReportModal(context),
+              onPressed: () => context.push(AppRoutes.reportHazardSelect),
             )
           : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

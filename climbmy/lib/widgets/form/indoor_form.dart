@@ -5,7 +5,6 @@ import '../../models/indoor_session.dart';
 import '../../providers/home_providers.dart';
 import '../../providers/post_form_providers.dart';
 import '../felt_grade_selector.dart';
-import '../indoor_tally_counter.dart';
 import '../session_rating_bar.dart';
 import 'venue_picker_bottom_sheet.dart';
 
@@ -109,7 +108,7 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
       feltGrade: indoorState.feltGrade,
       rating: indoorState.rating,
       notes: _notesController.text.trim(),
-      gradeTallies: indoorState.gradeTallies,
+      // gradeTallies: indoorState.gradeTallies,
       gymName: indoorState.selectedGym!.name,
     );
 
@@ -392,13 +391,13 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
           const SizedBox(height: 20),
 
           // Section 3: Boulder Sends Tally Counter
-          IndoorTallyCounter(
-            tallies: indoorState.gradeTallies,
-            onIncrement: indoorNotifier.incrementTally,
-            onDecrement: indoorNotifier.decrementTally,
-          ),
+          // IndoorTallyCounter(
+          //   tallies: indoorState.gradeTallies,
+          //   onIncrement: indoorNotifier.incrementTally,
+          //   onDecrement: indoorNotifier.decrementTally,
+          // ),
 
-          const SizedBox(height: 20),
+          // const SizedBox(height: 20),
 
           // Section 4: Felt Grade / Perceived Effort
           FeltGradeSelector(
