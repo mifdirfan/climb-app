@@ -6,7 +6,7 @@ import '../../core/theme/app_theme.dart';
 import '../../models/crag.dart';
 import '../../providers/hazard_report_providers.dart';
 import '../../providers/home_providers.dart';
-import '../../widgets/form/venue_picker_bottom_sheet.dart';
+import '../../widgets/form/crag_picker_bottom_sheet.dart';
 
 /// Screen 2: Report Hazard Form (Figma Node 5315-275).
 ///

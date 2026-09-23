@@ -242,16 +242,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       'Recently Added Routes',
                       style: AppTextStyles.headlineSmall,
                     ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.add,
-                        color: AppColors.textSecondary,
-                        size: 20,
-                      ),
+
+                    TextButton(
                       onPressed: () {
                         // Placeholder for submitting a new route
                       },
-                    ),
+                      child: Text(
+                        'Add New Route',
+                        style: AppTextStyles.labelSmall.copyWith(
+                          color: AppColors.textSecondary,
+                          letterSpacing: 1.0,
+                        ),
+                      ),
+                    )
                   ],
                 ),
 

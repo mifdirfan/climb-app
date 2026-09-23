@@ -7,7 +7,7 @@ import '../../providers/home_providers.dart';
 import '../../providers/post_form_providers.dart';
 import '../felt_grade_selector.dart';
 import '../session_rating_bar.dart';
-import 'venue_picker_bottom_sheet.dart';
+import 'crag_picker_bottom_sheet.dart';
 
 /// Alias for phonetic foam / form naming
 typedef IndoorFoam = IndoorForm;
@@ -30,8 +30,6 @@ class IndoorForm extends ConsumerStatefulWidget {
 class _IndoorFormState extends ConsumerState<IndoorForm> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _notesController;
-
-  static const List<int> _durationOptions = [30, 60, 90, 120, 180];
 
   @override
   void initState() {

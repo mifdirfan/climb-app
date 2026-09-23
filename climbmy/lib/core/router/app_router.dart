@@ -8,6 +8,7 @@ import '../../screens/mainscreen/ProfileScreen.dart';
 import '../../screens/hazard_report/select_hazard_type_screen.dart';
 import '../../screens/hazard_report/report_hazard_form_screen.dart';
 import '../../screens/hazard_report/report_confirmation_screen.dart';
+import '../../screens/crags_list_screen.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import '../../widgets/report_hazard_button.dart';
 
@@ -23,6 +24,8 @@ class AppRoutes {
   static const String reportHazardSelect = '/report-hazard/select';
   static const String reportHazardForm = '/report-hazard/form';
   static const String reportHazardConfirmation = '/report-hazard/confirmation';
+  static const String tickHistory = '/profile/tick-history';
+  static const String savedCrags = '/profile/saved-crags';
 }
 
 /// Riverpod provider exposing the application-wide GoRouter instance.
@@ -116,6 +119,30 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.reportHazardConfirmation,
         name: 'report-hazard-confirmation',
         builder: (context, state) => const ReportConfirmationScreen(),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRoutes.tickHistory,
+        name: 'tick-history',
+        builder: (context, state) => const VenuesListScreen(
+          title: 'Tick History & Send Log',
+          subtitle: 'Completed routes, redpoints, and flashes',
+          emptyMessage: 'No ticks or sends logged yet',
+          emptySubtitle: 'Log your sends in the Ticks tab to build your climbing logbook!',
+          emptyIcon: Icons.history_rounded,
+        ),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRoutes.savedCrags,
+        name: 'saved-crags',
+        builder: (context, state) => const VenuesListScreen(
+          title: 'Saved Crags & Topos',
+          subtitle: 'Cached sectors and topo guides for offline climbing',
+          emptyMessage: 'No saved crags or topos yet',
+          emptySubtitle: 'Explore crags on the Home or Map tab to save them for offline access!',
+          emptyIcon: Icons.bookmark_border_rounded,
+        ),
       ),
     ],
   );

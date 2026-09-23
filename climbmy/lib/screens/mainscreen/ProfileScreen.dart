@@ -1,14 +1,20 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../core/router/app_router.dart';
 import '../../core/theme/app_theme.dart';
 
 /// User profile and climbing logbook screen.
 class ProfileScreen extends StatelessWidget {
   final VoidCallback? onBack;
+  final VoidCallback? onEditProfile;
+  final VoidCallback? onShareProfile;
 
   const ProfileScreen({
     super.key,
     this.onBack,
+    this.onEditProfile,
+    this.onShareProfile,
   });
 
   @override
@@ -112,30 +118,71 @@ class ProfileScreen extends StatelessWidget {
                         color: AppColors.textMuted,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 14),
 
-                    // Grade System Pill
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: AppColors.surfaceInput,
-                        borderRadius: BorderRadius.circular(AppRadius.pill),
-                        border: Border.all(color: AppColors.borderSubtle),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.fitness_center_rounded, size: 14, color: AppColors.primary),
-                          const SizedBox(width: 6),
-                          Text(
-                            'French Grade System',
-                            style: AppTextStyles.caption.copyWith(
-                              color: AppColors.primaryLight,
-                              fontWeight: FontWeight.w600,
+                    // Edit Profile and Share Profile buttons
+                    Row(
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                            height: 38,
+                            child: OutlinedButton.icon(
+                              key: const Key('edit_profile_button'),
+                              onPressed: onEditProfile ?? () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    backgroundColor: AppColors.surfaceElevated,
+                                    content: Text('Edit profile coming soon.'),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.edit_outlined, size: 16),
+                              label: const Text('Edit Profile'),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: AppColors.textPrimary,
+                                side: const BorderSide(color: AppColors.borderSubtle, width: 1.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(AppRadius.sm),
+                                ),
+                                textStyle: AppTextStyles.labelMedium.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: SizedBox(
+                            height: 38,
+                            child: OutlinedButton.icon(
+                              key: const Key('share_profile_button'),
+                              onPressed: onShareProfile ?? () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    backgroundColor: AppColors.surfaceElevated,
+                                    content: Text('Profile link copied to clipboard!'),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.share_outlined, size: 16),
+                              label: const Text('Share Profile'),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: AppColors.textPrimary,
+                                side: const BorderSide(color: AppColors.borderSubtle, width: 1.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(AppRadius.sm),
+                                ),
+                                textStyle: AppTextStyles.labelMedium.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -147,7 +194,7 @@ class ProfileScreen extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: _buildStatBox(label: 'TICKS', value: '0', icon: Icons.check_circle_outline),
+                    child: _buildStatBox(label: 'POSTS', value: '0', icon: Icons.check_circle_outline),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
@@ -155,7 +202,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: _buildStatBox(label: 'CRAGS', value: '0', icon: Icons.landscape_outlined),
+                    child: _buildStatBox(label: 'CRAGS VISITED', value: '0', icon: Icons.landscape_outlined),
                   ),
                 ],
               ),
@@ -164,7 +211,7 @@ class ProfileScreen extends StatelessWidget {
 
               // Menu & Action List
               Text(
-                'LOGBOOK & SETTINGS',
+                'LOGBOOK',
                 style: AppTextStyles.labelSmall.copyWith(
                   color: AppColors.textMuted,
                   letterSpacing: 1.0,
@@ -177,20 +224,20 @@ class ProfileScreen extends StatelessWidget {
                 icon: Icons.history_rounded,
                 title: 'Tick History & Send Log',
                 subtitle: 'View your redpoints, flashes, and on-sights',
-                onTap: () {},
+                onTap: () => context.push(AppRoutes.tickHistory),
               ),
               const SizedBox(height: 8),
               _buildMenuTile(
                 icon: Icons.bookmark_border_rounded,
                 title: 'Saved Crags & Topos',
                 subtitle: 'Cached sectors for offline climbing',
-                onTap: () {},
+                onTap: () => context.push(AppRoutes.savedCrags),
               ),
               const SizedBox(height: 8),
               _buildMenuTile(
-                icon: Icons.notifications_none_rounded,
-                title: 'Crag Hazard Alerts',
-                subtitle: 'Safety notifications for local areas',
+                icon: Icons.fitness_center_rounded,
+                title: 'Indoor Climbing Log',
+                subtitle: 'Track your indoor bouldering and training sessions',
                 onTap: () {},
               ),
 

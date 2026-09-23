@@ -5,7 +5,7 @@ import '../../providers/home_providers.dart';
 import '../../providers/post_form_providers.dart';
 import '../ascent_style_selector.dart';
 import '../topo_video_card.dart';
-import 'venue_picker_bottom_sheet.dart';
+import 'crag_picker_bottom_sheet.dart';
 
 /// Alias for phonetic foam / form naming
 typedef OutdoorFoam = OutdoorForm;
