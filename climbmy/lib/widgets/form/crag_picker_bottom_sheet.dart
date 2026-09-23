@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/app_theme.dart';
 import '../../models/crag.dart';
-import '../../models/route_item.dart';
+import '../../models/route.dart';
 import '../../providers/home_providers.dart';
 
 /// Helper to display the venue picker modal bottom sheet with optional route selection.

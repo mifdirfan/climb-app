@@ -101,7 +101,8 @@ class _VenuesListScreenState extends ConsumerState<VenuesListScreen> {
             // Top Controls: Search Bar and Category Filter Chips
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-              child: 
+              child: Column(
+                children: [
                   // Search Field
                   TextField(
                     key: const Key('venues_search_field'),
@@ -123,10 +124,38 @@ class _VenuesListScreenState extends ConsumerState<VenuesListScreen> {
                           : null,
                     ),
                   ),
-
-                
+                  const SizedBox(height: 10),
+                  // Filter Chips Row
+                  Row(
+                    children: [
+                      _buildFilterChip(
+                        key: const Key('filter_all'),
+                        label: 'All Places',
+                        filter: VenueCategoryFilter.all,
+                        colorScheme: colorScheme,
+                        theme: theme,
+                      ),
+                      const SizedBox(width: 8),
+                      _buildFilterChip(
+                        key: const Key('filter_crags'),
+                        label: 'Outdoor Crags',
+                        filter: VenueCategoryFilter.crags,
+                        colorScheme: colorScheme,
+                        theme: theme,
+                      ),
+                      const SizedBox(width: 8),
+                      _buildFilterChip(
+                        key: const Key('filter_gyms'),
+                        label: 'Indoor Gyms',
+                        filter: VenueCategoryFilter.gyms,
+                        colorScheme: colorScheme,
+                        theme: theme,
+                      ),
+                    ],
+                  ),
+                ],
               ),
-      
+            ),
 
             const Divider(height: 1),
 
@@ -179,7 +208,38 @@ class _VenuesListScreenState extends ConsumerState<VenuesListScreen> {
     );
   }
 
-  
+  Widget _buildFilterChip({
+    required Key key,
+    required String label,
+    required VenueCategoryFilter filter,
+    required ColorScheme colorScheme,
+    required ThemeData theme,
+  }) {
+    final isSelected = _selectedFilter == filter;
+    return InkWell(
+      key: key,
+      onTap: () => setState(() => _selectedFilter = filter),
+      borderRadius: BorderRadius.circular(AppRadius.pill),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+        decoration: BoxDecoration(
+          color: isSelected ? colorScheme.primary : colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(AppRadius.pill),
+          border: Border.all(
+            color: isSelected ? colorScheme.primary : colorScheme.outlineVariant,
+            width: 1.0,
+          ),
+        ),
+        child: Text(
+          label,
+          style: theme.textTheme.labelMedium?.copyWith(
+            color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface,
+            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildVenuesList(ThemeData theme, ColorScheme colorScheme, List<Crag> venues) {
     // 1. Filter by category

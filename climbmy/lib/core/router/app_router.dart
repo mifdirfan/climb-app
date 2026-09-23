@@ -9,6 +9,10 @@ import '../../screens/hazard_report/select_hazard_type_screen.dart';
 import '../../screens/hazard_report/report_hazard_form_screen.dart';
 import '../../screens/hazard_report/report_confirmation_screen.dart';
 import '../../screens/crags_list_screen.dart';
+import '../../models/crag.dart';
+import '../../models/route.dart';
+import '../../screens/crag_detail_screen.dart';
+import '../../screens/route_detail_screen.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import '../../widgets/report_hazard_button.dart';
 
@@ -26,6 +30,11 @@ class AppRoutes {
   static const String reportHazardConfirmation = '/report-hazard/confirmation';
   static const String tickHistory = '/profile/tick-history';
   static const String savedCrags = '/profile/saved-crags';
+  static const String cragDetail = '/crag/:id';
+  static const String routeDetail = '/route/:id';
+
+  static String cragDetailPath(String id) => '/crag/$id';
+  static String routeDetailPath(String id) => '/route/$id';
 }
 
 /// Riverpod provider exposing the application-wide GoRouter instance.
@@ -143,6 +152,26 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           emptySubtitle: 'Explore crags on the Home or Map tab to save them for offline access!',
           emptyIcon: Icons.bookmark_border_rounded,
         ),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRoutes.cragDetail,
+        name: 'crag-detail',
+        builder: (context, state) {
+          final cragId = state.pathParameters['id'] ?? '';
+          final initialCrag = state.extra as Crag?;
+          return CragDetailScreen(cragId: cragId, initialCrag: initialCrag);
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRoutes.routeDetail,
+        name: 'route-detail',
+        builder: (context, state) {
+          final routeId = state.pathParameters['id'] ?? '';
+          final initialRoute = state.extra as RouteItem?;
+          return RouteDetailScreen(routeId: routeId, initialRoute: initialRoute);
+        },
       ),
     ],
   );

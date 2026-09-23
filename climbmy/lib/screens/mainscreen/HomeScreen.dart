@@ -2,9 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/router/app_router.dart';
 import '../../core/theme/app_theme.dart';
 import '../../models/crag.dart';
-import '../../models/route_item.dart';
+import '../../models/route.dart';
 import '../../models/hazard_alert.dart';
 import '../../providers/home_providers.dart';
 import '../../widgets/crag_card.dart';
@@ -147,6 +148,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       padding: const EdgeInsets.only(top: 12),
                       child: HazardAlertBanner(
                         alert: alerts.first,
+                        onTap: () {
+                          if (alerts.first.routeId != null && alerts.first.routeId!.isNotEmpty) {
+                            context.push(AppRoutes.routeDetailPath(alerts.first.routeId!));
+                          }
+                        },
                       ),
                     );
                   },
@@ -223,7 +229,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           return CragCard(
                             crag: crag,
                             onTap: () {
-                              // Placeholder for Crag Detail navigation
+                              context.push(AppRoutes.cragDetailPath(crag.id), extra: crag);
                             },
                           );
                         },
@@ -301,7 +307,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         return RouteItemCard(
                           route: route,
                           onTap: () {
-                            // Placeholder for route detail navigation
+                            context.push(AppRoutes.routeDetailPath(route.id), extra: route);
                           },
                         );
                       },
@@ -311,21 +317,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
                 const SizedBox(height: 16),
 
-                // 6. Submit New Route CTA Button
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      context.go('/ticks');
-                    },
-                    icon: const Icon(Icons.add, size: 18),
-                    label: const Text('SUBMIT NEW ROUTE'),
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
-                  ),
-                ),
-
+                
                 // Spacing to ensure content is fully scrollable above the floating action button & nav bar
                 const SizedBox(height: 110),
               ],

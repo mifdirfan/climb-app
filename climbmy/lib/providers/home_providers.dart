@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/crag.dart';
-import '../models/route_item.dart';
+import '../models/route.dart';
 import '../models/hazard_alert.dart';
 
 /// Notifier for selected state filter ('All', 'Selangor', 'Perak', 'Perlis', 'Johor', etc.)
@@ -127,6 +127,93 @@ final cragRoutesProvider =
 
   return getFallbackRoutesForCrag(cragId, cragName);
 });
+
+/// Riverpod FutureProvider reading a specific crag by ID
+final cragDetailProvider =
+    FutureProvider.family<Crag?, String>((ref, cragId) async {
+  try {
+    final response = await Supabase.instance.client
+        .from('crags')
+        .select()
+        .eq('id', cragId)
+        .single();
+    return Crag.fromJson(response);
+  } catch (e) {
+    try {
+      final all = await ref.watch(mapVenuesProvider.future);
+      return all.firstWhere((c) => c.id == cragId);
+    } catch (_) {
+      return null;
+    }
+  }
+});
+
+/// Riverpod FutureProvider reading a specific route by ID
+final routeDetailProvider =
+    FutureProvider.family<RouteItem?, String>((ref, routeId) async {
+  try {
+    final response = await Supabase.instance.client
+        .from('routes')
+        .select('*, sectors(*, crags(*))')
+        .eq('id', routeId)
+        .single();
+    return RouteItem.fromJson(response);
+  } catch (e) {
+    return getFallbackRouteById(routeId);
+  }
+});
+
+/// Riverpod FutureProvider reading active alerts for a crag
+final cragHazardsProvider =
+    FutureProvider.family<List<HazardAlert>, String>((ref, cragId) async {
+  try {
+    final response = await Supabase.instance.client
+        .from('hazard_alerts')
+        .select('*, sectors!inner(name, crag_id), routes(name)')
+        .eq('sectors.crag_id', cragId)
+        .eq('status', 'active')
+        .order('created_at', ascending: false);
+
+    return (response as List<dynamic>)
+        .map((item) => HazardAlert.fromJson(item as Map<String, dynamic>))
+        .toList();
+  } catch (e) {
+    return [];
+  }
+});
+
+/// Riverpod FutureProvider reading active alerts for a specific route
+final routeHazardsProvider =
+    FutureProvider.family<List<HazardAlert>, String>((ref, routeId) async {
+  try {
+    final response = await Supabase.instance.client
+        .from('hazard_alerts')
+        .select('*, sectors(name), routes(name)')
+        .eq('route_id', routeId)
+        .eq('status', 'active')
+        .order('created_at', ascending: false);
+
+    return (response as List<dynamic>)
+        .map((item) => HazardAlert.fromJson(item as Map<String, dynamic>))
+        .toList();
+  } catch (e) {
+    return [];
+  }
+});
+
+/// Helper finding a fallback route by ID across known catalogs
+RouteItem? getFallbackRouteById(String routeId) {
+  final allRoutes = [
+    ...getFallbackRoutesForCrag('crag-batu-caves'),
+    ...getFallbackRoutesForCrag('crag-bukit-keteri'),
+    ...getFallbackRoutesForCrag('crag-bukit-nyamuk'),
+  ];
+  try {
+    return allRoutes.firstWhere((r) => r.id == routeId);
+  } catch (_) {
+    return allRoutes.isNotEmpty ? allRoutes.first : null;
+  }
+}
 
 /// Fallback catalog of climbing routes for known crags
 List<RouteItem> getFallbackRoutesForCrag(String cragId, [String? cragName]) {

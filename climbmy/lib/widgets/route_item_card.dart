@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../core/theme/app_theme.dart';
-import '../models/route_item.dart';
+import '../models/route.dart';
 import 'grade_chip.dart';
 
 /// Reusable list item card for displaying routes in Recently Added Routes.
