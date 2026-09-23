@@ -1,10 +1,11 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../core/theme/app_theme.dart';
 import '../../models/crag.dart';
 import '../../providers/home_providers.dart';
+import '../../widgets/built_in_flutter_map.dart';
+import '../../widgets/map_filter.dart';
 
 /// Venue filter options for the map view
 enum VenueTypeFilter {
@@ -13,7 +14,7 @@ enum VenueTypeFilter {
   gyms,
 }
 
-/// Map screen displaying interactive Google Map with:
+/// Map screen displaying interactive built-in Flutter Map with:
 /// - Pointers for each climbing gym and crag from Supabase
 /// - Filter selecting between all, crags, or gyms
 /// - Zoom in/out and My Location buttons
@@ -30,19 +31,41 @@ class MapScreen extends ConsumerStatefulWidget {
   ConsumerState<MapScreen> createState() => _MapScreenState();
 }
 
-class _MapScreenState extends ConsumerState<MapScreen> {
-  GoogleMapController? _mapController;
+class _MapScreenState extends ConsumerState<MapScreen>
+    with SingleTickerProviderStateMixin {
+  late final TransformationController _transformationController;
+  late final AnimationController _animationController;
+  Animation<Matrix4>? _mapAnimation;
+
   VenueTypeFilter _selectedFilter = VenueTypeFilter.all;
   Crag? _selectedVenue;
+  final bool _isTopographic = true;
 
-  static const CameraPosition _initialCameraPosition = CameraPosition(
-    target: LatLng(3.2374, 101.6839), // Central Batu Caves / Klang Valley climbing area
-    zoom: 11.0,
-  );
+  @override
+  void initState() {
+    super.initState();
+    _transformationController = TransformationController();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 350),
+    )..addListener(() {
+        if (_mapAnimation != null) {
+          _transformationController.value = _mapAnimation!.value;
+        }
+      });
+
+    // Automatically center map on Central Malaysia / Batu Caves
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _goToMyLocation(animate: false);
+      }
+    });
+  }
 
   @override
   void dispose() {
-    _mapController?.dispose();
+    _animationController.dispose();
+    _transformationController.dispose();
     super.dispose();
   }
 
@@ -52,27 +75,91 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     });
   }
 
+  void _animateMatrix(Matrix4 target) {
+    _mapAnimation = Matrix4Tween(
+      begin: _transformationController.value,
+      end: target,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+    _animationController.forward(from: 0.0);
+  }
+
   void _zoomIn() {
-    _mapController?.animateCamera(CameraUpdate.zoomIn());
+    final current = _transformationController.value;
+    final size = MediaQuery.of(context).size;
+    final focal = Offset(size.width / 2, size.height / 2);
+
+    final target = Matrix4.copy(current)
+        ..translateByDouble(focal.dx, focal.dy, 0.0, 1.0)
+      ..scaleByDouble(1.25, 1.25, 1.0, 1.0)
+      ..translateByDouble(-focal.dx, -focal.dy, 0.0, 1.0);
+
+    _animateMatrix(target);
   }
 
   void _zoomOut() {
-    _mapController?.animateCamera(CameraUpdate.zoomOut());
+    final current = _transformationController.value;
+    final size = MediaQuery.of(context).size;
+    final focal = Offset(size.width / 2, size.height / 2);
+
+    final target = Matrix4.copy(current)
+      ..translateByDouble(focal.dx, focal.dy, 0.0, 1.0)
+      ..scaleByDouble(0.8, 0.8, 1.0, 1.0)
+      ..translateByDouble(-focal.dx, -focal.dy, 0.0, 1.0);
+
+    _animateMatrix(target);
   }
 
-  void _goToMyLocation() {
-    _mapController?.animateCamera(
-      CameraUpdate.newCameraPosition(
-        const CameraPosition(
-          target: LatLng(3.2374, 101.6839),
-          zoom: 13.5,
-        ),
-      ),
-    );
+  void _goToMyLocation({bool animate = true}) {
+    // Batu Caves central climbing area coordinates: Lat 3.2374, Lng 101.6839
+    final (canvasX, canvasY) =
+        BuiltInFlutterMap.coordinatesToCanvas(3.2374, 101.6839);
+    final size = MediaQuery.of(context).size;
+    const scale = 1.15;
+
+    final targetX = size.width / 2 - canvasX * scale;
+    final targetY = size.height / 2 - canvasY * scale;
+
+    final targetMatrix = Matrix4.identity()
+      ..translateByDouble(targetX, targetY, 0.0, 1.0)
+      ..scaleByDouble(scale, scale, 1.0, 1.0);
+
+    if (animate) {
+      _animateMatrix(targetMatrix);
+    } else {
+      _transformationController.value = targetMatrix;
+    }
   }
 
-  Set<Marker> _buildMarkers(List<Crag> venues, ThemeData theme) {
-    final filteredVenues = venues.where((venue) {
+  void _selectVenue(Crag venue) {
+    setState(() {
+      _selectedVenue = venue;
+    });
+    final coords = venue.coordinates;
+    final (canvasX, canvasY) =
+        BuiltInFlutterMap.coordinatesToCanvas(coords.$1, coords.$2);
+    final size = MediaQuery.of(context).size;
+    const scale = 1.4;
+
+    final targetX = size.width / 2 - canvasX * scale;
+    final targetY = size.height * 0.42 - canvasY * scale;
+
+    final targetMatrix = Matrix4.identity()
+      ..translateByDouble(targetX, targetY, 0.0, 1.0)
+      ..scaleByDouble(scale, scale, 1.0, 1.0);
+   _animateMatrix(targetMatrix);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final venuesAsync = ref.watch(mapVenuesProvider);
+    final allVenues = venuesAsync.asData?.value ?? defaultMapVenues;
+
+    final filteredVenues = allVenues.where((venue) {
       switch (_selectedFilter) {
         case VenueTypeFilter.all:
           return true;
@@ -83,58 +170,23 @@ class _MapScreenState extends ConsumerState<MapScreen> {
       }
     }).toList();
 
-    return filteredVenues.map((venue) {
-      final coords = venue.coordinates;
-      final isSelected = _selectedVenue?.id == venue.id;
-
-      return Marker(
-        markerId: MarkerId(venue.id),
-        position: LatLng(coords.$1, coords.$2),
-        infoWindow: InfoWindow(
-          title: venue.name,
-          snippet: '${venue.isIndoor ? "Indoor Gym" : "Outdoor Crag"} • ${venue.state}',
-        ),
-        icon: venue.isIndoor
-            ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan)
-            : BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-        zIndexInt: isSelected ? 10 : 1,
-        onTap: () {
-          setState(() {
-            _selectedVenue = venue;
-          });
-          _mapController?.animateCamera(
-            CameraUpdate.newLatLng(LatLng(coords.$1, coords.$2)),
-          );
-        },
-      );
-    }).toSet();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final venuesAsync = ref.watch(mapVenuesProvider);
-    final venues = venuesAsync.asData?.value ?? defaultMapVenues;
-    final markers = _buildMarkers(venues, theme);
-
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: Stack(
         children: [
-          // 1. Google Map filling the entire page
+          // 1. Built-in Flutter Map filling the entire page
           Positioned.fill(
-            child: GoogleMap(
-              key: const Key('google_map'),
-              initialCameraPosition: _initialCameraPosition,
-              myLocationEnabled: false,
-              myLocationButtonEnabled: false,
-              zoomControlsEnabled: false,
-              mapToolbarEnabled: false,
-              compassEnabled: false,
-              markers: markers,
-              onMapCreated: (controller) {
-                _mapController = controller;
+            child: BuiltInFlutterMap(
+              key: const Key('built_in_flutter_map'),
+              transformationController: _transformationController,
+              venues: filteredVenues,
+              selectedVenue: _selectedVenue,
+              isTopographic: _isTopographic,
+              onVenueSelected: _selectVenue,
+              onTapBackground: () {
+                setState(() {
+                  _selectedVenue = null;
+                });
               },
             ),
           ),
@@ -166,28 +218,28 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                 ),
                 child: Row(
                   children: [
-                    _FilterSegment(
+                    MapFilter(
                       key: const Key('filter_all'),
                       label: 'All',
-                      count: venues.length,
+                      count: allVenues.length,
                       isSelected: _selectedFilter == VenueTypeFilter.all,
                       onTap: () => _onFilterSelected(VenueTypeFilter.all),
                     ),
                     const SizedBox(width: 4),
-                    _FilterSegment(
+                    MapFilter(
                       key: const Key('filter_crags'),
                       label: 'Crags',
                       icon: Icons.terrain_outlined,
-                      count: venues.where((v) => v.isOutdoor).length,
+                      count: allVenues.where((v) => v.isOutdoor).length,
                       isSelected: _selectedFilter == VenueTypeFilter.crags,
                       onTap: () => _onFilterSelected(VenueTypeFilter.crags),
                     ),
                     const SizedBox(width: 4),
-                    _FilterSegment(
+                    MapFilter(
                       key: const Key('filter_gyms'),
                       label: 'Gyms',
                       icon: Icons.fitness_center_outlined,
-                      count: venues.where((v) => v.isIndoor).length,
+                      count: allVenues.where((v) => v.isIndoor).length,
                       isSelected: _selectedFilter == VenueTypeFilter.gyms,
                       onTap: () => _onFilterSelected(VenueTypeFilter.gyms),
                     ),
@@ -211,7 +263,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                   elevation: 0,
                   child: InkWell(
                     key: const Key('my_location_button'),
-                    onTap: _goToMyLocation,
+                    onTap: () => _goToMyLocation(),
                     borderRadius: AppRadius.borderSm,
                     child: Container(
                       width: 44,
@@ -360,16 +412,19 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                           // If a venue is selected on the map, show its info banner
                           if (_selectedVenue != null)
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Row(
                                 children: [
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           _selectedVenue!.name,
-                                          style: theme.textTheme.titleMedium?.copyWith(
+                                          style: theme.textTheme.titleMedium
+                                              ?.copyWith(
                                             fontWeight: FontWeight.w700,
                                           ),
                                           maxLines: 1,
@@ -378,15 +433,18 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                                         const SizedBox(height: 2),
                                         Text(
                                           '${_selectedVenue!.isIndoor ? "Indoor Climbing Gym" : "Outdoor Crag"} • ${_selectedVenue!.state}',
-                                          style: theme.textTheme.bodySmall?.copyWith(
-                                            color: colorScheme.onSurface.withValues(alpha: 0.7),
+                                          style: theme.textTheme.bodySmall
+                                              ?.copyWith(
+                                            color: colorScheme.onSurface
+                                                .withValues(alpha: 0.7),
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 4),
                                     decoration: BoxDecoration(
                                       color: _selectedVenue!.isIndoor
                                           ? (colorScheme.secondaryContainer)
@@ -394,11 +452,16 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                                       borderRadius: AppRadius.borderXs,
                                     ),
                                     child: Text(
-                                      _selectedVenue!.isIndoor ? 'GYM' : 'CRAG',
-                                      style: theme.textTheme.labelSmall?.copyWith(
+                                      _selectedVenue!.isIndoor
+                                          ? 'GYM'
+                                          : 'CRAG',
+                                      style:
+                                          theme.textTheme.labelSmall?.copyWith(
                                         color: _selectedVenue!.isIndoor
-                                            ? (colorScheme.onSecondaryContainer)
-                                            : colorScheme.onPrimaryContainer,
+                                            ? (colorScheme
+                                                .onSecondaryContainer)
+                                            : colorScheme
+                                                .onPrimaryContainer,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
@@ -411,7 +474,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                       ),
                     ),
 
-                    // Empty boulder list (no elements in the list yet)
+                    // Empty boulder list
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) => const SizedBox.shrink(),
@@ -424,83 +487,6 @@ class _MapScreenState extends ConsumerState<MapScreen> {
             },
           ),
         ],
-      ),
-    );
-  }
-}
-
-/// Internal segmented filter item widget for MapScreen top bar
-class _FilterSegment extends StatelessWidget {
-  final String label;
-  final IconData? icon;
-  final int count;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _FilterSegment({
-    super.key,
-    required this.label,
-    this.icon,
-    required this.count,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: AppRadius.borderPill,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          decoration: BoxDecoration(
-            color: isSelected ? colorScheme.primary : Colors.transparent,
-            borderRadius: AppRadius.borderPill,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (icon != null) ...[
-                Icon(
-                  icon,
-                  size: 16,
-                  color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface,
-                ),
-                const SizedBox(width: 4),
-              ],
-              Text(
-                label,
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface,
-                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                ),
-              ),
-              const SizedBox(width: 4),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? colorScheme.onPrimary.withValues(alpha: 0.15)
-                      : colorScheme.outlineVariant.withValues(alpha: 0.5),
-                  borderRadius: AppRadius.borderPill,
-                ),
-                child: Text(
-                  '$count',
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    fontSize: 10,
-                    color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

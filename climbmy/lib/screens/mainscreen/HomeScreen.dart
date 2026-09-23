@@ -308,7 +308,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
                 const SizedBox(height: 16),
 
-                
+                // 6. Submit New Route CTA Button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      context.go('/ticks');
+                    },
+                    icon: const Icon(Icons.add, size: 18),
+                    label: const Text('SUBMIT NEW ROUTE'),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                  ),
+                ),
 
                 // Spacing to ensure content is fully scrollable above the floating action button & nav bar
                 const SizedBox(height: 110),

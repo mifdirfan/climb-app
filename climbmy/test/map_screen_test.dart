@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:climbmy/core/theme/app_theme.dart';
 import 'package:climbmy/screens/mainscreen/MapScreen.dart';
+import 'package:climbmy/widgets/built_in_flutter_map.dart';
 
 void main() {
   Widget buildTestWidget() {
@@ -16,7 +16,8 @@ void main() {
   }
 
   group('MapScreen Tests', () {
-    testWidgets('MapScreen renders GoogleMap, has no header, and renders sliding boulder list sheet',
+    testWidgets(
+        'MapScreen renders BuiltInFlutterMap, has no header, and renders sliding boulder list sheet',
         (tester) async {
       await tester.pumpWidget(buildTestWidget());
       await tester.pumpAndSettle();
@@ -25,11 +26,12 @@ void main() {
       expect(find.byType(AppBar), findsNothing);
       expect(find.text('Crags Map'), findsNothing);
 
-      // 2. Verify GoogleMap is rendered as the primary view with markers
-      expect(find.byType(GoogleMap), findsOneWidget);
-      expect(find.byKey(const Key('google_map')), findsOneWidget);
-      final googleMapWidget = tester.widget<GoogleMap>(find.byKey(const Key('google_map')));
-      expect(googleMapWidget.markers.isNotEmpty, isTrue);
+      // 2. Verify BuiltInFlutterMap is rendered as the primary view with venues
+      expect(find.byType(BuiltInFlutterMap), findsOneWidget);
+      expect(find.byKey(const Key('built_in_flutter_map')), findsOneWidget);
+      final mapWidget = tester.widget<BuiltInFlutterMap>(
+          find.byKey(const Key('built_in_flutter_map')));
+      expect(mapWidget.venues.isNotEmpty, isTrue);
 
       // 3. Verify DraggableScrollableSheet is rendered at the bottom
       expect(find.byType(DraggableScrollableSheet), findsOneWidget);
@@ -37,7 +39,8 @@ void main() {
       expect(find.byKey(const Key('boulder_list_scroll_view')), findsOneWidget);
     });
 
-    testWidgets('Renders top venue filter bar and switches between All, Crags, and Gyms',
+    testWidgets(
+        'Renders top venue filter bar and switches between All, Crags, and Gyms',
         (tester) async {
       await tester.pumpWidget(buildTestWidget());
       await tester.pumpAndSettle();
@@ -52,25 +55,31 @@ void main() {
       await tester.tap(find.byKey(const Key('filter_crags')));
       await tester.pumpAndSettle();
 
-      final cragsMap = tester.widget<GoogleMap>(find.byKey(const Key('google_map')));
-      expect(cragsMap.markers.isNotEmpty, isTrue);
+      final cragsMap = tester.widget<BuiltInFlutterMap>(
+          find.byKey(const Key('built_in_flutter_map')));
+      expect(cragsMap.venues.isNotEmpty, isTrue);
+      expect(cragsMap.venues.every((v) => v.isOutdoor), isTrue);
 
       // Tap Gyms filter
       await tester.tap(find.byKey(const Key('filter_gyms')));
       await tester.pumpAndSettle();
 
-      final gymsMap = tester.widget<GoogleMap>(find.byKey(const Key('google_map')));
-      expect(gymsMap.markers.isNotEmpty, isTrue);
+      final gymsMap = tester.widget<BuiltInFlutterMap>(
+          find.byKey(const Key('built_in_flutter_map')));
+      expect(gymsMap.venues.isNotEmpty, isTrue);
+      expect(gymsMap.venues.every((v) => v.isIndoor), isTrue);
 
       // Tap All filter
       await tester.tap(find.byKey(const Key('filter_all')));
       await tester.pumpAndSettle();
 
-      final allMap = tester.widget<GoogleMap>(find.byKey(const Key('google_map')));
-      expect(allMap.markers.length, greaterThanOrEqualTo(gymsMap.markers.length));
+      final allMap = tester.widget<BuiltInFlutterMap>(
+          find.byKey(const Key('built_in_flutter_map')));
+      expect(allMap.venues.length, greaterThanOrEqualTo(gymsMap.venues.length));
     });
 
-    testWidgets('Renders zoom in/out and my location buttons and responds to taps',
+    testWidgets(
+        'Renders zoom in/out and my location buttons and responds to taps',
         (tester) async {
       await tester.pumpWidget(buildTestWidget());
       await tester.pumpAndSettle();
@@ -93,7 +102,8 @@ void main() {
       await tester.pumpAndSettle();
     });
 
-    testWidgets('Sliding boulder sheet can be dragged up and down', (tester) async {
+    testWidgets('Sliding boulder sheet can be dragged up and down',
+        (tester) async {
       await tester.pumpWidget(buildTestWidget());
       await tester.pumpAndSettle();
 

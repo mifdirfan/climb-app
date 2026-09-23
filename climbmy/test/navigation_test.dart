@@ -32,9 +32,9 @@ void main() {
       await tester.tap(mapIcon);
       await tester.pumpAndSettle();
 
-      // Verify MapScreen is active with GoogleMap and sliding boulder sheet
+      // Verify MapScreen is active with BuiltInFlutterMap and sliding boulder sheet
       expect(find.byType(MapScreen), findsOneWidget);
-      expect(find.byKey(const Key('google_map')), findsOneWidget);
+      expect(find.byKey(const Key('built_in_flutter_map')), findsOneWidget);
       expect(find.byKey(const Key('boulder_list_sheet')), findsOneWidget);
 
       // 3. Tap 'Ticks' nav item (index 2) -> /ticks (PostScreen)
@@ -110,7 +110,7 @@ void main() {
       await tester.tap(find.byIcon(Icons.map_outlined));
       await tester.pumpAndSettle();
       expect(find.byType(MapScreen), findsOneWidget);
-      expect(find.byKey(const Key('google_map')), findsOneWidget);
+      expect(find.byKey(const Key('built_in_flutter_map')), findsOneWidget);
 
       // Tap Crags nav item in bottom nav
       final cragsIcon = find.byIcon(Icons.explore_outlined);
