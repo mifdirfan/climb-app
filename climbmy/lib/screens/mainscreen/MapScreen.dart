@@ -1,11 +1,14 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:latlong2/latlong.dart';
 import '../../core/theme/app_theme.dart';
 import '../../models/crag.dart';
 import '../../providers/home_providers.dart';
 import '../../widgets/built_in_flutter_map.dart';
 import '../../widgets/map_filter.dart';
+import '../../widgets/visible_places_sheet.dart';
 
 /// Venue filter options for the map view
 enum VenueTypeFilter {
@@ -14,11 +17,6 @@ enum VenueTypeFilter {
   gyms,
 }
 
-/// Map screen displaying interactive built-in Flutter Map with:
-/// - Pointers for each climbing gym and crag from Supabase
-/// - Filter selecting between all, crags, or gyms
-/// - Zoom in/out and My Location buttons
-/// - Bottom sliding boulder list sheet
 class MapScreen extends ConsumerStatefulWidget {
   final VoidCallback? onBack;
 
@@ -33,39 +31,34 @@ class MapScreen extends ConsumerStatefulWidget {
 
 class _MapScreenState extends ConsumerState<MapScreen>
     with SingleTickerProviderStateMixin {
-  late final TransformationController _transformationController;
+  late final MapController _mapController;
   late final AnimationController _animationController;
-  Animation<Matrix4>? _mapAnimation;
+  VoidCallback? _activeAnimationListener;
 
   VenueTypeFilter _selectedFilter = VenueTypeFilter.all;
   Crag? _selectedVenue;
-  final bool _isTopographic = true;
+  LatLngBounds? _visibleBounds;
+
+  // Central Batu Caves climbing coordinates
+  static const LatLng _defaultLocation = LatLng(3.2374, 101.6839);
 
   @override
   void initState() {
     super.initState();
-    _transformationController = TransformationController();
+    _mapController = MapController();
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 350),
-    )..addListener(() {
-        if (_mapAnimation != null) {
-          _transformationController.value = _mapAnimation!.value;
-        }
-      });
-
-    // Automatically center map on Central Malaysia / Batu Caves
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        _goToMyLocation(animate: false);
-      }
-    });
+    );
   }
 
   @override
   void dispose() {
+    if (_activeAnimationListener != null) {
+      _animationController.removeListener(_activeAnimationListener!);
+    }
     _animationController.dispose();
-    _transformationController.dispose();
+    _mapController.dispose();
     super.dispose();
   }
 
@@ -75,81 +68,86 @@ class _MapScreenState extends ConsumerState<MapScreen>
     });
   }
 
-  void _animateMatrix(Matrix4 target) {
-    _mapAnimation = Matrix4Tween(
-      begin: _transformationController.value,
-      end: target,
-    ).animate(CurvedAnimation(
+  void _onVisibleBoundsChanged(LatLngBounds bounds) {
+    if (_visibleBounds != bounds) {
+      setState(() {
+        _visibleBounds = bounds;
+      });
+    }
+  }
+
+  void _animatedMapMove(LatLng destLocation, double destZoom) {
+    // 1. Stop active animation and remove previous listeners
+    _animationController.stop();
+    if (_activeAnimationListener != null) {
+      _animationController.removeListener(_activeAnimationListener!);
+      _activeAnimationListener = null;
+    }
+    _animationController.reset();
+
+    // 2. Set up tweens from current camera position
+    final latTween = Tween<double>(
+      begin: _mapController.camera.center.latitude,
+      end: destLocation.latitude,
+    );
+    final lngTween = Tween<double>(
+      begin: _mapController.camera.center.longitude,
+      end: destLocation.longitude,
+    );
+    final zoomTween = Tween<double>(
+      begin: _mapController.camera.zoom,
+      end: destZoom,
+    );
+
+    final curved = CurvedAnimation(
       parent: _animationController,
-      curve: Curves.easeOutCubic,
-    ));
-    _animationController.forward(from: 0.0);
+      curve: Curves.easeInOutCubic,
+    );
+
+    // 3. Define and attach single active listener
+    _activeAnimationListener = () {
+      _mapController.move(
+        LatLng(latTween.evaluate(curved), lngTween.evaluate(curved)),
+        zoomTween.evaluate(curved),
+      );
+    };
+
+    _animationController.addListener(_activeAnimationListener!);
+
+    // 4. Cleanup when animation completes
+    _animationController.forward().then((_) {
+      if (_activeAnimationListener != null) {
+        _animationController.removeListener(_activeAnimationListener!);
+        _activeAnimationListener = null;
+      }
+    });
   }
 
   void _zoomIn() {
-    final current = _transformationController.value;
-    final size = MediaQuery.of(context).size;
-    final focal = Offset(size.width / 2, size.height / 2);
-
-    final target = Matrix4.copy(current)
-        ..translateByDouble(focal.dx, focal.dy, 0.0, 1.0)
-      ..scaleByDouble(1.25, 1.25, 1.0, 1.0)
-      ..translateByDouble(-focal.dx, -focal.dy, 0.0, 1.0);
-
-    _animateMatrix(target);
+    final currentZoom = _mapController.camera.zoom;
+    _animatedMapMove(_mapController.camera.center, currentZoom + 1.0);
   }
 
   void _zoomOut() {
-    final current = _transformationController.value;
-    final size = MediaQuery.of(context).size;
-    final focal = Offset(size.width / 2, size.height / 2);
-
-    final target = Matrix4.copy(current)
-      ..translateByDouble(focal.dx, focal.dy, 0.0, 1.0)
-      ..scaleByDouble(0.8, 0.8, 1.0, 1.0)
-      ..translateByDouble(-focal.dx, -focal.dy, 0.0, 1.0);
-
-    _animateMatrix(target);
+    final currentZoom = _mapController.camera.zoom;
+    _animatedMapMove(_mapController.camera.center, currentZoom - 1.0);
   }
 
-  void _goToMyLocation({bool animate = true}) {
-    // Batu Caves central climbing area coordinates: Lat 3.2374, Lng 101.6839
-    final (canvasX, canvasY) =
-        BuiltInFlutterMap.coordinatesToCanvas(3.2374, 101.6839);
-    final size = MediaQuery.of(context).size;
-    const scale = 1.15;
-
-    final targetX = size.width / 2 - canvasX * scale;
-    final targetY = size.height / 2 - canvasY * scale;
-
-    final targetMatrix = Matrix4.identity()
-      ..translateByDouble(targetX, targetY, 0.0, 1.0)
-      ..scaleByDouble(scale, scale, 1.0, 1.0);
-
-    if (animate) {
-      _animateMatrix(targetMatrix);
-    } else {
-      _transformationController.value = targetMatrix;
-    }
+  void _goToMyLocation() {
+    _animatedMapMove(_defaultLocation, 13.0);
   }
 
   void _selectVenue(Crag venue) {
     setState(() {
       _selectedVenue = venue;
     });
+
     final coords = venue.coordinates;
-    final (canvasX, canvasY) =
-        BuiltInFlutterMap.coordinatesToCanvas(coords.$1, coords.$2);
-    final size = MediaQuery.of(context).size;
-    const scale = 1.4;
+    // Offset slightly southward so the pin stays visible above the bottom sheet
+    final targetLat = coords.$1 - 0.008;
+    final targetLng = coords.$2;
 
-    final targetX = size.width / 2 - canvasX * scale;
-    final targetY = size.height * 0.42 - canvasY * scale;
-
-    final targetMatrix = Matrix4.identity()
-      ..translateByDouble(targetX, targetY, 0.0, 1.0)
-      ..scaleByDouble(scale, scale, 1.0, 1.0);
-   _animateMatrix(targetMatrix);
+    _animatedMapMove(LatLng(targetLat, targetLng), 14.5);
   }
 
   @override
@@ -170,6 +168,13 @@ class _MapScreenState extends ConsumerState<MapScreen>
       }
     }).toList();
 
+    // Venues currently visible in the map's viewport
+    final visibleVenues = filteredVenues.where((venue) {
+      if (_visibleBounds == null) return true;
+      final coords = venue.coordinates;
+      return _visibleBounds!.contains(LatLng(coords.$1, coords.$2));
+    }).toList();
+
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: Stack(
@@ -178,11 +183,11 @@ class _MapScreenState extends ConsumerState<MapScreen>
           Positioned.fill(
             child: BuiltInFlutterMap(
               key: const Key('built_in_flutter_map'),
-              transformationController: _transformationController,
+              mapController: _mapController,
               venues: filteredVenues,
               selectedVenue: _selectedVenue,
-              isTopographic: _isTopographic,
               onVenueSelected: _selectVenue,
+              onVisibleBoundsChanged: _onVisibleBoundsChanged,
               onTapBackground: () {
                 setState(() {
                   _selectedVenue = null;
@@ -194,56 +199,59 @@ class _MapScreenState extends ConsumerState<MapScreen>
           // 2. Top Floating Filter Bar (All / Crags / Gyms)
           Positioned(
             top: 16,
-            left: 16,
-            right: 16,
+            left: 0,
+            right: 0,
             child: SafeArea(
               bottom: false,
-              child: Container(
-                key: const Key('venue_filter_bar'),
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: theme.cardTheme.color ?? colorScheme.surface,
-                  borderRadius: AppRadius.borderPill,
-                  border: Border.all(
-                    color: colorScheme.outlineVariant,
-                    width: 1.0,
+              child: Center(
+                child: Container(
+                  key: const Key('venue_filter_bar'),
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: theme.cardTheme.color ?? colorScheme.surface,
+                    borderRadius: AppRadius.borderPill,
+                    border: Border.all(
+                      color: colorScheme.outlineVariant,
+                      width: 1.0,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.15),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.15),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    MapFilter(
-                      key: const Key('filter_all'),
-                      label: 'All',
-                      count: allVenues.length,
-                      isSelected: _selectedFilter == VenueTypeFilter.all,
-                      onTap: () => _onFilterSelected(VenueTypeFilter.all),
-                    ),
-                    const SizedBox(width: 4),
-                    MapFilter(
-                      key: const Key('filter_crags'),
-                      label: 'Crags',
-                      icon: Icons.terrain_outlined,
-                      count: allVenues.where((v) => v.isOutdoor).length,
-                      isSelected: _selectedFilter == VenueTypeFilter.crags,
-                      onTap: () => _onFilterSelected(VenueTypeFilter.crags),
-                    ),
-                    const SizedBox(width: 4),
-                    MapFilter(
-                      key: const Key('filter_gyms'),
-                      label: 'Gyms',
-                      icon: Icons.fitness_center_outlined,
-                      count: allVenues.where((v) => v.isIndoor).length,
-                      isSelected: _selectedFilter == VenueTypeFilter.gyms,
-                      onTap: () => _onFilterSelected(VenueTypeFilter.gyms),
-                    ),
-                  ],
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      MapFilter(
+                        key: const Key('filter_all'),
+                        label: 'All',
+                        count: allVenues.length,
+                        isSelected: _selectedFilter == VenueTypeFilter.all,
+                        onTap: () => _onFilterSelected(VenueTypeFilter.all),
+                      ),
+                      const SizedBox(width: 4),
+                      MapFilter(
+                        key: const Key('filter_crags'),
+                        label: 'Crags',
+                        icon: Icons.terrain_outlined,
+                        count: allVenues.where((v) => v.isOutdoor).length,
+                        isSelected: _selectedFilter == VenueTypeFilter.crags,
+                        onTap: () => _onFilterSelected(VenueTypeFilter.crags),
+                      ),
+                      const SizedBox(width: 4),
+                      MapFilter(
+                        key: const Key('filter_gyms'),
+                        label: 'Gyms',
+                        icon: Icons.fitness_center_outlined,
+                        count: allVenues.where((v) => v.isIndoor).length,
+                        isSelected: _selectedFilter == VenueTypeFilter.gyms,
+                        onTap: () => _onFilterSelected(VenueTypeFilter.gyms),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -252,18 +260,17 @@ class _MapScreenState extends ConsumerState<MapScreen>
           // 3. Floating Action Controls (Zoom In/Out & My Location)
           Positioned(
             right: 16,
-            bottom: 210,
+            bottom: 145,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // My Location Button
                 Material(
                   color: theme.cardTheme.color ?? colorScheme.surface,
                   borderRadius: AppRadius.borderSm,
                   elevation: 0,
                   child: InkWell(
                     key: const Key('my_location_button'),
-                    onTap: () => _goToMyLocation(),
+                    onTap: _goToMyLocation,
                     borderRadius: AppRadius.borderSm,
                     child: Container(
                       width: 44,
@@ -358,132 +365,12 @@ class _MapScreenState extends ConsumerState<MapScreen>
             ),
           ),
 
-          // 4. Sliding Boulder List Sheet at the bottom
-          DraggableScrollableSheet(
-            key: const Key('boulder_list_sheet'),
-            initialChildSize: 0.25,
-            minChildSize: 0.12,
-            maxChildSize: 0.85,
-            snap: true,
-            snapSizes: const [0.12, 0.25, 0.5, 0.85],
-            builder: (context, scrollController) {
-              return Container(
-                key: const Key('boulder_sheet_container'),
-                decoration: BoxDecoration(
-                  color: theme.cardTheme.color ?? colorScheme.surface,
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(AppRadius.lg),
-                  ),
-                  border: Border.all(
-                    color: colorScheme.outlineVariant,
-                    width: 1.0,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.2),
-                      blurRadius: 10,
-                      offset: const Offset(0, -2),
-                    ),
-                  ],
-                ),
-                child: CustomScrollView(
-                  key: const Key('boulder_list_scroll_view'),
-                  controller: scrollController,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  slivers: [
-                    // Drag handle
-                    SliverToBoxAdapter(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const SizedBox(height: 10),
-                          Center(
-                            child: Container(
-                              width: 36,
-                              height: 4,
-                              decoration: BoxDecoration(
-                                color: colorScheme.outlineVariant,
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 14),
-
-                          // If a venue is selected on the map, show its info banner
-                          if (_selectedVenue != null)
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          _selectedVenue!.name,
-                                          style: theme.textTheme.titleMedium
-                                              ?.copyWith(
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        const SizedBox(height: 2),
-                                        Text(
-                                          '${_selectedVenue!.isIndoor ? "Indoor Climbing Gym" : "Outdoor Crag"} • ${_selectedVenue!.state}',
-                                          style: theme.textTheme.bodySmall
-                                              ?.copyWith(
-                                            color: colorScheme.onSurface
-                                                .withValues(alpha: 0.7),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      color: _selectedVenue!.isIndoor
-                                          ? (colorScheme.secondaryContainer)
-                                          : colorScheme.primaryContainer,
-                                      borderRadius: AppRadius.borderXs,
-                                    ),
-                                    child: Text(
-                                      _selectedVenue!.isIndoor
-                                          ? 'GYM'
-                                          : 'CRAG',
-                                      style:
-                                          theme.textTheme.labelSmall?.copyWith(
-                                        color: _selectedVenue!.isIndoor
-                                            ? (colorScheme
-                                                .onSecondaryContainer)
-                                            : colorScheme
-                                                .onPrimaryContainer,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          const SizedBox(height: 8),
-                        ],
-                      ),
-                    ),
-
-                    // Empty boulder list
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) => const SizedBox.shrink(),
-                        childCount: 0,
-                      ),
-                    ),
-                  ],
-                ),
-              );
+          // 4. Sliding Visible Places Sheet at the bottom
+          VisiblePlacesSheet(
+            venues: visibleVenues,
+            selectedVenue: _selectedVenue,
+            onVenueTap: (venue) {
+              // Clickable venue element; no action performed yet as requested
             },
           ),
         ],

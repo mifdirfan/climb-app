@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/app_theme.dart';
 import '../../models/indoor_session.dart';
@@ -357,29 +358,39 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
                     const SizedBox(height: 6),
                     Container(
                       height: 52,
+                      alignment: Alignment.center, 
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
                         color: AppColors.surface,
                         borderRadius: BorderRadius.circular(AppRadius.lg),
                         border: Border.all(color: AppColors.borderSubtle),
                       ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<int>(
-                          value: indoorState.durationMinutes,
-                          isExpanded: true,
-                          dropdownColor: AppColors.surfaceElevated,
-                          icon: const Icon(Icons.arrow_drop_down, color: AppColors.textMuted),
-                          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
-                          items: _durationOptions
-                              .map(
-                                (mins) => DropdownMenuItem(
-                                  value: mins,
-                                  child: Text('$mins mins'),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: indoorNotifier.setDurationMinutes,
+                      child: TextFormField(
+                        initialValue: indoorState.durationMinutes.toString(),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
+                        decoration: InputDecoration(
+                          // THIS is the magic property. It removes all hidden min-heights 
+                          // and error-text padding from the Material spec.
+                          isCollapsed: true, 
+                          
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          filled: false,
+                          hintText: 'Duration (mins)',
+                          hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
                         ),
+                        onChanged: (value) {
+                          final parsed = int.tryParse(value);
+                          if (parsed != null) {
+                            indoorNotifier.setDurationMinutes(parsed);
+                          } else if (value.isEmpty) {
+                            indoorNotifier.setDurationMinutes(0);
+                          }
+                        },
                       ),
                     ),
                   ],

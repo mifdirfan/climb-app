@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/app_theme.dart';
@@ -15,9 +16,11 @@ void showVenuePickerSheet({
   ValueChanged<RouteItem?>? onRouteSelected,
   bool outdoorOnly = false,
   String? selectedRouteId,
+  bool useRootNavigator = true,
 }) {
   showModalBottomSheet(
     context: context,
+    useRootNavigator: useRootNavigator,
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
     builder: (context) {
@@ -98,6 +101,8 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    final bottomSafeArea = MediaQuery.of(context).padding.bottom;
+    final effectiveBottomPadding = math.max(bottomInset, bottomSafeArea);
 
     // Filter venues based on outdoorOnly flag and search query
     final availableVenues = widget.outdoorOnly
@@ -122,7 +127,7 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
           width: 1.0,
         ),
       ),
-      padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + bottomInset),
+      padding: EdgeInsets.fromLTRB(16, 16, 16, 16 + effectiveBottomPadding),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
