@@ -73,11 +73,11 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
         ref.read(mapVenuesProvider).value ??
         [];
 
-    if (route.cragId != null && route.cragId!.isNotEmpty) {
+    if (route.cragId.isNotEmpty) {
       try {
         resolvedCrag = allCrags.firstWhere((c) => c.id == route.cragId);
       } catch (_) {
-        resolvedCrag = ref.read(cragDetailProvider(route.cragId!)).value;
+        resolvedCrag = ref.read(cragDetailProvider(route.cragId)).value;
       }
     }
 
@@ -88,15 +88,6 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
         );
       } catch (_) {}
     }
-
-    resolvedCrag ??= Crag(
-      id: route.cragId ??
-          (route.cragName != null
-              ? 'crag-${route.cragName!.toLowerCase().replaceAll(' ', '-')}'
-              : 'crag-temp'),
-      name: route.cragName ?? 'Batu Caves',
-      state: 'Selangor',
-    );
 
     // 3. Pre-fill outdoor form provider:
     // IMPORTANT: setSelectedCrag MUST be called BEFORE setSelectedRouteId & setRouteName
@@ -197,23 +188,20 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     final routeAsync = ref.watch(routeDetailProvider(widget.routeId));
     final hazardsAsync = ref.watch(routeHazardsProvider(widget.routeId));
 
-    // Resolve route model
     final route = widget.initialRoute ??
         routeAsync.value ??
         RouteItem(
           id: widget.routeId,
-          sectorId: 'sector-damai',
-          name: 'Tualang Serenade',
-          grade: '7b',
-          routeType: 'sport',
-          sectorName: 'Damai Central',
+          cragId: '11111111-1111-1111-1111-111111111101',
+          sectorId: '33333333-3333-3333-3333-333333333301',
+          name: 'Banana Jam',
+          grade: 'V3',
+          routeType: 'boulder',
+          sectorName: 'Damai Wall',
           cragName: 'Batu Caves',
-          length: '24 Meters',
-          boltsCount: 11,
-          anchors: '2 Stainless Rings',
-          firstAscent: 'A. Honnold (2024)',
+          firstAscent: 'Zul F. (2021)',
           description:
-              'Sustained, vertical limestone crimping through the first 4 bolts leading to an explosive crux traverse right on underclings. Keep feet high through the gaston sequence to reach the rest jug before clipping the chain anchor.',
+              'Compression problem using dual sidepull flakes to an airy mantle top-out.',
         );
 
     return Scaffold(
@@ -437,7 +425,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
   Widget _buildTechnicalBadgesStrip(RouteItem route) {
     final List<Widget> techBadges = [];
 
-    // 1. Route Type badge (if exists)
+    // Route Type
     if (route.routeType.isNotEmpty) {
       techBadges.add(
         _buildTechBadge(
@@ -447,37 +435,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
       );
     }
 
-    // 2. Length badge (if exists)
-    if (route.length != null && route.length!.isNotEmpty) {
-      techBadges.add(
-        _buildTechBadge(
-          icon: Icons.straighten_rounded,
-          label: route.length!,
-        ),
-      );
-    }
-
-    // 3. Bolts / Quickdraws badge (if exists)
-    if (route.boltsCount != null && route.boltsCount! > 0) {
-      techBadges.add(
-        _buildTechBadge(
-          icon: Icons.hardware_rounded,
-          label: '${route.boltsCount} Quickdraws',
-        ),
-      );
-    }
-
-    // 4. Anchors badge (if exists)
-    if (route.anchors != null && route.anchors!.isNotEmpty) {
-      techBadges.add(
-        _buildTechBadge(
-          icon: Icons.link_rounded,
-          label: route.anchors!,
-        ),
-      );
-    }
-
-    // 5. First Ascent badge (if exists)
+    // First Ascent
     if (route.firstAscent != null && route.firstAscent!.isNotEmpty) {
       techBadges.add(
         _buildTechBadge(
@@ -539,7 +497,6 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          // Normal Image representation
           route.imageUrl != null && route.imageUrl!.isNotEmpty
               ? Image.network(
                   route.imageUrl!,
@@ -549,14 +506,13 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                 )
               : _buildTopoPlaceholder(),
 
-          // High-contrast scrim for badge overlay visibility
           Positioned.fill(
             child: Container(
               color: Colors.black.withValues(alpha: 0.25),
             ),
           ),
 
-          // Top Info Badges
+          // Top Info Badge
           Positioned(
             top: 12,
             left: 12,
@@ -568,58 +524,11 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                 border: Border.all(color: AppColors.border, width: 1.0),
               ),
               child: Text(
-                '${route.boltsCount ?? 11} BOLTS • ${route.length ?? '24M'}',
+                'BOULDER PROBLEM • ${route.grade}',
                 style: AppTextStyles.caption.copyWith(
                   color: AppColors.primary,
                   fontWeight: FontWeight.w700,
                 ),
-              ),
-            ),
-          ),
-
-          Positioned(
-            top: 12,
-            right: 12,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: AppColors.background.withValues(alpha: 0.85),
-                borderRadius: AppRadius.borderXs,
-                border: Border.all(color: AppColors.border, width: 1.0),
-              ),
-              child: Text(
-                'PITCH 1 OF 1',
-                style: AppTextStyles.caption.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-
-          // Bottom Label
-          Positioned(
-            bottom: 12,
-            left: 12,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: AppColors.background.withValues(alpha: 0.85),
-                borderRadius: AppRadius.borderXs,
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.camera_alt_outlined, size: 13, color: AppColors.textSecondary),
-                  const SizedBox(width: 4),
-                  Text(
-                    'DAMAI KARST TOPO',
-                    style: AppTextStyles.caption.copyWith(
-                      color: AppColors.textSecondary,
-                      letterSpacing: 0.5,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
               ),
             ),
           ),
@@ -764,7 +673,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
   Widget _buildBetaCard(RouteItem route) {
     final betaText = route.description != null && route.description!.isNotEmpty
         ? route.description!
-        : 'Sustained, vertical limestone crimping through the first 4 bolts leading to an explosive crux traverse right on underclings. Keep feet high through the gaston sequence to reach the rest jug before clipping the chain anchor.';
+        : 'Compression boulder problem with technical footwork. Spotters recommended for the top-out.';
 
     return Container(
       padding: const EdgeInsets.all(14),
@@ -777,7 +686,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'ROUTE BETA & SEQUENCE',
+            'BOULDER BETA & SEQUENCE',
             style: AppTextStyles.labelSmall.copyWith(
               color: AppColors.textSecondary,
               letterSpacing: 1.0,
@@ -793,8 +702,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             ),
           ),
           const SizedBox(height: 12),
-
-          // Required Gear Pill
+          // Bouldering Gear Notice
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -804,11 +712,11 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             ),
             child: Row(
               children: [
-                const Icon(Icons.fitness_center_rounded, size: 16, color: AppColors.primary),
+                const Icon(Icons.shield_outlined, size: 16, color: AppColors.primary),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'GEAR: ${route.length ?? '60m / 70m rope'}, ${route.boltsCount ?? 12} quickdraws, long runners for bolt 4.',
+                    'GEAR: Crash pads, chalk, and active spotter recommended.',
                     style: AppTextStyles.caption.copyWith(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.w600,
@@ -816,32 +724,6 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                   ),
                 ),
               ],
-            ),
-          ),
-          const SizedBox(height: 12),
-
-          // Video Beta button
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton.icon(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: AppColors.surfaceElevated,
-                    content: Text(
-                      'Opening community video beta clip...',
-                      style: AppTextStyles.bodySmall.copyWith(color: AppColors.textPrimary),
-                    ),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.play_circle_fill_rounded, size: 18, color: AppColors.primary),
-              label: const Text('WATCH VIDEO BETA (YOUTUBE / REEL)'),
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: AppColors.border),
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(borderRadius: AppRadius.borderSm),
-              ),
             ),
           ),
         ],

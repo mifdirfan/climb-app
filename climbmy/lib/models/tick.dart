@@ -5,6 +5,7 @@ class Tick {
   final String routeId;
   final String tickType; // 'flash' | 'send' | 'onsight' | 'dab' | 'repeat' | 'project'
   final String? notes;
+  final String? videoUrl; 
   final DateTime climbedAt;
   final DateTime? createdAt;
 
@@ -21,6 +22,7 @@ class Tick {
     required this.userId,
     required this.routeId,
     required this.tickType,
+    this.videoUrl,
     this.notes,
     required this.climbedAt,
     this.createdAt,

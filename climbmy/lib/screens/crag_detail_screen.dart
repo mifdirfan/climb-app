@@ -1020,14 +1020,8 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              'No routes found',
+              'No boulder problems found',
               style: AppTextStyles.titleSmall.copyWith(color: AppColors.textSecondary),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              'No climbing routes recorded for this crag yet.',
-              style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
-              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -1042,17 +1036,6 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
       itemBuilder: (context, index) {
         final route = routes[index];
         final subgrade = formatSubgrade(route.grade);
-
-        // Build route specs without mock rating/review data
-        final List<String> specParts = [];
-        specParts.add(route.routeType.toUpperCase());
-        if (route.length != null && route.length!.isNotEmpty) {
-          specParts.add(route.length!);
-        }
-        if (route.boltsCount != null && route.boltsCount! > 0) {
-          specParts.add('${route.boltsCount} bolts');
-        }
-        final specsText = specParts.join(' • ');
 
         return InkWell(
           key: Key('crag_route_card_${route.id}'),
@@ -1069,11 +1052,8 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
             ),
             child: Row(
               children: [
-                // Grade Badge
                 GradeChip(grade: route.grade),
                 const SizedBox(width: 12),
-
-                // Route Metadata
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1095,10 +1075,10 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      if (specsText.isNotEmpty) ...[
+                      if (route.firstAscent != null && route.firstAscent!.isNotEmpty) ...[
                         const SizedBox(height: 4),
                         Text(
-                          specsText,
+                          'FA: ${route.firstAscent}',
                           style: AppTextStyles.caption.copyWith(
                             color: AppColors.textSecondary,
                           ),
@@ -1107,10 +1087,7 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
                     ],
                   ),
                 ),
-
                 const SizedBox(width: 8),
-
-                // Trailing Chevron
                 const Icon(
                   Icons.chevron_right_rounded,
                   color: AppColors.textSecondary,

@@ -1,7 +1,7 @@
 class HazardAlert {
   final String id;
   final String cragId;
-  final String sectorId;
+  final String? sectorId;
   final String? routeId;
   final String? userId;
   final String hazardType;
@@ -14,7 +14,7 @@ class HazardAlert {
   const HazardAlert({
     required this.id,
     required this.cragId,
-    required this.sectorId,
+    this.sectorId,
     this.routeId,
     this.userId,
     required this.hazardType,
@@ -29,7 +29,7 @@ class HazardAlert {
     return HazardAlert(
       id: json['id'] as String,
       cragId: json['crag_id'] as String,
-      sectorId: json['sector_id'] as String,
+      sectorId: json['sector_id'] as String?,
       routeId: json['route_id'] as String?,
       userId: json['user_id'] as String?,
       sectorName: json['sectors']?['name'] as String?,

@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/theme/app_theme.dart';
-import '../../models/indoor_session.dart';
 import '../../providers/home_providers.dart';
 import '../../providers/post_form_providers.dart';
 import '../felt_grade_selector.dart';

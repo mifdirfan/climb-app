@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/router/app_router.dart';
 import '../../core/theme/app_theme.dart';
 import '../../providers/auth_providers.dart';
@@ -77,6 +77,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
 
     if (!_formKey.currentState!.validate()) {
+      debugPrint('--> [AUTH] Form validation failed. Check required fields.');
       return;
     }
 
@@ -84,10 +85,42 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final password = _passwordController.text;
 
     if (_isSignUp) {
+      // =======================================================================
+      // SIGN UP DEBUGGING
+      // =======================================================================
       final username = _usernameController.text.trim();
+      debugPrint('--> [AUTH:SIGNUP] -----------------------------------------');
+      debugPrint('--> [AUTH:SIGNUP] Starting registration...');
+      debugPrint('    Email: $email');
+      debugPrint('    Username: $username');
+      debugPrint('    Password length: ${password.length} chars');
+
       final success = await ref
           .read(authControllerProvider.notifier)
           .signUp(email, password, username);
+
+      final client = Supabase.instance.client;
+      final user = client.auth.currentUser;
+      final session = client.auth.currentSession;
+      final authState = ref.read(authControllerProvider);
+
+      if (success) {
+        debugPrint('--> [AUTH:SIGNUP] ✅ REGISTRATION SUCCESSFUL!');
+        debugPrint('    Auth UID: ${user?.id}');
+        debugPrint('    Registered Email: ${user?.email}');
+        debugPrint('    Metadata: ${user?.userMetadata}');
+        debugPrint('    Has active session: ${session != null}');
+
+        if (session == null) {
+          debugPrint('    ⚠️ WARNING: session is NULL. Email confirmation is active in Supabase.');
+          debugPrint('    The user must click the email confirmation link before logging in.');
+        } else {
+          debugPrint('    Auto-login confirmed. Access Token: ${session.accessToken.substring(0, 15)}...');
+        }
+      } else {
+        debugPrint('--> [AUTH:SIGNUP] 🛑 REGISTRATION FAILED');
+        debugPrint('    Error: ${authState.error}');
+      }
 
       if (success && mounted) {
         final theme = Theme.of(context);
@@ -108,9 +141,32 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         });
       }
     } else {
+      // =======================================================================
+      // SIGN IN DEBUGGING
+      // =======================================================================
+      debugPrint('--> [AUTH:LOGIN] ------------------------------------------');
+      debugPrint('--> [AUTH:LOGIN] Starting sign in...');
+      debugPrint('    Email: $email');
+
       final success = await ref
           .read(authControllerProvider.notifier)
           .signIn(email, password);
+
+      final client = Supabase.instance.client;
+      final user = client.auth.currentUser;
+      final session = client.auth.currentSession;
+      final authState = ref.read(authControllerProvider);
+
+      if (success) {
+        debugPrint('--> [AUTH:LOGIN] ✅ SIGN IN SUCCESSFUL!');
+        debugPrint('    Authenticated UID: ${user?.id}');
+        debugPrint('    User Email: ${user?.email}');
+        debugPrint('    Active Session: ${session != null}');
+        debugPrint('    Expires At: ${session?.expiresAt}');
+      } else {
+        debugPrint('--> [AUTH:LOGIN] 🛑 SIGN IN FAILED');
+        debugPrint('    Error: ${authState.error}');
+      }
 
       if (success && mounted) {
         final router = GoRouter.maybeOf(context);
@@ -290,35 +346,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     const SizedBox(height: 20),
 
-                    // Mode Switcher Segmented Tabs
-                    Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: colorScheme.surfaceContainerHighest,
-                        borderRadius: AppRadius.borderSm,
-                        border: Border.all(color: colorScheme.outlineVariant),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: _buildModeTab(
-                              title: 'SIGN IN',
-                              isSelected: !_isSignUp,
-                              theme: theme,
-                              onTap: () => _toggleMode(false),
-                            ),
-                          ),
-                          Expanded(
-                            child: _buildModeTab(
-                              title: 'SIGN UP',
-                              isSelected: _isSignUp,
-                              theme: theme,
-                              onTap: () => _toggleMode(true),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    
                     const SizedBox(height: 18),
 
                     // Error Alert Banner (if any)
@@ -698,38 +726,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       style: theme.textTheme.labelSmall?.copyWith(
         letterSpacing: 0.8,
         color: theme.colorScheme.onSurface,
-      ),
-    );
-  }
-
-  Widget _buildModeTab({
-    required String title,
-    required bool isSelected,
-    required ThemeData theme,
-    required VoidCallback onTap,
-  }) {
-    final activeBg = theme.colorScheme.primary;
-    final activeFg = theme.colorScheme.onPrimary;
-    final inactiveFg = theme.textTheme.bodyMedium?.color;
-
-    return InkWell(
-      onTap: onTap,
-      borderRadius: AppRadius.borderXs,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 9),
-        decoration: BoxDecoration(
-          color: isSelected ? activeBg : Colors.transparent,
-          borderRadius: AppRadius.borderXs,
-        ),
-        child: Center(
-          child: Text(
-            title,
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: isSelected ? activeFg : inactiveFg,
-              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-            ),
-          ),
-        ),
       ),
     );
   }
