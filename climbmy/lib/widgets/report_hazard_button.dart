@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../core/router/app_router.dart';
 import '../core/theme/app_theme.dart';
+import '../util/auth_guard.dart';
 
 /// A floating action button designed for reporting climbing hazards & safety alerts.
 ///
 /// Follows ClimbApp design system tokens with hazard styling, stadium pill radius
 /// ([AppRadius.pill]), and responsive theme integration. Tapping navigates to
 /// the dedicated 3-step Hazard Reporting flow.
-class ReportHazardButton extends StatelessWidget {
+class ReportHazardButton extends ConsumerWidget {
   final VoidCallback? onPressed;
   final bool extended;
   final String label;
@@ -25,7 +27,7 @@ class ReportHazardButton extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
@@ -36,7 +38,13 @@ class ReportHazardButton extends StatelessWidget {
       if (onPressed != null) {
         onPressed!();
       } else {
-        context.push(AppRoutes.reportHazardSelect);
+        // Automatically guards navigation behind authentication
+        requireAuth(
+          context,
+          ref,
+          reason: 'Sign in to report a crag hazard',
+          action: () => context.push(AppRoutes.reportHazardSelect),
+        );
       }
     }
 

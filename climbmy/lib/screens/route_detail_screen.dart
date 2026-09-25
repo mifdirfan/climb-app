@@ -9,6 +9,7 @@ import '../models/route.dart';
 import '../providers/home_providers.dart';
 import '../providers/post_form_providers.dart';
 import '../util/grade_utils.dart';
+import '../providers/hazard_report_providers.dart';
 
 /// Screen displaying climbing Route Details matching Figma frame 5333:9.
 /// Implements technical badges with conditional checks, normal Topo image,
@@ -199,7 +200,6 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     // Resolve route model
     final route = widget.initialRoute ??
         routeAsync.value ??
-        getFallbackRouteById(widget.routeId) ??
         RouteItem(
           id: widget.routeId,
           sectorId: 'sector-damai',

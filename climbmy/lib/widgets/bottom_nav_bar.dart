@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/theme/app_theme.dart';
+import '../util/auth_guard.dart';
 
 /// Navigation item model for [FloatingBottomNavBar].
 class FloatingNavItem {
@@ -15,23 +17,13 @@ class FloatingNavItem {
   });
 }
 
-/// A compact, floating bottom navigation bar inspired by Instagram's
-/// minimalist aesthetic.
-///
-/// Features:
-/// - Floating pill container with rounded borders and elevation.
-/// - Spacing from screen edges and bottom safe area.
-/// - Instagram-style monochrome icons: active item is bold/filled in white without
-///   accent colors, and inactive item is outlined and muted.
-/// - Compact height and icon sizing for a clean, non-intrusive look.
-class FloatingBottomNavBar extends StatelessWidget {
+class FloatingBottomNavBar extends ConsumerWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
   final List<FloatingNavItem> items;
   final Color backgroundColor;
   final double elevation;
 
-  /// Default items matching ClimbApp's main navigation destinations.
   static const List<FloatingNavItem> defaultItems = [
     FloatingNavItem(
       icon: Icons.explore_outlined,
@@ -61,11 +53,27 @@ class FloatingBottomNavBar extends StatelessWidget {
     required this.onTap,
     this.items = defaultItems,
     this.backgroundColor = Colors.transparent,
-    this.elevation = 0
+    this.elevation = 0,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    void handleTap(int index) {
+      final item = items[index];
+
+      // Check if the selected tab requires authentication
+      if (item.label == 'Ticks') {
+        requireAuth(
+          context,
+          ref,
+          reason: 'Sign in to log indoor sessions and outdoor sends',
+          action: () => onTap(index), // Keeps tab index and router synchronized
+        );
+      } else {
+        onTap(index);
+      }
+    }
+
     return SafeArea(
       top: false,
       child: Padding(
@@ -102,7 +110,7 @@ class FloatingBottomNavBar extends StatelessWidget {
                     child: Tooltip(
                       message: item.label,
                       child: InkWell(
-                        onTap: () => onTap(index),
+                        onTap: () => handleTap(index),
                         splashColor: Colors.transparent,
                         highlightColor: Colors.white.withValues(alpha: 0.05),
                         borderRadius: BorderRadius.circular(24),
@@ -132,4 +140,3 @@ class FloatingBottomNavBar extends StatelessWidget {
     );
   }
 }
-

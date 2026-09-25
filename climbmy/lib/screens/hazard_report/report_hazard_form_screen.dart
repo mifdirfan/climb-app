@@ -6,21 +6,19 @@ import '../../core/theme/app_theme.dart';
 import '../../models/crag.dart';
 import '../../providers/hazard_report_providers.dart';
 import '../../providers/home_providers.dart';
+import '../../util/auth_guard.dart';
 import '../../widgets/form/crag_picker_bottom_sheet.dart';
 
-/// Screen 2: Report Hazard Form (Figma Node 5315-275).
-///
-/// Multi-field form for logging climbing hazard details including outdoor crag location,
-/// route in crag dropdown, severity, description, and optional photo attachment.
-/// Hazard reports are strictly restricted to outdoor climbing crags.
 class ReportHazardFormScreen extends ConsumerStatefulWidget {
   const ReportHazardFormScreen({super.key});
 
   @override
-  ConsumerState<ReportHazardFormScreen> createState() => _ReportHazardFormScreenState();
+  ConsumerState<ReportHazardFormScreen> createState() =>
+      _ReportHazardFormScreenState();
 }
 
-class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen> {
+class _ReportHazardFormScreenState
+    extends ConsumerState<ReportHazardFormScreen> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _sectorController;
   late final TextEditingController _routeController;
@@ -44,55 +42,40 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
   }
 
   Future<void> _handleSubmit() async {
-    final formNotifier = ref.read(hazardReportFormProvider.notifier);
-    formNotifier.setSectorOrLocation(_sectorController.text.trim());
-    formNotifier.setRouteName(_routeController.text.trim());
-    formNotifier.setDescription(_descriptionController.text.trim());
+    // 1. Ensure user is authenticated before writing to the database
+    requireAuth(
+      context,
+      ref,
+      reason: 'Please sign in to submit a hazard report.',
+      action: () async {
+        final formState = ref.read(hazardReportFormProvider);
 
-    final formState = ref.read(hazardReportFormProvider);
-    if (formState.selectedCrag == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Theme.of(context).colorScheme.error,
-          content: Text(
-            'Please select an outdoor climbing crag first.',
-            style: TextStyle(color: Theme.of(context).colorScheme.onError),
-          ),
-        ),
-      );
-      return;
-    }
+        if (formState.selectedCrag == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Theme.of(context).colorScheme.error,
+              content: Text(
+                'Please select an outdoor climbing crag first.',
+                style: TextStyle(color: Theme.of(context).colorScheme.onError),
+              ),
+            ),
+          );
+          return;
+        }
 
-    if (!formState.selectedCrag!.isOutdoor) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Theme.of(context).colorScheme.error,
-          content: Text(
-            'Hazard reports can only be submitted for outdoor climbing crags.',
-            style: TextStyle(color: Theme.of(context).colorScheme.onError),
-          ),
-        ),
-      );
-      return;
-    }
+        if (!_formKey.currentState!.validate()) return;
 
-    if (_descriptionController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Theme.of(context).colorScheme.error,
-          content: Text(
-            'Please provide a brief description of the hazard.',
-            style: TextStyle(color: Theme.of(context).colorScheme.onError),
-          ),
-        ),
-      );
-      return;
-    }
+        final formNotifier = ref.read(hazardReportFormProvider.notifier);
+        formNotifier.setSectorOrLocation(_sectorController.text.trim());
+        formNotifier.setRouteName(_routeController.text.trim());
+        formNotifier.setDescription(_descriptionController.text.trim());
 
-    final success = await formNotifier.submitReport();
-    if (success && mounted) {
-      context.pushReplacement(AppRoutes.reportHazardConfirmation);
-    }
+        final success = await formNotifier.submitReport();
+        if (success && mounted) {
+          context.pushReplacement(AppRoutes.reportHazardConfirmation);
+        }
+      },
+    );
   }
 
   @override
@@ -198,7 +181,8 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
                           }
                         },
                         style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 6),
                           minimumSize: Size.zero,
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
@@ -215,7 +199,7 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
                 ),
                 const SizedBox(height: 20),
 
-                // 2. Outdoor Crag Picker (Strictly outdoor crags only)
+                // 2. Outdoor Crag Picker
                 Text(
                   'OUTDOOR CLIMBING CRAG *',
                   style: AppTextStyles.labelSmall.copyWith(
@@ -227,7 +211,8 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
                 InkWell(
                   onTap: () {
                     final allVenues = cragsAsync.value ?? [];
-                    final outdoorVenues = allVenues.where((c) => c.isOutdoor).toList();
+                    final outdoorVenues =
+                        allVenues.where((c) => c.isOutdoor).toList();
 
                     showVenuePickerSheet(
                       context: context,
@@ -236,19 +221,27 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
                       outdoorOnly: true,
                       selectedVenueId: formState.selectedCrag?.id,
                       onSelected: (crag) {
-                        formNotifier.setSelectedCrag(crag);
+                        if (crag.id != formState.selectedCrag?.id) {
+                          formNotifier.setSelectedCrag(crag);
+                          formNotifier.setRouteName('');
+                          formNotifier.setSectorOrLocation('');
+                          _routeController.clear();
+                          _sectorController.clear();
+                        }
                       },
                       onRouteSelected: (route) {
                         if (route != null) {
                           formNotifier.setRouteName(route.name);
                           _routeController.text = route.name;
-                          if (route.sectorName != null && route.sectorName!.isNotEmpty) {
-                            formNotifier.setSectorOrLocation(route.sectorName!);
+                          if (route.sectorName != null &&
+                              route.sectorName!.isNotEmpty) {
+                            formNotifier
+                                .setSectorOrLocation(route.sectorName!);
                             _sectorController.text = route.sectorName!;
                           }
                         } else {
                           formNotifier.setRouteName('');
-                          _routeController.text = '';
+                          _routeController.clear();
                         }
                       },
                     );
@@ -256,7 +249,8 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
                   borderRadius: AppRadius.borderSm,
                   child: Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 14),
                     decoration: BoxDecoration(
                       color: AppColors.surfaceInput,
                       borderRadius: AppRadius.borderSm,
@@ -279,7 +273,8 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            formState.selectedCrag?.name ?? 'Tap to select outdoor crag',
+                            formState.selectedCrag?.name ??
+                                'Tap to select outdoor crag',
                             style: AppTextStyles.bodyMedium.copyWith(
                               color: formState.selectedCrag != null
                                   ? colorScheme.onSurface
@@ -302,7 +297,7 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
 
                 // 3. Route in Crag Dropdown
                 Text(
-                  'ROUTE IN CRAG',
+                  'ROUTE IN CRAG (OPTIONAL)',
                   style: AppTextStyles.labelSmall.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     letterSpacing: 1.0,
@@ -312,9 +307,11 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
                 if (formState.selectedCrag == null)
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 14),
                     decoration: BoxDecoration(
-                      color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                      color: colorScheme.surfaceContainerHighest
+                          .withValues(alpha: 0.5),
                       borderRadius: AppRadius.borderSm,
                       border: Border.all(
                         color: colorScheme.outlineVariant,
@@ -344,6 +341,25 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
                   _buildCragRouteDropdown(context, formState.selectedCrag!),
                 const SizedBox(height: 18),
 
+                // 4. Sector / Specific Location Field
+                Text(
+                  'SECTOR OR WALL AREA (OPTIONAL)',
+                  style: AppTextStyles.labelSmall.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    letterSpacing: 1.0,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: _sectorController,
+                  style: AppTextStyles.bodyMedium
+                      .copyWith(color: colorScheme.onSurface),
+                  decoration: const InputDecoration(
+                    hintText: 'e.g. Damai Wall, Cave Entrance, Approach Trail',
+                    prefixIcon: Icon(Icons.place_outlined, size: 20),
+                  ),
+                ),
+                const SizedBox(height: 18),
 
                 // 5. Severity Level Selector
                 Text(
@@ -360,7 +376,7 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
                   children: [
                     _buildSeverityChip(context, 'low', colorScheme),
                     _buildSeverityChip(context, 'medium', colorScheme),
-                    _buildSeverityChip(context, 'high', colorScheme)
+                    _buildSeverityChip(context, 'high', colorScheme),
                   ],
                 ),
                 const SizedBox(height: 18),
@@ -374,12 +390,18 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
                   ),
                 ),
                 const SizedBox(height: 8),
-                TextField(
+                TextFormField(
                   key: const Key('hazard_description_field'),
                   controller: _descriptionController,
-                  onChanged: formNotifier.setDescription,
                   maxLines: 4,
-                  style: AppTextStyles.bodyMedium.copyWith(color: colorScheme.onSurface),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Please provide a brief description of the hazard.';
+                    }
+                    return null;
+                  },
+                  style: AppTextStyles.bodyMedium
+                      .copyWith(color: colorScheme.onSurface),
                   decoration: const InputDecoration(
                     hintText:
                         'Describe what you saw, specific location on pitch/wall, and guidance for climbers...',
@@ -387,7 +409,7 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
                 ),
                 const SizedBox(height: 18),
 
-                // 7. Photo / Attachment Placeholder
+                // 7. Photo Attachment Placeholder
                 Text(
                   'PHOTO ATTACHMENT (OPTIONAL)',
                   style: AppTextStyles.labelSmall.copyWith(
@@ -408,7 +430,8 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
                   borderRadius: AppRadius.borderSm,
                   child: Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 16),
                     decoration: BoxDecoration(
                       color: colorScheme.surfaceContainerHighest,
                       borderRadius: AppRadius.borderSm,
@@ -432,20 +455,12 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        const SizedBox(height: 2),
-                        Text(
-                          'Helps climbers identify the exact issue visually',
-                          style: AppTextStyles.caption.copyWith(
-                            color: colorScheme.onSurfaceVariant,
-                          ),
-                        ),
                       ],
                     ),
                   ),
                 ),
                 const SizedBox(height: 28),
 
-                // Error Message if any
                 if (formState.errorMessage != null)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16),
@@ -475,7 +490,8 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
                             height: 22,
                             child: CircularProgressIndicator(
                               strokeWidth: 2.2,
-                              valueColor: AlwaysStoppedAnimation(colorScheme.onPrimary),
+                              valueColor:
+                                  AlwaysStoppedAnimation(colorScheme.onPrimary),
                             ),
                           )
                         : Text(
@@ -501,10 +517,11 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
     final colorScheme = Theme.of(context).colorScheme;
     final formState = ref.watch(hazardReportFormProvider);
     final formNotifier = ref.read(hazardReportFormProvider.notifier);
-    final routesAsync = ref.watch(cragRoutesProvider(crag.id));
-    final routes = routesAsync.value ?? getFallbackRoutesForCrag(crag.id, crag.name);
+    final routes = ref.watch(cragRoutesProvider(crag.id)).value ?? [];
 
     final isKnownRoute = routes.any((r) => r.name == formState.routeName);
+    final isCustom = formState.routeName.isNotEmpty && !isKnownRoute;
+
     final selectedDropdownValue = formState.routeName.isEmpty
         ? null
         : (isKnownRoute ? formState.routeName : '__custom__');
@@ -547,26 +564,20 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
             ...routes.map((route) {
               return DropdownMenuItem<String?>(
                 value: route.name,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '${route.name} (${route.grade}${route.sectorName != null ? " • ${route.sectorName}" : ""})',
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: colorScheme.onSurface,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  '${route.name} (${route.grade})',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: colorScheme.onSurface,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               );
             }),
             DropdownMenuItem<String?>(
               value: '__custom__',
               child: Text(
-                formState.routeName.isNotEmpty && !isKnownRoute
-                    ? 'Custom Route: ${formState.routeName}'
+                isCustom
+                    ? 'Custom: ${formState.routeName} (Tap to change)'
                     : '+ Enter custom route name...',
                 style: AppTextStyles.bodySmall.copyWith(
                   color: colorScheme.primary,
@@ -578,20 +589,25 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
           onChanged: (val) async {
             if (val == null) {
               formNotifier.setRouteName('');
-              _routeController.text = '';
+              _routeController.clear();
             } else if (val == '__custom__') {
               final custom = await _showCustomRouteDialog(context);
               if (custom != null && custom.isNotEmpty) {
                 formNotifier.setRouteName(custom);
                 _routeController.text = custom;
+              } else if (formState.routeName.isEmpty) {
+                // If cancelled and was previously empty, remain null
+                formNotifier.setRouteName('');
+                _routeController.clear();
               }
             } else {
               formNotifier.setRouteName(val);
               _routeController.text = val;
-              final matchedRoute = routes.firstWhere((r) => r.name == val);
-              if (matchedRoute.sectorName != null && matchedRoute.sectorName!.isNotEmpty) {
-                formNotifier.setSectorOrLocation(matchedRoute.sectorName!);
-                _sectorController.text = matchedRoute.sectorName!;
+              final matched = routes.firstWhere((r) => r.name == val);
+              if (matched.sectorName != null &&
+                  matched.sectorName!.isNotEmpty) {
+                formNotifier.setSectorOrLocation(matched.sectorName!);
+                _sectorController.text = matched.sectorName!;
               }
             }
           },
@@ -620,7 +636,8 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
               child: const Text('CANCEL'),
             ),
             ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(controller.text.trim()),
+              onPressed: () =>
+                  Navigator.of(context).pop(controller.text.trim()),
               child: const Text('SET ROUTE'),
             ),
           ],
@@ -638,7 +655,7 @@ class _ReportHazardFormScreenState extends ConsumerState<ReportHazardFormScreen>
     final isSelected = selectedSeverity == key;
 
     return ChoiceChip(
-      label: Text(key),
+      label: Text(key.toUpperCase()),
       selected: isSelected,
       selectedColor: colorScheme.primary,
       backgroundColor: AppColors.surfaceInput,

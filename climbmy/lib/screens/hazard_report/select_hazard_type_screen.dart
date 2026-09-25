@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/router/app_router.dart';
 import '../../core/theme/app_theme.dart';
+import '../../util/hazard_type.dart'; 
 import '../../providers/hazard_report_providers.dart';
 
 /// Screen 1: Select Hazard Type (Figma Node 5315-425).
@@ -106,7 +107,7 @@ class SelectHazardTypeScreen extends ConsumerWidget {
               const SizedBox(height: 24),
 
               // Hazard Category Cards List
-              ...kHazardTypeOptions.map((hazard) {
+              ...HazardType.values.map((hazard) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 14),
                   child: InkWell(

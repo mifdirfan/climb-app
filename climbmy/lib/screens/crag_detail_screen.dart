@@ -10,6 +10,7 @@ import '../providers/home_providers.dart';
 import '../util/grade_utils.dart';
 import '../widgets/grade_chip.dart';
 import '../widgets/hazard_alert_banner.dart';
+import '../providers/hazard_report_providers.dart';
 
 /// Available sorting modes for the route directory in CragDetailScreen.
 enum CragRouteSort {

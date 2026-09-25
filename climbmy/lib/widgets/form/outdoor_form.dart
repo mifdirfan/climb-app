@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/theme/app_theme.dart';
 import '../../providers/home_providers.dart';
 import '../../providers/post_form_providers.dart';
@@ -118,66 +119,64 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
     );
   }
 
-  void _handleSubmit() {
-    final outdoorState = ref.read(outdoorPostFormProvider);
-    final outdoorNotifier = ref.read(outdoorPostFormProvider.notifier);
+  Future<void> _handleSubmit() async {
+  final outdoorState = ref.read(outdoorPostFormProvider);
+  final outdoorNotifier = ref.read(outdoorPostFormProvider.notifier);
+  final client = Supabase.instance.client;
+  final user = client.auth.currentUser;
 
-    if (outdoorState.selectedCrag == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: AppColors.hazardContainer,
-          content: Text(
-            'Please select a climbing crag or location first.',
-            style: TextStyle(color: AppColors.hazardText),
-          ),
-        ),
-      );
-      return;
-    }
-
-    outdoorNotifier.setSubmitting(true);
-
-    final sendData = {
-      'type': 'outdoor',
-      'crag_id': outdoorState.selectedCrag!.id,
-      'crag_name': outdoorState.selectedCrag!.name,
-      'route_id': outdoorState.selectedRouteId,
-      'route_name': _routeNameController.text.trim(),
-      'grade': outdoorState.grade,
-      'route_type': outdoorState.routeType,
-      'ascent_style': outdoorState.ascentStyle,
-      'date': outdoorState.date.toIso8601String(),
-      'video_url': _videoUrlController.text.trim(),
-      'notes': _notesController.text.trim(),
-    };
-
-    widget.onPostSend?.call(sendData);
-
-    Future.delayed(const Duration(milliseconds: 400), () {
-      if (!mounted) return;
-      outdoorNotifier.setSubmitting(false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: AppColors.surfaceElevated,
-          content: Row(
-            children: [
-              const Icon(Icons.check_circle_rounded, color: AppColors.primary, size: 20),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  'Send logged for ${outdoorState.selectedCrag!.name}! Keep crushing 🧗',
-                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.textPrimary),
-                ),
-              ),
-            ],
-          ),
-          duration: const Duration(seconds: 3),
-        ),
-      );
-
-      widget.onSubmitted?.call();
-    });
+  if (user == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please sign in to log outdoor sends.')),
+    );
+    return;
   }
+
+  if (outdoorState.selectedRouteId == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please select a verified route from the database.')),
+    );
+    return;
+  }
+
+  outdoorNotifier.setSubmitting(true);
+
+  try {
+    // Convert UI ascent style to valid check constraint enum
+    String tickType = outdoorState.ascentStyle.toLowerCase();
+    if (tickType == 'redpoint') tickType = 'send';
+
+    await client.from('ticks').insert({
+      'user_id': user.id,
+      'route_id': outdoorState.selectedRouteId,
+      'tick_type': tickType,
+      'video_url': _videoUrlController.text.trim().isNotEmpty 
+          ? _videoUrlController.text.trim() 
+          : null,
+      'notes': _notesController.text.trim(),
+      'climbed_at': outdoorState.date.toIso8601String().split('T').first,
+    });
+
+    if (!mounted) return;
+    outdoorNotifier.setSubmitting(false);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Send logged for ${outdoorState.routeName}!'),
+        backgroundColor: AppColors.surfaceElevated,
+      ),
+    );
+    widget.onSubmitted?.call();
+  } catch (e) {
+    if (!mounted) return;
+    outdoorNotifier.setSubmitting(false);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Failed to log send: $e'),
+        backgroundColor: Theme.of(context).colorScheme.error,
+      ),
+    );
+  }
+}
 
   @override
   Widget build(BuildContext context) {

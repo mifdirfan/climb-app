@@ -155,7 +155,10 @@ class _MapScreenState extends ConsumerState<MapScreen>
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final venuesAsync = ref.watch(mapVenuesProvider);
-    final allVenues = venuesAsync.asData?.value ?? defaultMapVenues;
+    final List<Crag> allVenues = venuesAsync.maybeWhen(
+      data: (venues) => venues,
+      orElse: () => <Crag>[],
+    );
 
     final filteredVenues = allVenues.where((venue) {
       switch (_selectedFilter) {

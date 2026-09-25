@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/theme/app_theme.dart';
 import '../../models/indoor_session.dart';
 import '../../providers/home_providers.dart';
@@ -79,72 +80,60 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
     }
   }
 
-  void _handleSubmit() {
-    final indoorState = ref.read(indoorSessionFormProvider);
-    final indoorNotifier = ref.read(indoorSessionFormProvider.notifier);
+  Future<void> _handleSubmit() async {
+  final indoorState = ref.read(indoorSessionFormProvider);
+  final indoorNotifier = ref.read(indoorSessionFormProvider.notifier);
+  final client = Supabase.instance.client;
+  final user = client.auth.currentUser;
 
-    if (indoorState.selectedGym == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: AppColors.hazardContainer,
-          content: Text(
-            'Please select a climbing gym first.',
-            style: TextStyle(color: AppColors.hazardText),
-          ),
-        ),
-      );
-      return;
-    }
-
-    indoorNotifier.setSubmitting(true);
-
-    final session = IndoorSession(
-      id: 'session-${DateTime.now().millisecondsSinceEpoch}',
-      userId: 'current-user',
-      gymId: indoorState.selectedGym!.id,
-      sessionDate: indoorState.sessionDate,
-      durationMinutes: indoorState.durationMinutes,
-      feltGrade: indoorState.feltGrade,
-      rating: indoorState.rating,
-      notes: _notesController.text.trim(),
-      // gradeTallies: indoorState.gradeTallies,
-      gymName: indoorState.selectedGym!.name,
+  if (user == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please sign in to log gym sessions.')),
     );
-
-    final sessionData = {
-      'type': 'indoor',
-      ...session.toJson(),
-      'gym_name': indoorState.selectedGym!.name,
-      'total_sends': indoorState.totalSends,
-    };
-
-    widget.onPostSend?.call(sessionData);
-
-    Future.delayed(const Duration(milliseconds: 400), () {
-      if (!mounted) return;
-      indoorNotifier.setSubmitting(false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: AppColors.surfaceElevated,
-          content: Row(
-            children: [
-              const Icon(Icons.fitness_center_rounded, color: AppColors.primary, size: 20),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  'Indoor session at ${indoorState.selectedGym!.name} logged! (${indoorState.totalSends} sends)',
-                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.textPrimary),
-                ),
-              ),
-            ],
-          ),
-          duration: const Duration(seconds: 3),
-        ),
-      );
-
-      widget.onSubmitted?.call();
-    });
+    return;
   }
+
+  if (indoorState.selectedGym == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Please select a climbing gym first.')),
+    );
+    return;
+  }
+
+  indoorNotifier.setSubmitting(true);
+
+  try {
+    await client.from('indoor_sessions').insert({
+      'user_id': user.id,
+      'gym_id': indoorState.selectedGym!.id,
+      'session_date': indoorState.sessionDate.toIso8601String().split('T').first,
+      'duration_minutes': indoorState.durationMinutes,
+      'felt_grade': indoorState.feltGrade,
+      'rating': indoorState.rating,
+      'grade_tallies': indoorState.gradeTallies,
+      'notes': _notesController.text.trim(),
+    });
+
+    if (!mounted) return;
+    indoorNotifier.setSubmitting(false);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Indoor session at ${indoorState.selectedGym!.name} logged!'),
+        backgroundColor: AppColors.surfaceElevated,
+      ),
+    );
+    widget.onSubmitted?.call();
+  } catch (e) {
+    if (!mounted) return;
+    indoorNotifier.setSubmitting(false);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Failed to save session: $e'),
+        backgroundColor: Theme.of(context).colorScheme.error,
+      ),
+    );
+  }
+}
 
   @override
   Widget build(BuildContext context) {

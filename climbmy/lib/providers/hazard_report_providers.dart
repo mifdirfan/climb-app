@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/crag.dart';
 import '../models/hazard_alert.dart';
+import '../util/hazard_type.dart';
 import 'home_providers.dart';
 
 /// Information definition for supported hazard types.
@@ -21,37 +22,7 @@ class HazardTypeOption {
   });
 }
 
-/// Catalog of selectable hazard categories matching climbing safety domains.
-const List<HazardTypeOption> kHazardTypeOptions = [
-  HazardTypeOption(
-    key: 'loose_rock',
-    title: 'Loose Rock',
-    subtitle: 'Chossy rock, detached flakes, or active rockfall zone',
-    iconEmoji: '🪨',
-    tag: 'HIGH RISK',
-  ),
-  HazardTypeOption(
-    key: 'wasps',
-    title: 'Wasps & Wildlife',
-    subtitle: 'Active wasp/bee nests, hornet swarms, or aggressive wildlife',
-    iconEmoji: '🐝',
-    tag: 'ACTIVE SIGHTING',
-  ),
-  HazardTypeOption(
-    key: 'bad_bolt',
-    title: 'Bad Bolt / Anchor',
-    subtitle: 'Loose/spinning hanger, rusted bolt, or worn anchor chains',
-    iconEmoji: '🔩',
-    tag: 'EQUIPMENT',
-  ),
-  HazardTypeOption(
-    key: 'other',
-    title: 'Other Danger',
-    subtitle: 'Trail erosion, flash flood risk, fallen tree, or access issues',
-    iconEmoji: '⚠️',
-    tag: 'GENERAL',
-  ),
-];
+
 
 /// State model for the Hazard Reporting flow.
 class HazardReportFormState {
@@ -79,12 +50,7 @@ class HazardReportFormState {
     this.submittedAlert,
   });
 
-  HazardTypeOption get currentHazardOption {
-    return kHazardTypeOptions.firstWhere(
-      (opt) => opt.key == hazardType,
-      orElse: () => kHazardTypeOptions.last,
-    );
-  }
+  HazardType get currentHazardOption => HazardType.fromDb(hazardType);
 
   HazardReportFormState copyWith({
     String? hazardType,
@@ -153,70 +119,46 @@ class HazardReportFormNotifier extends Notifier<HazardReportFormState> {
   /// Submits the hazard alert to Supabase or fallback local store,
   /// and updates Riverpod alert providers.
   Future<bool> submitReport() async {
-    if (state.selectedCrag != null && !state.selectedCrag!.isOutdoor) {
-      state = state.copyWith(
-        errorMessage: 'Hazard alerts can only be reported for outdoor climbing crags.',
-      );
-      return false;
-    }
-
-    if (state.description.trim().isEmpty) {
-      state = state.copyWith(errorMessage: 'Please enter a description of the hazard.');
-      return false;
-    }
-
-    state = state.copyWith(isSubmitting: true, clearError: true);
-
-    try {
-      final cragName = state.selectedCrag?.name ?? 'Outdoor Crag';
-      final sectorDisplay = state.sectorOrLocation.isNotEmpty
-          ? state.sectorOrLocation
-          : 'General Area';
-      final routeDisplay = state.routeName.isNotEmpty ? state.routeName : null;
-
-      // Construct the alert object
-      final alertId = 'hazard-${DateTime.now().millisecondsSinceEpoch}';
-      final newAlert = HazardAlert(
-        id: alertId,
-        sectorId: state.selectedCrag?.id ?? 'general-sector',
-        sectorName: '$cragName - $sectorDisplay',
-        routeName: routeDisplay,
-        hazardType: state.hazardType,
-        description: state.description.trim(),
-        status: 'active',
-        createdAt: DateTime.now(),
-      );
-
-      // Attempt Supabase insert if client is initialized
-      try {
-        final client = Supabase.instance.client;
-        await client.from('hazard_alerts').insert({
-          'sector_id': state.selectedCrag?.id ?? '00000000-0000-0000-0000-000000000000',
-          'hazard_type': state.hazardType,
-          'description': '${state.description.trim()} [Location: $cragName / $sectorDisplay${routeDisplay != null ? " / $routeDisplay" : ""}]',
-          'status': 'active',
-        });
-      } catch (_) {
-        // Fallback for offline mode, testing environments, or unseeded tables
-      }
-
-      // Invalidate the alerts provider so the HomeScreen updates immediately
-      ref.invalidate(hazardAlertsProvider);
-
-      state = state.copyWith(
-        isSubmitting: false,
-        submittedAlert: newAlert,
-      );
-      return true;
-    } catch (e) {
-      state = state.copyWith(
-        isSubmitting: false,
-        errorMessage: 'Failed to submit report. Please try again.',
-      );
-      return false;
-    }
+  if (state.selectedCrag == null || !state.selectedCrag!.isOutdoor) {
+    state = state.copyWith(
+      errorMessage: 'Hazard alerts can only be reported for outdoor climbing crags.',
+    );
+    return false;
+  }
+  if (state.description.trim().isEmpty) {
+    state = state.copyWith(errorMessage: 'Please enter a description of the hazard.');
+    return false;
   }
 
+  state = state.copyWith(isSubmitting: true, clearError: true);
+
+  try {
+    final client = Supabase.instance.client;
+    final currentUserId = client.auth.currentUser?.id;
+
+    await client.from('hazard_alerts').insert({
+      'crag_id': state.selectedCrag!.id,
+      'sector_id': null, // Set if a sector was specifically selected
+      'route_id': null,  // Set if selected from known routes
+      'user_id': currentUserId,
+      'hazard_type': state.hazardType,
+      'description': state.routeName.isNotEmpty 
+          ? '[Route: ${state.routeName}] ${state.description.trim()}'
+          : state.description.trim(),
+      'status': 'active',
+    });
+
+    ref.invalidate(hazardAlertsProvider);
+    state = state.copyWith(isSubmitting: false);
+    return true;
+  } catch (e) {
+    state = state.copyWith(
+      isSubmitting: false,
+      errorMessage: 'Failed to submit report: ${e.toString()}',
+    );
+    return false;
+  }
+}
   void reset() {
     state = const HazardReportFormState();
   }
@@ -227,4 +169,49 @@ final hazardReportFormProvider =
     NotifierProvider<HazardReportFormNotifier, HazardReportFormState>(
   HazardReportFormNotifier.new,
 );
+
+// Riverpod FutureProvider for fetching hazard alerts for a specific crag
+final cragHazardsProvider =
+    FutureProvider.family<List<HazardAlert>, String>((ref, cragId) async {
+  try {
+    final response = await Supabase.instance.client
+        .from('hazard_alerts')  
+      .select('*, sectors(name), routes(name)')
+        .eq('sector_id', cragId)
+        .eq('status', 'active')
+        .order('created_at', ascending: false);
+    final list = (response as List<dynamic>)
+        .map((item) => HazardAlert.fromJson(item as Map<String, dynamic>))
+        .toList();
+        return list;
+  } catch (e) {
+    // Fallback gracefully if table is empty or error occurs
+    return [];
+  }
+});
+
+
+
+// Riverpod FutureProvider for fetching hazard alerts for a specific route
+final routeHazardsProvider = 
+    FutureProvider.family<List<HazardAlert>, String>((ref, routeId) async {
+  try {
+    final response = await Supabase.instance.client
+        .from('hazard_alerts')
+        .select('*, sectors(name), routes(name)')
+        .eq('route_id', routeId)
+        .eq('status', 'active')
+        .order('created_at', ascending: false);
+
+    final list = (response as List<dynamic>)
+        .map((item) => HazardAlert.fromJson(item as Map<String, dynamic>))
+        .toList();
+
+    return list;
+  } catch (e) {
+    // Fallback gracefully if table is empty or error occurs
+    return [];
+  }
+});
+  
 

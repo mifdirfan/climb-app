@@ -7,8 +7,7 @@ import 'package:climbmy/core/router/app_router.dart';
 
 // Android Emulator maps host localhost (127.0.0.1) to 10.0.2.2.
 // Use 127.0.0.1 for Windows/Desktop/iOS Simulator.
-const supabaseUrl = 'https://npbpyzoiphzfcjxfuniz.supabase.co';
-const supabaseAnonKey = 'sb_publishable_8YafDV_-3X4fYY2EEAiL5Q_JuH7Ji41';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +17,9 @@ Future<void> main() async {
   } catch (e) {
     debugPrint('Notice: .env file not loaded: $e');
   }
+
+  final supabaseUrl = dotenv.env['SUPABASE_URL'] ?? '';
+final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'] ?? '';
 
   await Supabase.initialize(
     url: supabaseUrl,

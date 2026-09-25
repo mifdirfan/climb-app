@@ -323,7 +323,10 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
 
   Widget _buildRouteDropdownSection(ThemeData theme, ColorScheme colorScheme) {
     final routesAsync = ref.watch(cragRoutesProvider(_selectedCrag!.id));
-    final routes = routesAsync.value ?? getFallbackRoutesForCrag(_selectedCrag!.id, _selectedCrag!.name);
+    final routes = routesAsync.maybeWhen(
+      data: (routes) => routes,
+      orElse: () => [],
+    );
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),

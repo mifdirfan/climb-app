@@ -13,6 +13,7 @@ import '../../models/crag.dart';
 import '../../models/route.dart';
 import '../../screens/crag_detail_screen.dart';
 import '../../screens/route_detail_screen.dart';
+import '../../screens/auth/login_screen.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import '../../widgets/report_hazard_button.dart';
 
@@ -32,6 +33,7 @@ class AppRoutes {
   static const String savedCrags = '/profile/saved-crags';
   static const String cragDetail = '/crag/:id';
   static const String routeDetail = '/route/:id';
+  static const String login = '/login';
 
   static String cragDetailPath(String id) => '/crag/$id';
   static String routeDetailPath(String id) => '/route/$id';
@@ -171,6 +173,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           final routeId = state.pathParameters['id'] ?? '';
           final initialRoute = state.extra as RouteItem?;
           return RouteDetailScreen(routeId: routeId, initialRoute: initialRoute);
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRoutes.login,
+        name: 'login',
+        builder: (context, state) {
+          final isSignUp = state.uri.queryParameters['mode'] == 'signup';
+          return LoginScreen(initialIsSignUp: isSignUp);
         },
       ),
     ],
