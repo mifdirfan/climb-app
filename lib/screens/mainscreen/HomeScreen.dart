@@ -138,27 +138,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 // 2. Horizontal State Filter Chips
                 const FilterChipBar(),
 
-                // 3. Active Hazard Alert Banner (Riverpod bound)
-                alertsAsync.when(
-                  data: (alerts) {
-                    if (alerts.isEmpty) {
-                      return const SizedBox.shrink();
-                    }
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: HazardAlertBanner(
-                        alert: alerts.first,
-                        onTap: () {
-                          if (alerts.first.routeId != null && alerts.first.routeId!.isNotEmpty) {
-                            context.push(AppRoutes.routeDetailPath(alerts.first.routeId!));
-                          }
-                        },
-                      ),
-                    );
-                  },
-                  loading: () => const SizedBox.shrink(),
-                  error: (_, _) => const SizedBox.shrink(),
-                ),
+                // 3. Active Hazard Alert Banner (Riverpod bound) implementation on hold
+                // alertsAsync.when(
+                //   data: (alerts) {
+                //     if (alerts.isEmpty) {
+                //       return const SizedBox.shrink();
+                //     }
+                //     return Padding(
+                //       padding: const EdgeInsets.only(top: 12),
+                //       child: HazardAlertBanner(
+                //         alert: alerts.first,
+                //         onTap: () {
+                //           if (alerts.first.routeId != null && alerts.first.routeId!.isNotEmpty) {
+                //             context.push(AppRoutes.routeDetailPath(alerts.first.routeId!));
+                //           }
+                //         },
+                //       ),
+                //     );
+                //   },
+                //   loading: () => const SizedBox.shrink(),
+                //   error: (_, _) => const SizedBox.shrink(),
+                // ),
 
                 const SizedBox(height: 20),
 

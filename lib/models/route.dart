@@ -45,17 +45,17 @@ class Route {
   }
 
   factory Route.fromJson(Map<String, dynamic> json) {
-    String? sName;
-    String? cName;
+    String? sName = json['sector_name'] as String?;
+    String? cName = json['crag_name'] as String?;
     String? cId = json['crag_id'] as String?;
 
     // Handle joined relations if available: sectors ( name, crag_id, crags ( name ) )
     if (json['sectors'] is Map<String, dynamic>) {
       final sMap = json['sectors'] as Map<String, dynamic>;
-      sName = sMap['name'] as String?;
+      sName ??= sMap['name'] as String?;
       cId ??= sMap['crag_id'] as String?;
       if (sMap['crags'] is Map<String, dynamic>) {
-        cName = (sMap['crags'] as Map<String, dynamic>)['name'] as String?;
+        cName ??= (sMap['crags'] as Map<String, dynamic>)['name'] as String?;
       }
     }
 
@@ -63,8 +63,11 @@ class Route {
       cName ??= (json['crags'] as Map<String, dynamic>)['name'] as String?;
     }
 
+    final rawId = json['id'];
+    final id = rawId is String ? rawId : (rawId?.toString() ?? '');
+
     return Route(
-      id: json['id'] as String,
+      id: id,
       cragId: cId ?? (json['crag_id'] as String? ?? ''),
       sectorId: json['sector_id'] as String?,
       name: json['name'] as String? ?? 'Unnamed Boulder',
@@ -74,7 +77,7 @@ class Route {
       description: json['description'] as String?,
       firstAscent: json['first_ascent'] as String?,
       createdAt: json['created_at'] != null
-          ? DateTime.tryParse(json['created_at'] as String)
+          ? DateTime.tryParse(json['created_at'].toString())
           : null,
       sectorName: sName,
       cragName: cName,
@@ -94,6 +97,9 @@ class Route {
       if (description != null) 'description': description,
       if (firstAscent != null) 'first_ascent': firstAscent,
       if (createdAt != null) 'created_at': createdAt?.toIso8601String(),
+      if (sectorName != null) 'sector_name': sectorName,
+      if (cragName != null) 'crag_name': cragName,
+      if (imageUrl != null) 'image_url': imageUrl,
     };
   }
 

@@ -79,8 +79,10 @@ class _BuiltInFlutterMapState extends State<BuiltInFlutterMap> {
 
         // Interactive Venue Markers
         MarkerLayer(
-          markers: widget.venues.map((venue) {
-            final coords = venue.coordinates;
+          markers: widget.venues
+              .where((venue) => venue.coordinates != null)
+              .map((venue) {
+            final coords = venue.coordinates!;
             final lat = coords.$1;
             final lng = coords.$2;
             final isSelected = widget.selectedVenue?.id == venue.id;

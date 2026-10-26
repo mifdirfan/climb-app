@@ -21,7 +21,18 @@ void requireAuth(
         content: Text(reason),
         action: SnackBarAction(
           label: 'SIGN IN',
-          onPressed: () => context.push(AppRoutes.login),
+          onPressed: () {
+            String? currentUri;
+            try {
+              currentUri = GoRouterState.of(context).uri.toString();
+            } catch (_) {}
+
+            if (currentUri != null && currentUri.isNotEmpty && currentUri != AppRoutes.login) {
+              context.push('${AppRoutes.login}?redirect=${Uri.encodeComponent(currentUri)}');
+            } else {
+              context.push(AppRoutes.login);
+            }
+          },
         ),
       ),
     );

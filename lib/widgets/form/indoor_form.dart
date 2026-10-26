@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/theme/app_theme.dart';
 import '../../providers/home_providers.dart';
 import '../../providers/post_form_providers.dart';
 import '../felt_grade_selector.dart';
 import '../session_rating_bar.dart';
 import 'crag_picker_bottom_sheet.dart';
+import '../indoor_tally_counter.dart';
 
 /// Alias for phonetic foam / form naming
 typedef IndoorFoam = IndoorForm;
@@ -80,59 +80,41 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
   }
 
   Future<void> _handleSubmit() async {
-  final indoorState = ref.read(indoorSessionFormProvider);
-  final indoorNotifier = ref.read(indoorSessionFormProvider.notifier);
-  final client = Supabase.instance.client;
-  final user = client.auth.currentUser;
+    final indoorState = ref.read(indoorSessionFormProvider);
+    final indoorNotifier = ref.read(indoorSessionFormProvider.notifier);
 
-  if (user == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please sign in to log gym sessions.')),
-    );
-    return;
+    if (indoorState.selectedGym == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a climbing gym first.')),
+      );
+      return;
+    }
+
+    // Sync notes from controller before submitting
+    indoorNotifier.setNotes(_notesController.text.trim());
+    debugPrint('--> [SESSION:UI] User submitted indoor session form');
+
+    try {
+      await indoorNotifier.submitForm();
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Indoor session at ${indoorState.selectedGym!.name} logged!'),
+          backgroundColor: AppColors.surfaceElevated,
+        ),
+      );
+      widget.onSubmitted?.call();
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString().replaceAll('Exception: ', '')),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }
   }
-
-  if (indoorState.selectedGym == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please select a climbing gym first.')),
-    );
-    return;
-  }
-
-  indoorNotifier.setSubmitting(true);
-
-  try {
-    await client.from('indoor_sessions').insert({
-      'user_id': user.id,
-      'gym_id': indoorState.selectedGym!.id,
-      'session_date': indoorState.sessionDate.toIso8601String().split('T').first,
-      'duration_minutes': indoorState.durationMinutes,
-      'felt_grade': indoorState.feltGrade,
-      'rating': indoorState.rating,
-      'grade_tallies': indoorState.gradeTallies,
-      'notes': _notesController.text.trim(),
-    });
-
-    if (!mounted) return;
-    indoorNotifier.setSubmitting(false);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Indoor session at ${indoorState.selectedGym!.name} logged!'),
-        backgroundColor: AppColors.surfaceElevated,
-      ),
-    );
-    widget.onSubmitted?.call();
-  } catch (e) {
-    if (!mounted) return;
-    indoorNotifier.setSubmitting(false);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Failed to save session: $e'),
-        backgroundColor: Theme.of(context).colorScheme.error,
-      ),
-    );
-  }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -388,13 +370,13 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
           const SizedBox(height: 20),
 
           // Section 3: Boulder Sends Tally Counter
-          // IndoorTallyCounter(
-          //   tallies: indoorState.gradeTallies,
-          //   onIncrement: indoorNotifier.incrementTally,
-          //   onDecrement: indoorNotifier.decrementTally,
-          // ),
-
-          // const SizedBox(height: 20),
+          IndoorTallyCounter(
+            tallies: indoorState.gradeTallies,
+            gradingScale: indoorState.selectedGym?.gradingScale ?? [],
+            onIncrement: indoorNotifier.incrementTally,
+            onDecrement: indoorNotifier.decrementTally,
+          ),
+          const SizedBox(height: 20),
 
           // Section 4: Felt Grade / Perceived Effort
           FeltGradeSelector(

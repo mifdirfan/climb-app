@@ -1,6 +1,14 @@
+import 'package:climbmy/models/crag.dart';
+import 'package:climbmy/providers/home_providers.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/crag.dart';
-import 'home_providers.dart';
+import 'package:flutter_riverpod/legacy.dart';
+
+import '../repositories/session_repository.dart';
+import '../repositories/tick_repository.dart';
+import 'auth_providers.dart';
+import '../models/indoor_session.dart';
+
 
 /// Supported modes for logging climbing sends in PostScreen.
 enum ClimbPostType {
@@ -21,6 +29,19 @@ class PostTypeNotifier extends Notifier<ClimbPostType> {
 final postTypeProvider = NotifierProvider<PostTypeNotifier, ClimbPostType>(
   PostTypeNotifier.new,
 );
+
+final selectedMonthProvider = StateProvider<DateTime>((ref) {
+  final now = DateTime.now();
+  return DateTime(now.year, now.month);
+});
+
+final monthlyIndoorSessionsProvider = FutureProvider<List<IndoorSession>>((ref) async {
+  final user = ref.watch(currentUserProvider);
+  if (user == null) return [];
+  
+  final month = ref.watch(selectedMonthProvider);
+  return ref.watch(sessionRepositoryProvider).getMonthlySessions(user.id, month);
+});
 
 /// State for the Outdoor send logging form.
 class OutdoorPostFormState {
@@ -136,6 +157,34 @@ class OutdoorPostFormNotifier extends Notifier<OutdoorPostFormState> {
   void reset() {
     state = OutdoorPostFormState();
   }
+  Future<void> submitForm() async {
+    if (state.selectedRouteId == null) throw Exception('No route selected.');
+    
+    final user = ref.read(currentUserProvider);
+    if (user == null) throw Exception('You must be signed in to log outdoor sends.');
+
+    state = state.copyWith(isSubmitting: true);
+    debugPrint('--> [TICKS:STATE] Mutating state to AsyncLoading for tick submission');
+
+    try {
+      String tickType = state.ascentStyle.toLowerCase();
+      if (tickType == 'redpoint') tickType = 'send';
+
+      await ref.read(tickRepositoryProvider).createTick({
+        'user_id': user.id,
+        'route_id': state.selectedRouteId,
+        'tick_type': tickType,
+        'video_url': state.videoUrl.trim().isNotEmpty ? state.videoUrl.trim() : null,
+        'notes': state.notes.trim(),
+        'climbed_at': state.date.toIso8601String().split('T').first,
+      });
+      state = state.copyWith(isSubmitting: false);
+    } catch (e) {
+      state = state.copyWith(isSubmitting: false);
+      rethrow;
+    }
+  }
+  
 }
 
 final outdoorPostFormProvider =
@@ -280,6 +329,32 @@ class IndoorSessionFormNotifier extends Notifier<IndoorSessionFormState> {
 
   void reset() {
     state = IndoorSessionFormState();
+  }
+  Future<void> submitForm() async {
+    if (state.selectedGym == null) throw Exception('No gym selected.');
+    
+    final user = ref.read(currentUserProvider);
+    if (user == null) throw Exception('You must be signed in to log gym sessions.');
+
+    state = state.copyWith(isSubmitting: true);
+    debugPrint('--> [SESSION:STATE] Mutating state to AsyncLoading for session submission');
+
+    try {
+      await ref.read(sessionRepositoryProvider).createIndoorSession({
+        'user_id': user.id,
+        'gym_id': state.selectedGym!.id,
+        'session_date': state.sessionDate.toIso8601String().split('T').first,
+        'duration_minutes': state.durationMinutes,
+        'felt_grade': state.feltGrade,
+        'rating': state.rating,
+        'grade_tallies': state.gradeTallies,
+        'notes': state.notes.trim(),
+      });
+      state = state.copyWith(isSubmitting: false);
+    } catch (e) {
+      state = state.copyWith(isSubmitting: false);
+      rethrow;
+    }
   }
 }
 

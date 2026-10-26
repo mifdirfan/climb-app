@@ -1,3 +1,6 @@
+import 'package:climbmy/screens/indoor_log_screen.dart';
+import 'package:climbmy/screens/indoor_log_daily.dart';
+import 'package:climbmy/models/indoor_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -17,8 +20,12 @@ import '../../screens/auth/login_screen.dart';
 import '../../widgets/bottom_nav_bar.dart';
 import '../../widgets/report_hazard_button.dart';
 
-/// Global navigator key for the root GoRouter.
-final rootNavigatorKey = GlobalKey<NavigatorState>();
+/// Global navigator keys for the root GoRouter and individual shell branches.
+final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+final _shellNavigatorCragsKey = GlobalKey<NavigatorState>(debugLabel: 'shellCrags');
+final _shellNavigatorMapKey = GlobalKey<NavigatorState>(debugLabel: 'shellMap');
+final _shellNavigatorTicksKey = GlobalKey<NavigatorState>(debugLabel: 'shellTicks');
+final _shellNavigatorProfileKey = GlobalKey<NavigatorState>(debugLabel: 'shellProfile');
 
 /// Route path constants for ClimbApp.
 class AppRoutes {
@@ -31,6 +38,8 @@ class AppRoutes {
   static const String reportHazardConfirmation = '/report-hazard/confirmation';
   static const String tickHistory = '/profile/tick-history';
   static const String savedCrags = '/profile/saved-crags';
+  static const String indoorLog = '/profile/indoor-log';
+  static const String indoorLogDaily = '/profile/indoor-log/daily';
   static const String cragDetail = '/crag/:id';
   static const String routeDetail = '/route/:id';
   static const String login = '/login';
@@ -60,12 +69,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         branches: [
           // Branch 0: Crags / Guidebook (HomeScreen)
           StatefulShellBranch(
+            navigatorKey: _shellNavigatorCragsKey,
             routes: [
               GoRoute(
                 path: AppRoutes.crags,
                 name: 'crags',
-                pageBuilder: (context, state) => const NoTransitionPage(
-                  child: HomeScreen(),
+                pageBuilder: (context, state) => NoTransitionPage(
+                  key: state.pageKey,
+                  child: const HomeScreen(),
                 ),
               ),
             ],
@@ -73,12 +84,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
           // Branch 1: Interactive Map (MapScreen)
           StatefulShellBranch(
+            navigatorKey: _shellNavigatorMapKey,
             routes: [
               GoRoute(
                 path: AppRoutes.map,
                 name: 'map',
-                pageBuilder: (context, state) => const NoTransitionPage(
-                  child: MapScreen(),
+                pageBuilder: (context, state) => NoTransitionPage(
+                  key: state.pageKey,
+                  child: const MapScreen(),
                 ),
               ),
             ],
@@ -86,12 +99,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
           // Branch 2: Ticks / Send Logger (PostScreen)
           StatefulShellBranch(
+            navigatorKey: _shellNavigatorTicksKey,
             routes: [
               GoRoute(
                 path: AppRoutes.ticks,
                 name: 'ticks',
-                pageBuilder: (context, state) => const NoTransitionPage(
-                  child: PostScreen(),
+                pageBuilder: (context, state) => NoTransitionPage(
+                  key: state.pageKey,
+                  child: const PostScreen(),
                 ),
               ),
             ],
@@ -99,12 +114,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
           // Branch 3: Profile & Logbook (ProfileScreen)
           StatefulShellBranch(
+            navigatorKey: _shellNavigatorProfileKey,
             routes: [
               GoRoute(
                 path: AppRoutes.profile,
                 name: 'profile',
-                pageBuilder: (context, state) => const NoTransitionPage(
-                  child: ProfileScreen(),
+                pageBuilder: (context, state) => NoTransitionPage(
+                  key: state.pageKey,
+                  child: const ProfileScreen(),
                 ),
               ),
             ],
@@ -157,11 +174,62 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         parentNavigatorKey: rootNavigatorKey,
+        path: AppRoutes.indoorLog, 
+        name: 'indoor-log', 
+        builder: (context, state) => const IndoorLogCalendarScreen(),
+      ),   
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRoutes.indoorLogDaily,
+        name: 'indoor-log-daily',
+        builder: (context, state) {
+          final extra = state.extra is Map
+              ? Map<String, dynamic>.from(state.extra as Map)
+              : null;
+          final date = extra?['date'] is DateTime
+              ? extra!['date'] as DateTime
+              : (extra?['date'] is String
+                  ? DateTime.tryParse(extra!['date'] as String) ?? DateTime.now()
+                  : DateTime.now());
+          final rawSessions = extra?['sessions'];
+          final List<IndoorSession> sessions = [];
+          if (rawSessions is List) {
+            for (final item in rawSessions) {
+              if (item is IndoorSession) {
+                sessions.add(item);
+              } else if (item is Map) {
+                try {
+                  sessions.add(
+                    IndoorSession.fromJson(Map<String, dynamic>.from(item)),
+                  );
+                } catch (e) {
+                  debugPrint('[AppRouter] Failed to parse IndoorSession: $e');
+                }
+              }
+            }
+          }
+          return DailyIndoorLogScreen(
+            date: date,
+            sessions: sessions,
+          );
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
         path: AppRoutes.cragDetail,
         name: 'crag-detail',
         builder: (context, state) {
           final cragId = state.pathParameters['id'] ?? '';
-          final initialCrag = state.extra as Crag?;
+          Crag? initialCrag;
+          if (state.extra is Crag) {
+            initialCrag = state.extra as Crag;
+          } else if (state.extra is Map) {
+            try {
+              initialCrag = Crag.fromJson(Map<String, dynamic>.from(state.extra as Map));
+            } catch (e) {
+              debugPrint('[AppRouter] Failed to parse Crag from state.extra: $e');
+            }
+          }
           return CragDetailScreen(cragId: cragId, initialCrag: initialCrag);
         },
       ),
@@ -171,7 +239,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: 'route-detail',
         builder: (context, state) {
           final routeId = state.pathParameters['id'] ?? '';
-          final initialRoute = state.extra as RouteItem?;
+          RouteItem? initialRoute;
+          if (state.extra is RouteItem) {
+            initialRoute = state.extra as RouteItem;
+          } else if (state.extra is Map) {
+            try {
+              initialRoute = RouteItem.fromJson(Map<String, dynamic>.from(state.extra as Map));
+            } catch (e) {
+              debugPrint('[AppRouter] Failed to parse RouteItem from state.extra: $e');
+            }
+          }
           return RouteDetailScreen(routeId: routeId, initialRoute: initialRoute);
         },
       ),
@@ -181,7 +258,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: 'login',
         builder: (context, state) {
           final isSignUp = state.uri.queryParameters['mode'] == 'signup';
-          return LoginScreen(initialIsSignUp: isSignUp);
+          final redirect = state.uri.queryParameters['redirect'];
+          return LoginScreen(
+            initialIsSignUp: isSignUp,
+            redirectPath: redirect,
+          );
         },
       ),
     ],

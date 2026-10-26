@@ -96,50 +96,26 @@ class Crag {
   bool get isOutdoor => venueType == 'outdoor';
   String? get access => accessRestrictions;
 
-  /// Returns valid coordinates for mapping, falling back to known coordinates if null.
-  (double lat, double lng) get coordinates {
-    if (parkingLat != null && parkingLong != null) {
-      return (parkingLat!, parkingLong!);
-    }
-    return _resolveFallbackCoordinates(name, state);
-  }
+  /// Returns valid coordinates taken directly from the database columns.
+  /// If [parkingLat] or [parkingLong] is null, returns null to drop the venue from map rendering.
+  ///
+  /// - Intent: Removes hardcoded fallback coordinates to rely strictly on database records.
+  /// - @source: [parkingLat], [parkingLong] from Supabase `public.crags`.
+  /// - @sink: `MapScreen`, `BuiltInFlutterMap` MarkerLayer.
+  /// - Side Effects: None (pure getter).
+  (double lat, double lng)? get coordinates =>
+      (parkingLat != null && parkingLong != null)
+          ? (parkingLat!, parkingLong!)
+          : null;
 
-  static (double lat, double lng) _resolveFallbackCoordinates(String name, String state) {
-    final lowerName = name.toLowerCase();
-    final lowerState = state.toLowerCase();
+  /// Indicates whether the venue contains valid non-null coordinates.
+  bool get hasCoordinates => coordinates != null;
 
-    if (lowerName.contains('batu') || lowerName.contains('damai')) {
-      return (3.2374, 101.6839);
-    } else if (lowerName.contains('keteri')) {
-      return (6.5312, 100.2588);
-    } else if (lowerName.contains('nyamuk')) {
-      return (2.1833, 102.7667);
-    } else if (lowerName.contains('musang')) {
-      return (4.8821, 101.9680);
-    } else if (lowerName.contains('datuk')) {
-      return (2.5562, 102.1691);
-    } else if (lowerName.contains('1 u') || lowerName.contains('utama')) {
-      return (3.1502, 101.6155);
-    } else if (lowerName.contains('eco city')) {
-      return (3.1182, 101.6744);
-    } else if (lowerName.contains('bolder')) {
-      return (3.0733, 101.5901);
-    } else if (lowerName.contains('bump')) {
-      return (3.1189, 101.6358);
-    } else if (lowerName.contains('rock') || lowerState.contains('penang')) {
-      return (5.4371, 100.3097);
-    } else if (lowerState.contains('perlis')) {
-      return (6.4449, 100.2048);
-    } else if (lowerState.contains('johor')) {
-      return (2.1833, 102.7667);
-    } else if (lowerState.contains('perak')) {
-      return (4.5921, 101.0901);
-    } else if (lowerState.contains('kelantan')) {
-      return (4.8821, 101.9680);
-    }
-    return (3.2374, 101.6839);
-  }
-
+  /// Deserializes a [Crag] from a Supabase row or JSON map.
+  /// If latitude or longitude is missing or null, coordinates are dropped to prevent partial mapping.
+  ///
+  /// - @source: Supabase `public.crags` row.
+  /// - @sink: In-memory [Crag] instance.
   factory Crag.fromJson(Map<String, dynamic> json) {
     List<GymGradeTag> parsedGradingScale = [];
     if (json['grading_scale'] is List) {
@@ -148,6 +124,10 @@ class Crag {
           .map((item) => GymGradeTag.fromJson(item))
           .toList();
     }
+
+    final rawLat = ((json['parking_lat'] ?? json['latitude'] ?? json['lat']) as num?)?.toDouble();
+    final rawLong = ((json['parking_long'] ?? json['longitude'] ?? json['long'] ?? json['lng']) as num?)?.toDouble();
+    final bool hasValidCoords = rawLat != null && rawLong != null;
 
     return Crag(
       id: json['id'] as String,
@@ -160,8 +140,8 @@ class Crag {
       instagram: json['instagram'] as String?,
       gradingScale: parsedGradingScale,
       approachNotes: json['approach_notes'] as String?,
-      parkingLat: ((json['parking_lat'] ?? json['latitude'] ?? json['lat']) as num?)?.toDouble(),
-      parkingLong: ((json['parking_long'] ?? json['longitude'] ?? json['long'] ?? json['lng']) as num?)?.toDouble(),
+      parkingLat: hasValidCoords ? rawLat : null,
+      parkingLong: hasValidCoords ? rawLong : null,
       accessRestrictions: json['access_restrictions'] as String? ?? json['access'] as String?,
       imageUrl: json['image_url'] as String? ?? json['imageUrl'] as String?,
       createdAt: json['created_at'] != null
@@ -188,8 +168,10 @@ class Crag {
       if (instagram != null) 'instagram': instagram,
       'grading_scale': gradingScale.map((tag) => tag.toJson()).toList(),
       if (approachNotes != null) 'approach_notes': approachNotes,
-      if (parkingLat != null) 'parking_lat': parkingLat,
-      if (parkingLong != null) 'parking_long': parkingLong,
+      if (parkingLat != null && parkingLong != null) ...{
+        'parking_lat': parkingLat,
+        'parking_long': parkingLong,
+      },
       if (accessRestrictions != null) 'access_restrictions': accessRestrictions,
       if (createdAt != null) 'created_at': createdAt?.toIso8601String(),
     };

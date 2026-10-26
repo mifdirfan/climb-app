@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/theme/app_theme.dart';
 import '../../providers/home_providers.dart';
 import '../../providers/post_form_providers.dart';
@@ -120,63 +119,42 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
   }
 
   Future<void> _handleSubmit() async {
-  final outdoorState = ref.read(outdoorPostFormProvider);
-  final outdoorNotifier = ref.read(outdoorPostFormProvider.notifier);
-  final client = Supabase.instance.client;
-  final user = client.auth.currentUser;
+    final outdoorState = ref.read(outdoorPostFormProvider);
+    final outdoorNotifier = ref.read(outdoorPostFormProvider.notifier);
 
-  if (user == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please sign in to log outdoor sends.')),
-    );
-    return;
+    if (outdoorState.selectedRouteId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a verified route from the database.')),
+      );
+      return;
+    }
+
+    // Sync notes and video URL from controllers before submitting
+    outdoorNotifier.setNotes(_notesController.text.trim());
+    outdoorNotifier.setVideoUrl(_videoUrlController.text.trim());
+    debugPrint('--> [TICKS:UI] User submitted outdoor tick form');
+
+    try {
+      await outdoorNotifier.submitForm();
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Send logged for ${outdoorState.routeName}!'),
+          backgroundColor: AppColors.surfaceElevated,
+        ),
+      );
+      widget.onSubmitted?.call();
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString().replaceAll('Exception: ', '')),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }
   }
-
-  if (outdoorState.selectedRouteId == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Please select a verified route from the database.')),
-    );
-    return;
-  }
-
-  outdoorNotifier.setSubmitting(true);
-
-  try {
-    // Convert UI ascent style to valid check constraint enum
-    String tickType = outdoorState.ascentStyle.toLowerCase();
-    if (tickType == 'redpoint') tickType = 'send';
-
-    await client.from('ticks').insert({
-      'user_id': user.id,
-      'route_id': outdoorState.selectedRouteId,
-      'tick_type': tickType,
-      'video_url': _videoUrlController.text.trim().isNotEmpty 
-          ? _videoUrlController.text.trim() 
-          : null,
-      'notes': _notesController.text.trim(),
-      'climbed_at': outdoorState.date.toIso8601String().split('T').first,
-    });
-
-    if (!mounted) return;
-    outdoorNotifier.setSubmitting(false);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Send logged for ${outdoorState.routeName}!'),
-        backgroundColor: AppColors.surfaceElevated,
-      ),
-    );
-    widget.onSubmitted?.call();
-  } catch (e) {
-    if (!mounted) return;
-    outdoorNotifier.setSubmitting(false);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Failed to log send: $e'),
-        backgroundColor: Theme.of(context).colorScheme.error,
-      ),
-    );
-  }
-}
 
   @override
   Widget build(BuildContext context) {

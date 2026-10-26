@@ -100,7 +100,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     notifier.setRouteType(route.routeType);
 
     // 4. Navigate to Ticks logging screen
-    context.push(AppRoutes.ticks);
+    context.go(AppRoutes.ticks);
   }
 
   void _showAddNoteDialog() {
@@ -188,8 +188,8 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     final routeAsync = ref.watch(routeDetailProvider(widget.routeId));
     final hazardsAsync = ref.watch(routeHazardsProvider(widget.routeId));
 
-    final route = widget.initialRoute ??
-        routeAsync.value ??
+    final route = routeAsync.value ??
+        widget.initialRoute ??
         RouteItem(
           id: widget.routeId,
           cragId: '11111111-1111-1111-1111-111111111101',
@@ -295,7 +295,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             ),
 
             // 9. Bottom Sticky Action Dock (Single Primary Button per User Instruction)
-            _buildBottomStickyDock(route),
+            //_buildBottomStickyDock(route),
           ],
         ),
       ),
@@ -962,29 +962,29 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
 
   /// Bottom Sticky Action Dock: implements explicit user requirement:
   /// "for Bottom Sticky Action Dock remove secondary button"
-  Widget _buildBottomStickyDock(RouteItem route) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        border: Border(
-          top: BorderSide(color: AppColors.border, width: 1.0),
-        ),
-      ),
-      child: ElevatedButton.icon(
-        key: const Key('route_log_ascent_button'),
-        onPressed: () => _logAscent(route),
-        icon: const Icon(Icons.check_circle_outline_rounded, size: 20),
-        label: const Text('LOG ASCENT / TICK'),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.onPrimary,
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          textStyle: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w800),
-          shape: RoundedRectangleBorder(borderRadius: AppRadius.borderSm),
-        ),
-      ),
-    );
-  }
+  // Widget _buildBottomStickyDock(RouteItem route) {
+  //   return Container(
+  //     width: double.infinity,
+  //     padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
+  //     decoration: BoxDecoration(
+  //       color: AppColors.surface,
+  //       border: Border(
+  //         top: BorderSide(color: AppColors.border, width: 1.0),
+  //       ),
+  //     ),
+  //     child: ElevatedButton.icon(
+  //       key: const Key('route_log_ascent_button'),
+  //       onPressed: () => _logAscent(route),
+  //       icon: const Icon(Icons.check_circle_outline_rounded, size: 20),
+  //       label: const Text('LOG ASCENT / TICK'),
+  //       style: ElevatedButton.styleFrom(
+  //         backgroundColor: AppColors.primary,
+  //         foregroundColor: AppColors.onPrimary,
+  //         padding: const EdgeInsets.symmetric(vertical: 14),
+  //         textStyle: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w800),
+  //         shape: RoundedRectangleBorder(borderRadius: AppRadius.borderSm),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

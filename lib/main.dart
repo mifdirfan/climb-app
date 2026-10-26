@@ -26,6 +26,36 @@ final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'] ?? '';
     anonKey: supabaseAnonKey, // ignore: deprecated_member_use
   );
 
+  // Inspect and log initial session presence on startup
+  final initialSession = Supabase.instance.client.auth.currentSession;
+  final initialUser = Supabase.instance.client.auth.currentUser;
+  if (initialSession != null && initialUser != null) {
+    debugPrint('--> [AUTH:INIT] Initial session found: UID=${initialUser.id}, Email=${initialUser.email}');
+  } else {
+    debugPrint('--> [AUTH:INIT] No initial active session detected (Guest mode)');
+  }
+
+  // Globally monitor and log all authentication state transitions
+  Supabase.instance.client.auth.onAuthStateChange.listen((authState) {
+    final event = authState.event;
+    final session = authState.session;
+    debugPrint('--> [AUTH:STREAM] AuthChangeEvent: $event | Active Session: ${session != null}');
+    if (session != null) {
+      debugPrint('    Session User: ${session.user.email} (UID: ${session.user.id})');
+      debugPrint('    Expires At: ${session.expiresAt}');
+    }
+
+    if (event == AuthChangeEvent.signedIn) {
+      debugPrint('--> [AUTH:STREAM] ✅ User signed in confirmed: ${session?.user.email}');
+    } else if (event == AuthChangeEvent.signedOut) {
+      debugPrint('--> [AUTH:STREAM] ℹ️ User signed out confirmed');
+    } else if (event == AuthChangeEvent.tokenRefreshed) {
+      debugPrint('--> [AUTH:STREAM] 🔄 Access token refreshed');
+    } else if (event == AuthChangeEvent.userUpdated) {
+      debugPrint('--> [AUTH:STREAM] 👤 User profile/metadata updated');
+    }
+  });
+
   runApp(
     const ProviderScope(
       child: ClimbMYApp(),

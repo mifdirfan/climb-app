@@ -143,6 +143,7 @@ class _MapScreenState extends ConsumerState<MapScreen>
     });
 
     final coords = venue.coordinates;
+    if (coords == null) return;
     // Offset slightly southward so the pin stays visible above the bottom sheet
     final targetLat = coords.$1 - 0.008;
     final targetLng = coords.$2;
@@ -161,6 +162,7 @@ class _MapScreenState extends ConsumerState<MapScreen>
     );
 
     final filteredVenues = allVenues.where((venue) {
+      if (venue.coordinates == null) return false;
       switch (_selectedFilter) {
         case VenueTypeFilter.all:
           return true;
@@ -175,6 +177,7 @@ class _MapScreenState extends ConsumerState<MapScreen>
     final visibleVenues = filteredVenues.where((venue) {
       if (_visibleBounds == null) return true;
       final coords = venue.coordinates;
+      if (coords == null) return false;
       return _visibleBounds!.contains(LatLng(coords.$1, coords.$2));
     }).toList();
 

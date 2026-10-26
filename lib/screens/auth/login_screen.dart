@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/router/app_router.dart';
 import '../../core/theme/app_theme.dart';
 import '../../providers/auth_providers.dart';
+import '../../repositories/auth_repository.dart';
 
 /// Screen managing both Sign In and Sign Up flows with dynamic system theme adaptation.
 /// Complies with Figma nodes 5315:170 (Sign In) and 5318:215 (Sign Up), strictly
 /// consuming design tokens and typography configured in [AppTheme].
 class LoginScreen extends ConsumerStatefulWidget {
   final bool initialIsSignUp;
+  final String? redirectPath;
 
   const LoginScreen({
     super.key,
     this.initialIsSignUp = false,
+    this.redirectPath,
   });
 
   @override
@@ -27,7 +29,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   late bool _isSignUp;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
-  String? _localError;
 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -54,7 +55,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (_isSignUp != isSignUp) {
       setState(() {
         _isSignUp = isSignUp;
-        _localError = null;
       });
       _formKey.currentState?.reset();
     }
@@ -71,24 +71,60 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
   }
 
+  /// Handles form submission for both Sign Up and Sign In flows.
+  ///
+  /// - Intent: Validates user input and processes authentication via [authControllerProvider].
+  ///   Diagnostic error details are logged directly to the debug terminal and suppressed from the UI.
+  /// - @source: Text input controllers (_emailController, _passwordController, etc.).
+  /// - @sink: Supabase GoTrue Auth service via Riverpod controller.
+  /// - Side Effects: Sets active JWT in Supabase client, invalidates auth stream, triggers navigation on success.
   Future<void> _handleSubmit() async {
-    setState(() {
-      _localError = null;
-    });
-
-    if (!_formKey.currentState!.validate()) {
-      debugPrint('--> [AUTH] Form validation failed. Check required fields.');
-      return;
-    }
+    final modeLabel = _isSignUp ? 'Sign Up' : 'Sign In';
+    debugPrint('--> [AUTH:UI] ---------------------------------------------');
+    debugPrint('--> [AUTH:UI] Submit action triggered for mode: $modeLabel');
 
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
+    // Terminal-only validation checks (suppressed from user UI per guidelines)
+    if (email.isEmpty) {
+      debugPrint('--> [AUTH:UI] 🛑 Validation check failed: Email address is empty.');
+      debugPrint('--> [AUTH:${_isSignUp ? "SIGNUP" : "LOGIN"}] 🛑 ${_isSignUp ? "REGISTRATION" : "SIGN IN"} FAILED: Email is empty.');
+      return;
+    }
+
+    final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+    if (!emailRegex.hasMatch(email)) {
+      debugPrint('--> [AUTH:UI] 🛑 Validation check failed: Invalid email format ("$email").');
+      debugPrint('--> [AUTH:${_isSignUp ? "SIGNUP" : "LOGIN"}] 🛑 ${_isSignUp ? "REGISTRATION" : "SIGN IN"} FAILED: Invalid email format.');
+      return;
+    }
+
+    if (password.isEmpty) {
+      debugPrint('--> [AUTH:UI] 🛑 Validation check failed: Password is empty.');
+      debugPrint('--> [AUTH:${_isSignUp ? "SIGNUP" : "LOGIN"}] 🛑 ${_isSignUp ? "REGISTRATION" : "SIGN IN"} FAILED: Password is empty.');
+      return;
+    }
+
+  
+
     if (_isSignUp) {
-      // =======================================================================
-      // SIGN UP DEBUGGING
-      // =======================================================================
       final username = _usernameController.text.trim();
+      if (username.isEmpty || username.length < 3) {
+        debugPrint('--> [AUTH:UI] 🛑 Validation check failed: Username must be at least 3 characters ("$username").');
+        debugPrint('--> [AUTH:SIGNUP] 🛑 REGISTRATION FAILED: Invalid username.');
+        return;
+      }
+
+      if (_confirmPasswordController.text != password) {
+        debugPrint('--> [AUTH:UI] 🛑 Validation check failed: Password confirmation does not match.');
+        debugPrint('--> [AUTH:SIGNUP] 🛑 REGISTRATION FAILED: Passwords do not match.');
+        return;
+      }
+
+      // =======================================================================
+      // SIGN UP FLOW
+      // =======================================================================
       debugPrint('--> [AUTH:SIGNUP] -----------------------------------------');
       debugPrint('--> [AUTH:SIGNUP] Starting registration...');
       debugPrint('    Email: $email');
@@ -99,9 +135,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .read(authControllerProvider.notifier)
           .signUp(email, password, username);
 
-      final client = Supabase.instance.client;
-      final user = client.auth.currentUser;
-      final session = client.auth.currentSession;
+      final repo = ref.read(authRepositoryProvider);
+      final user = repo.currentUser;
+      final session = repo.currentSession;
       final authState = ref.read(authControllerProvider);
 
       if (success) {
@@ -112,14 +148,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         debugPrint('    Has active session: ${session != null}');
 
         if (session == null) {
-          debugPrint('    ⚠️ WARNING: session is NULL. Email confirmation is active in Supabase.');
-          debugPrint('    The user must click the email confirmation link before logging in.');
+          debugPrint('    ⚠️ Notice: session is NULL. Email confirmation link required before sign in.');
         } else {
           debugPrint('    Auto-login confirmed. Access Token: ${session.accessToken.substring(0, 15)}...');
         }
       } else {
         debugPrint('--> [AUTH:SIGNUP] 🛑 REGISTRATION FAILED');
-        debugPrint('    Error: ${authState.error}');
+        debugPrint('    Error details: ${authState.error}');
       }
 
       if (success && mounted) {
@@ -142,7 +177,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     } else {
       // =======================================================================
-      // SIGN IN DEBUGGING
+      // SIGN IN FLOW
       // =======================================================================
       debugPrint('--> [AUTH:LOGIN] ------------------------------------------');
       debugPrint('--> [AUTH:LOGIN] Starting sign in...');
@@ -152,9 +187,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           .read(authControllerProvider.notifier)
           .signIn(email, password);
 
-      final client = Supabase.instance.client;
-      final user = client.auth.currentUser;
-      final session = client.auth.currentSession;
+      final repo = ref.read(authRepositoryProvider);
+      final user = repo.currentUser;
+      final session = repo.currentSession;
       final authState = ref.read(authControllerProvider);
 
       if (success) {
@@ -165,17 +200,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         debugPrint('    Expires At: ${session?.expiresAt}');
       } else {
         debugPrint('--> [AUTH:LOGIN] 🛑 SIGN IN FAILED');
-        debugPrint('    Error: ${authState.error}');
+        debugPrint('    Error details: ${authState.error}');
       }
 
       if (success && mounted) {
+        final target = widget.redirectPath != null && widget.redirectPath!.isNotEmpty
+            ? widget.redirectPath!
+            : 'previous screen / crags';
+        debugPrint('--> [AUTH:LOGIN] Redirecting user post-login (target: $target)...');
         final router = GoRouter.maybeOf(context);
-        if (router != null) {
-          if (router.canPop()) {
-            router.pop();
-          } else {
-            router.go(AppRoutes.crags);
-          }
+        if (widget.redirectPath != null && widget.redirectPath!.isNotEmpty) {
+          router?.go(widget.redirectPath!);
+        } else if (router != null && router.canPop()) {
+          router.pop();
+        } else if (router != null) {
+          router.go(AppRoutes.crags);
         } else if (Navigator.of(context).canPop()) {
           Navigator.of(context).pop();
         }
@@ -264,10 +303,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final authState = ref.watch(authControllerProvider);
     final isLoading = authState.isLoading;
 
-    // Active error message
-    final activeError = _localError ??
-        (authState.hasError ? authState.error.toString() : null);
-
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
@@ -349,55 +384,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     
                     const SizedBox(height: 18),
 
-                    // Error Alert Banner (if any)
-                    if (activeError != null) ...[
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          color: colorScheme.error,
-                          borderRadius: AppRadius.borderSm,
-                          border: Border.all(
-                            color: colorScheme.onError.withValues(alpha: 0.5),
-                          ),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.error_outline_rounded,
-                              size: 18,
-                              color: colorScheme.onError,
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                activeError,
-                                style: textTheme.bodySmall?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: colorScheme.onError,
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _localError = null;
-                                });
-                              },
-                              child: Icon(
-                                Icons.close_rounded,
-                                size: 18,
-                                color: colorScheme.onError,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 14),
-                    ],
+
 
                     // Username Field (Sign Up only)
                     if (_isSignUp) ...[
@@ -406,6 +393,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       TextFormField(
                         key: const ValueKey('username_field'),
                         controller: _usernameController,
+                        textInputAction: TextInputAction.next,
                         style: textTheme.bodyLarge?.copyWith(
                           color: colorScheme.onSurface,
                         ),
@@ -417,16 +405,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             color: textTheme.bodyMedium?.color,
                           ),
                         ),
-                        validator: (val) {
-                          if (!_isSignUp) return null;
-                          if (val == null || val.trim().isEmpty) {
-                            return 'Please enter a username';
-                          }
-                          if (val.trim().length < 3) {
-                            return 'Username must be at least 3 characters';
-                          }
-                          return null;
-                        },
                       ),
                       const SizedBox(height: 14),
                     ],
@@ -438,6 +416,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       key: const ValueKey('email_field'),
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
                       style: textTheme.bodyLarge?.copyWith(
                         color: colorScheme.onSurface,
                       ),
@@ -449,17 +428,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           color: textTheme.bodyMedium?.color,
                         ),
                       ),
-                      validator: (val) {
-                        if (val == null || val.trim().isEmpty) {
-                          return 'Please enter your email address';
-                        }
-                        final emailRegex =
-                            RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-                        if (!emailRegex.hasMatch(val.trim())) {
-                          return 'Please enter a valid email address';
-                        }
-                        return null;
-                      },
                     ),
                     const SizedBox(height: 14),
 
@@ -470,6 +438,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       key: const ValueKey('password_field'),
                       controller: _passwordController,
                       obscureText: _obscurePassword,
+                      textInputAction: _isSignUp ? TextInputAction.next : TextInputAction.done,
+                      onFieldSubmitted: (_) => _isSignUp ? null : _handleSubmit(),
                       style: textTheme.bodyLarge?.copyWith(
                         color: colorScheme.onSurface,
                       ),
@@ -496,15 +466,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           },
                         ),
                       ),
-                      validator: (val) {
-                        if (val == null || val.isEmpty) {
-                          return 'Please enter a password';
-                        }
-                        if (val.length < 6) {
-                          return 'Password must be at least 6 characters';
-                        }
-                        return null;
-                      },
                     ),
 
                     // Forgot Password link (Sign In only)
@@ -540,6 +501,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         key: const ValueKey('confirm_password_field'),
                         controller: _confirmPasswordController,
                         obscureText: _obscureConfirmPassword,
+                        textInputAction: TextInputAction.done,
+                        onFieldSubmitted: (_) => _handleSubmit(),
                         style: textTheme.bodyLarge?.copyWith(
                           color: colorScheme.onSurface,
                         ),
@@ -566,16 +529,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             },
                           ),
                         ),
-                        validator: (val) {
-                          if (!_isSignUp) return null;
-                          if (val == null || val.isEmpty) {
-                            return 'Please confirm your password';
-                          }
-                          if (val != _passwordController.text) {
-                            return 'Passwords do not match';
-                          }
-                          return null;
-                        },
                       ),
                       const SizedBox(height: 18),
                     ],

@@ -1,11 +1,14 @@
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/router/app_router.dart';
 import '../../core/theme/app_theme.dart';
+import '../../providers/auth_providers.dart';
+import '../../providers/profile_providers.dart';
 
 /// User profile and climbing logbook screen.
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   final VoidCallback? onBack;
   final VoidCallback? onEditProfile;
   final VoidCallback? onShareProfile;
@@ -18,8 +21,23 @@ class ProfileScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final isAuthenticated = ref.watch(isAuthenticatedProvider);
+    final user = ref.watch(currentUserProvider);
+    final profileAsync = ref.watch(currentProfileProvider);
+    final profile = profileAsync.value;
+
+    final displayName = isAuthenticated
+        ? (profile?.displayName ??
+            profile?.username ??
+            (user?.email?.split('@').first ?? 'Climber'))
+        : 'Guest Climber';
+    final subtitle = isAuthenticated
+        ? (profile?.username != null
+            ? '@${profile!.username}'
+            : user?.email ?? 'Authenticated Climber')
+        : 'Sign in to log sends, ticks, and view personal topos';
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -108,82 +126,95 @@ class ProfileScreen extends StatelessWidget {
                     const SizedBox(height: 14),
 
                     Text(
-                      'Malaysian Climber',
+                      displayName,
                       style: AppTextStyles.titleLarge,
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Outdoor Sport & Boulder Enthusiast',
+                      subtitle,
+                      textAlign: TextAlign.center,
                       style: AppTextStyles.caption.copyWith(
                         color: AppColors.textMuted,
                       ),
                     ),
                     const SizedBox(height: 14),
 
-                    // Edit Profile and Share Profile buttons
-                    Row(
-                      children: [
-                        Expanded(
-                          child: SizedBox(
-                            height: 38,
-                            child: OutlinedButton.icon(
-                              key: const Key('edit_profile_button'),
-                              onPressed: onEditProfile ?? () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    backgroundColor: AppColors.surfaceElevated,
-                                    content: Text('Edit profile coming soon.'),
-                                    duration: Duration(seconds: 2),
+                    // Actions row: Edit/Share if logged in, Sign In button if guest
+                    if (isAuthenticated)
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: 38,
+                              child: OutlinedButton.icon(
+                                key: const Key('edit_profile_button'),
+                                onPressed: onEditProfile ?? () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      backgroundColor: AppColors.surfaceElevated,
+                                      content: Text('Edit profile coming soon.'),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                },
+                                icon: const Icon(Icons.edit_outlined, size: 16),
+                                label: const Text('Edit Profile'),
+                                style: OutlinedButton.styleFrom(
+                                  foregroundColor: AppColors.textPrimary,
+                                  side: const BorderSide(color: AppColors.borderSubtle, width: 1.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(AppRadius.sm),
                                   ),
-                                );
-                              },
-                              icon: const Icon(Icons.edit_outlined, size: 16),
-                              label: const Text('Edit Profile'),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: AppColors.textPrimary,
-                                side: const BorderSide(color: AppColors.borderSubtle, width: 1.0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(AppRadius.sm),
-                                ),
-                                textStyle: AppTextStyles.labelMedium.copyWith(
-                                  fontWeight: FontWeight.w600,
+                                  textStyle: AppTextStyles.labelMedium.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: SizedBox(
-                            height: 38,
-                            child: OutlinedButton.icon(
-                              key: const Key('share_profile_button'),
-                              onPressed: onShareProfile ?? () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    backgroundColor: AppColors.surfaceElevated,
-                                    content: Text('Profile link copied to clipboard!'),
-                                    duration: Duration(seconds: 2),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: SizedBox(
+                              height: 38,
+                              child: OutlinedButton.icon(
+                                key: const Key('share_profile_button'),
+                                onPressed: onShareProfile ?? () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      backgroundColor: AppColors.surfaceElevated,
+                                      content: Text('Profile link copied to clipboard!'),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                },
+                                icon: const Icon(Icons.share_outlined, size: 16),
+                                label: const Text('Share Profile'),
+                                style: OutlinedButton.styleFrom(
+                                  foregroundColor: AppColors.textPrimary,
+                                  side: const BorderSide(color: AppColors.borderSubtle, width: 1.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(AppRadius.sm),
                                   ),
-                                );
-                              },
-                              icon: const Icon(Icons.share_outlined, size: 16),
-                              label: const Text('Share Profile'),
-                              style: OutlinedButton.styleFrom(
-                                foregroundColor: AppColors.textPrimary,
-                                side: const BorderSide(color: AppColors.borderSubtle, width: 1.0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(AppRadius.sm),
-                                ),
-                                textStyle: AppTextStyles.labelMedium.copyWith(
-                                  fontWeight: FontWeight.w600,
+                                  textStyle: AppTextStyles.labelMedium.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
+                        ],
+                      )
+                    else
+                      SizedBox(
+                        width: double.infinity,
+                        height: 42,
+                        child: ElevatedButton.icon(
+                          key: const Key('profile_sign_in_button'),
+                          onPressed: () => context.push(AppRoutes.login),
+                          icon: const Icon(Icons.login_rounded, size: 18),
+                          label: const Text('SIGN IN / REGISTER'),
                         ),
-                      ],
-                    ),
+                      ),
                   ],
                 ),
               ),
@@ -238,8 +269,24 @@ class ProfileScreen extends StatelessWidget {
                 icon: Icons.fitness_center_rounded,
                 title: 'Indoor Climbing Log',
                 subtitle: 'Track your indoor bouldering and training sessions',
-                onTap: () {},
+                onTap: () => context.push(AppRoutes.indoorLog),
               ),
+              if (isAuthenticated) ...[
+                const SizedBox(height: 8),
+                _buildMenuTile(
+                  icon: Icons.logout_rounded,
+                  title: 'Sign Out',
+                  subtitle: 'Log out of ${user?.email ?? 'account'}',
+                  onTap: () async {
+                    await ref.read(authControllerProvider.notifier).signOut();
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Logged out successfully.')),
+                      );
+                    }
+                  },
+                ),
+              ],
 
               // Bottom clearance for FloatingBottomNavBar
               const SizedBox(height: 100),

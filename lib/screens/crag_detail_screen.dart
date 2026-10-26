@@ -73,7 +73,7 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
     final hazardsAsync = ref.watch(cragHazardsProvider(widget.cragId));
 
     // Resolve crag entity without mock data
-    final crag = widget.initialCrag ?? cragAsync.value;
+    final crag = cragAsync.value ?? widget.initialCrag;
 
     if (crag == null) {
       if (cragAsync.isLoading) {
