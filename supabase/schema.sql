@@ -53,11 +53,19 @@ create table public.crags (
   
   -- Indoor-specific attributes
   address text,
+  city text,
+  latitude double precision,
+  longitude double precision,
   operating_hours text,
+  pricing jsonb default '[]'::jsonb, -- e.g., [{"category": "Day Pass", "label": "Adult Peak", "price": 56}]
   phone text,
+  website text,
   instagram text,
+  facebook text,
+  photos text[],
+  wall_types text[],
   grading_scale jsonb default '[]'::jsonb, -- e.g., [{"label": "Yellow", "hex": "#FACC15", "v_min": 0, "v_max": 1}]
-  
+
   -- Outdoor-specific attributes
   approach_notes text,
   parking_lat double precision,
@@ -178,7 +186,22 @@ create policy "Authenticated users can submit hazards" on public.hazard_alerts f
 create policy "Users can update own hazards" on public.hazard_alerts for update using (auth.uid() = user_id);
 
 -- ============================================================
--- 6. REFRESH SCHEMA CACHE
+-- 6. MIGRATIONS (run once against existing DB)
+-- ============================================================
+
+alter table public.crags add column if not exists city text;
+alter table public.crags add column if not exists latitude double precision;
+alter table public.crags add column if not exists longitude double precision;
+alter table public.crags add column if not exists pricing jsonb default '[]'::jsonb;
+-- If pricing was already added as text, convert it:
+alter table public.crags alter column pricing type jsonb using coalesce(pricing::jsonb, '[]'::jsonb);
+alter table public.crags add column if not exists website text;
+alter table public.crags add column if not exists facebook text;
+alter table public.crags add column if not exists photos text[];
+alter table public.crags add column if not exists wall_types text[];
+
+-- ============================================================
+-- 7. REFRESH SCHEMA CACHE
 -- ============================================================
 
 notify pgrst, 'reload schema';
