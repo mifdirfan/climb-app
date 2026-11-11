@@ -63,4 +63,30 @@ class AuthRepository {
     await _client.auth.signOut();
     debugPrint('--> [AUTH:REPO] signOut completed');
   }
+
+  /// Permanently deletes the signed-in user's account.
+  ///
+  /// - Intent: the client key cannot touch `auth.users`, so this calls the
+  ///   `delete_own_account` SECURITY DEFINER function, which only deletes
+  ///   `auth.uid()`. Profile, ticks, sessions and saved crags cascade from it.
+  /// - @source: Current JWT (`auth.uid()` server-side).
+  /// - @sink: PostgreSQL:auth.users (cascades into public.profiles + children).
+  /// - Side Effects: Clears the now-orphaned local session.
+  Future<void> deleteAccount() async {
+    debugPrint('--> [AUTH:REPO] deleteAccount initiated for UID=${currentUser?.id}');
+    try {
+      await _client.rpc('delete_own_account');
+    } on PostgrestException catch (e) {
+      debugPrint('--> [AUTH:REPO] 🛑 deleteAccount failed: ${e.code} ${e.message}');
+      rethrow;
+    }
+    try {
+      // The server-side user is gone; a global sign-out would 401, so only
+      // drop the local session.
+      await _client.auth.signOut(scope: SignOutScope.local);
+    } on AuthException catch (e) {
+      debugPrint('--> [AUTH:REPO] Local sign-out after delete failed (ignored): ${e.message}');
+    }
+    debugPrint('--> [AUTH:REPO] deleteAccount completed');
+  }
 }

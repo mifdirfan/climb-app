@@ -130,4 +130,30 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
       state = AsyncError('Failed to sign out.', st);
     }
   }
+
+  /// Permanently deletes the current account, then refreshes auth listeners
+  /// so every user-scoped provider re-evaluates as a guest.
+  ///
+  /// - @source: SettingsScreen "Delete Account" confirmation.
+  /// - @sink: AuthRepository.deleteAccount -> PostgreSQL:auth.users.
+  /// - Returns `true` on success; on failure `state` holds a user-facing message.
+  Future<bool> deleteAccount() async {
+    state = const AsyncLoading();
+    debugPrint('--> [AUTH:STATE] Transitioning state to AsyncLoading for account deletion');
+    try {
+      await _repository.deleteAccount();
+      _ref.invalidate(authStateProvider);
+      state = const AsyncData(null);
+      debugPrint('--> [AUTH:STATE] Account deleted and session cleared');
+      return true;
+    } on PostgrestException catch (e, st) {
+      debugPrint('--> [AUTH:STATE] 🛑 PostgrestException deleting account: ${e.message}');
+      state = AsyncError('Could not delete your account. Please try again.', st);
+      return false;
+    } catch (e, st) {
+      debugPrint('--> [AUTH:STATE] 🛑 Unexpected error deleting account: $e\n$st');
+      state = AsyncError('Could not delete your account. Please try again.', st);
+      return false;
+    }
+  }
 }

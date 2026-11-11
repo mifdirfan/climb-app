@@ -12,6 +12,9 @@ import '../../screens/hazard_report/select_hazard_type_screen.dart';
 import '../../screens/hazard_report/report_hazard_form_screen.dart';
 import '../../screens/hazard_report/report_confirmation_screen.dart';
 import '../../screens/saved_crags_screen.dart';
+import '../../screens/settings/legal_content.dart';
+import '../../screens/settings/legal_document_screen.dart';
+import '../../screens/settings/settings_screen.dart';
 import '../../screens/tick_history_screen.dart';
 import '../../models/crag.dart';
 import '../../models/route.dart';
@@ -44,6 +47,9 @@ class AppRoutes {
   static const String cragDetail = '/crag/:id';
   static const String routeDetail = '/route/:id';
   static const String login = '/login';
+  static const String settings = '/settings';
+  static const String privacyPolicy = '/settings/privacy';
+  static const String terms = '/settings/terms';
 
   static String cragDetailPath(String id) => '/crag/$id';
   static String routeDetailPath(String id) => '/route/$id';
@@ -240,6 +246,24 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           }
           return RouteDetailScreen(routeId: routeId, initialRoute: initialRoute);
         },
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRoutes.settings,
+        name: 'settings',
+        builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRoutes.privacyPolicy,
+        name: 'privacy-policy',
+        builder: (context, state) => const LegalDocumentScreen(document: privacyPolicy),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: AppRoutes.terms,
+        name: 'terms',
+        builder: (context, state) => const LegalDocumentScreen(document: termsOfService),
       ),
       GoRoute(
         parentNavigatorKey: rootNavigatorKey,

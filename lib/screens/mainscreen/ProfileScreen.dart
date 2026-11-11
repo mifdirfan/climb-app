@@ -55,14 +55,11 @@ class ProfileScreen extends ConsumerWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.settings_outlined, color: context.palette.textSecondary),
+            key: const Key('profile_settings_button'),
+            tooltip: 'Settings',
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: context.palette.surfaceElevated,
-                  content: Text('Profile settings coming soon.'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
+              debugPrint('--> [PROFILE:UI] Open settings');
+              context.push(AppRoutes.settings);
             },
           ),
         ],
@@ -270,22 +267,7 @@ class ProfileScreen extends ConsumerWidget {
                 subtitle: 'Track your indoor bouldering and training sessions',
                 onTap: () => context.push(AppRoutes.indoorLog),
               ),
-              if (isAuthenticated) ...[
-                const SizedBox(height: 8),
-                _buildMenuTile(context,
-                  icon: Icons.logout_rounded,
-                  title: 'Sign Out',
-                  subtitle: 'Log out of ${user?.email ?? 'account'}',
-                  onTap: () async {
-                    await ref.read(authControllerProvider.notifier).signOut();
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Logged out successfully.')),
-                      );
-                    }
-                  },
-                ),
-              ],
+              // Sign Out lives in Settings (gear icon, top right).
 
               // Bottom clearance for FloatingBottomNavBar
               const SizedBox(height: 100),
