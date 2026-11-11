@@ -12,11 +12,12 @@ class FeltGradeSelector extends StatelessWidget {
     required this.onSelected,
   });
 
-  static const List<Map<String, dynamic>> _options = [
-    {'value': 'easy', 'label': 'Easy', 'icon': Icons.sentiment_satisfied_rounded, 'color': AppColors.primary},
-    {'value': 'average', 'label': 'Average', 'icon': Icons.sentiment_neutral_rounded, 'color': AppColors.primaryLight},
-    {'value': 'hard', 'label': 'Hard', 'icon': Icons.whatshot_rounded, 'color': AppColors.warning},
-    {'value': 'limit', 'label': 'Limit', 'icon': Icons.local_fire_department_rounded, 'color': AppColors.hazardText},
+  /// 'color' resolves against the active [AppPalette] so tones adapt to light/dark.
+  static final List<Map<String, dynamic>> _options = [
+    {'value': 'easy', 'label': 'Easy', 'icon': Icons.sentiment_satisfied_rounded, 'color': (AppPalette p) => p.accent},
+    {'value': 'average', 'label': 'Average', 'icon': Icons.sentiment_neutral_rounded, 'color': (AppPalette p) => p.primaryLight},
+    {'value': 'hard', 'label': 'Hard', 'icon': Icons.whatshot_rounded, 'color': (AppPalette p) => p.warning},
+    {'value': 'limit', 'label': 'Limit', 'icon': Icons.local_fire_department_rounded, 'color': (AppPalette p) => p.hazardText},
   ];
 
   @override
@@ -26,8 +27,8 @@ class FeltGradeSelector extends StatelessWidget {
       children: [
         Text(
           'INTENSITY',
-          style: AppTextStyles.labelSmall.copyWith(
-            color: AppColors.textMuted,
+          style: context.textStyles.labelSmall.copyWith(
+            color: context.palette.textMuted,
             letterSpacing: 1.0,
             fontWeight: FontWeight.w600,
           ),
@@ -38,7 +39,7 @@ class FeltGradeSelector extends StatelessWidget {
             final value = opt['value'] as String;
             final label = opt['label'] as String;
             final icon = opt['icon'] as IconData;
-            final color = opt['color'] as Color;
+            final color = (opt['color'] as Color Function(AppPalette))(context.palette);
             final isSelected = selectedFeltGrade == value;
 
             return Expanded(
@@ -57,10 +58,10 @@ class FeltGradeSelector extends StatelessWidget {
                     duration: const Duration(milliseconds: 150),
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     decoration: BoxDecoration(
-                      color: isSelected ? color.withValues(alpha: 0.15) : AppColors.surface,
+                      color: isSelected ? color.withValues(alpha: 0.15) : context.palette.surface,
                       borderRadius: BorderRadius.circular(AppRadius.md),
                       border: Border.all(
-                        color: isSelected ? color : AppColors.borderSubtle,
+                        color: isSelected ? color : context.palette.borderSubtle,
                         width: isSelected ? 1.5 : 1.0,
                       ),
                     ),
@@ -70,13 +71,13 @@ class FeltGradeSelector extends StatelessWidget {
                         Icon(
                           icon,
                           size: 20,
-                          color: isSelected ? color : AppColors.textMuted,
+                          color: isSelected ? color : context.palette.textMuted,
                         ),
                         const SizedBox(height: 4),
                         Text(
                           label,
-                          style: AppTextStyles.caption.copyWith(
-                            color: isSelected ? color : AppColors.textMuted,
+                          style: context.textStyles.caption.copyWith(
+                            color: isSelected ? color : context.palette.textMuted,
                             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                           ),
                         ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../core/router/app_router.dart';
 import '../core/theme/app_theme.dart';
 import '../models/crag.dart';
 
@@ -7,6 +9,9 @@ import '../models/crag.dart';
 class VisiblePlacesSheet extends StatelessWidget {
   final List<Crag> venues;
   final Crag? selectedVenue;
+
+  /// Called when a venue row is tapped. When null, the row opens
+  /// [CragDetailScreen] for that venue (crags and gyms alike).
   final ValueChanged<Crag>? onVenueTap;
 
   const VisiblePlacesSheet({
@@ -15,6 +20,18 @@ class VisiblePlacesSheet extends StatelessWidget {
     this.selectedVenue,
     this.onVenueTap,
   });
+
+  /// Defers to [onVenueTap] if provided; otherwise pushes the venue's detail
+  /// page, passing the [Crag] as `extra` so it renders instantly while the
+  /// detail provider refreshes from Supabase.
+  void _handleVenueTap(BuildContext context, Crag venue) {
+    if (onVenueTap != null) {
+      onVenueTap!(venue);
+      return;
+    }
+    debugPrint('--> [MAP:UI] Open venue detail ${venue.id} from visible places sheet');
+    context.push(AppRoutes.cragDetailPath(venue.id), extra: venue);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +59,7 @@ class VisiblePlacesSheet extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.25),
+                color: context.palette.shadow.withValues(alpha: 0.25),
                 blurRadius: 10,
                 offset: const Offset(0, -2),
               ),
@@ -65,7 +82,7 @@ class VisiblePlacesSheet extends StatelessWidget {
                         height: 4,
                         decoration: BoxDecoration(
                           color: colorScheme.outlineVariant,
-                          borderRadius: BorderRadius.circular(2),
+                          borderRadius: AppRadius.borderHandle,
                         ),
                       ),
                     ),
@@ -165,7 +182,7 @@ class VisiblePlacesSheet extends StatelessWidget {
                           key: Key('visible_venue_${venue.id}'),
                           venue: venue,
                           isSelected: isSelected,
-                          onTap: () => onVenueTap?.call(venue),
+                          onTap: () => _handleVenueTap(context, venue),
                         );
                       },
                       childCount: venues.length,

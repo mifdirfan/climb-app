@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../core/router/app_router.dart';
 import '../core/theme/app_theme.dart';
-import '../util/auth_guard.dart';
 
 /// A floating action button designed for reporting climbing hazards & safety alerts.
 ///
 /// Follows ClimbApp design system tokens with hazard styling, stadium pill radius
 /// ([AppRadius.pill]), and responsive theme integration. Tapping navigates to
 /// the dedicated 3-step Hazard Reporting flow.
-class ReportHazardButton extends ConsumerWidget {
+///
+/// Auth is not checked here: the destination [SelectHazardTypeScreen] renders
+/// an `AuthRequiredView` for guests, so after login the user is redirected
+/// straight back into the hazard flow instead of the screen they tapped from.
+class ReportHazardButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool extended;
   final String label;
@@ -27,7 +29,7 @@ class ReportHazardButton extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
@@ -38,13 +40,8 @@ class ReportHazardButton extends ConsumerWidget {
       if (onPressed != null) {
         onPressed!();
       } else {
-        // Automatically guards navigation behind authentication
-        requireAuth(
-          context,
-          ref,
-          reason: 'Sign in to report a crag hazard',
-          action: () => context.push(AppRoutes.reportHazardSelect),
-        );
+        debugPrint('--> [HAZARD:UI] Report hazard button tapped');
+        context.push(AppRoutes.reportHazardSelect);
       }
     }
 
@@ -70,7 +67,7 @@ class ReportHazardButton extends ConsumerWidget {
         ),
         label: Text(
           label,
-          style: AppTextStyles.labelMedium.copyWith(
+          style: context.textStyles.labelMedium.copyWith(
             color: foregroundColor,
             fontWeight: FontWeight.w700,
             letterSpacing: 0.8,

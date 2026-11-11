@@ -23,10 +23,10 @@ class RouteItemCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: context.palette.surface,
           borderRadius: AppRadius.borderSm,
           border: Border.all(
-            color: AppColors.border,
+            color: context.palette.border,
             width: 1.0,
           ),
         ),
@@ -45,9 +45,9 @@ class RouteItemCard extends StatelessWidget {
                 children: [
                   Text(
                     route.name,
-                    style: AppTextStyles.titleMedium.copyWith(
+                    style: context.textStyles.titleMedium.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
+                      color: context.palette.textPrimary,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -55,8 +55,8 @@ class RouteItemCard extends StatelessWidget {
                   const SizedBox(height: 3),
                   Text(
                     route.locationSubtitle,
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: AppColors.textSecondary,
+                    style: context.textStyles.bodySmall.copyWith(
+                      color: context.palette.textSecondary,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -68,9 +68,9 @@ class RouteItemCard extends StatelessWidget {
             const SizedBox(width: 10),
 
             // Trailing Chevron
-            const Icon(
+            Icon(
               Icons.chevron_right,
-              color: AppColors.textSecondary,
+              color: context.palette.textSecondary,
               size: 20,
             ),
           ],

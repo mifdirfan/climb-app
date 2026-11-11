@@ -46,7 +46,6 @@ class _ReportHazardFormScreenState
     requireAuth(
       context,
       ref,
-      reason: 'Please sign in to submit a hazard report.',
       action: () async {
         final formState = ref.read(hazardReportFormProvider);
 
@@ -56,7 +55,7 @@ class _ReportHazardFormScreenState
               backgroundColor: Theme.of(context).colorScheme.error,
               content: Text(
                 'Please select an outdoor climbing crag first.',
-                style: TextStyle(color: Theme.of(context).colorScheme.onError),
+                style: context.textStyles.bodySmall.copyWith(color: Theme.of(context).colorScheme.onError),
               ),
             ),
           );
@@ -109,7 +108,7 @@ class _ReportHazardFormScreenState
         ),
         title: Text(
           'HAZARD DETAILS',
-          style: AppTextStyles.labelLarge.copyWith(
+          style: context.textStyles.labelLarge.copyWith(
             fontWeight: FontWeight.w700,
             letterSpacing: 1.2,
             color: colorScheme.onSurface,
@@ -129,7 +128,7 @@ class _ReportHazardFormScreenState
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: theme.cardTheme.color ?? AppColors.surface,
+                    color: theme.cardTheme.color ?? context.palette.surface,
                     borderRadius: AppRadius.borderMd,
                     border: Border.all(
                       color: colorScheme.outlineVariant,
@@ -148,7 +147,7 @@ class _ReportHazardFormScreenState
                         ),
                         child: Text(
                           currentOption.iconEmoji,
-                          style: const TextStyle(fontSize: 20),
+                          style: context.textStyles.emoji.copyWith(fontSize: 20),
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -158,13 +157,13 @@ class _ReportHazardFormScreenState
                           children: [
                             Text(
                               'Selected Category',
-                              style: AppTextStyles.caption.copyWith(
+                              style: context.textStyles.caption.copyWith(
                                 color: colorScheme.onSurfaceVariant,
                               ),
                             ),
                             Text(
                               currentOption.title,
-                              style: AppTextStyles.titleSmall.copyWith(
+                              style: context.textStyles.titleSmall.copyWith(
                                 fontWeight: FontWeight.w700,
                                 color: colorScheme.onSurface,
                               ),
@@ -188,7 +187,7 @@ class _ReportHazardFormScreenState
                         ),
                         child: Text(
                           'CHANGE',
-                          style: AppTextStyles.labelSmall.copyWith(
+                          style: context.textStyles.labelSmall.copyWith(
                             color: colorScheme.primary,
                             fontWeight: FontWeight.w700,
                           ),
@@ -202,7 +201,7 @@ class _ReportHazardFormScreenState
                 // 2. Outdoor Crag Picker
                 Text(
                   'OUTDOOR CLIMBING CRAG *',
-                  style: AppTextStyles.labelSmall.copyWith(
+                  style: context.textStyles.labelSmall.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     letterSpacing: 1.0,
                   ),
@@ -252,7 +251,7 @@ class _ReportHazardFormScreenState
                     padding: const EdgeInsets.symmetric(
                         horizontal: 14, vertical: 14),
                     decoration: BoxDecoration(
-                      color: AppColors.surfaceInput,
+                      color: context.palette.surfaceInput,
                       borderRadius: AppRadius.borderSm,
                       border: Border.all(
                         color: formState.selectedCrag != null
@@ -275,7 +274,7 @@ class _ReportHazardFormScreenState
                           child: Text(
                             formState.selectedCrag?.name ??
                                 'Tap to select outdoor crag',
-                            style: AppTextStyles.bodyMedium.copyWith(
+                            style: context.textStyles.bodyMedium.copyWith(
                               color: formState.selectedCrag != null
                                   ? colorScheme.onSurface
                                   : colorScheme.onSurfaceVariant,
@@ -298,7 +297,7 @@ class _ReportHazardFormScreenState
                 // 3. Route in Crag Dropdown
                 Text(
                   'ROUTE IN CRAG (OPTIONAL)',
-                  style: AppTextStyles.labelSmall.copyWith(
+                  style: context.textStyles.labelSmall.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     letterSpacing: 1.0,
                   ),
@@ -329,7 +328,7 @@ class _ReportHazardFormScreenState
                         Expanded(
                           child: Text(
                             'Select an outdoor crag above to choose a route',
-                            style: AppTextStyles.bodySmall.copyWith(
+                            style: context.textStyles.bodySmall.copyWith(
                               color: colorScheme.onSurfaceVariant,
                             ),
                           ),
@@ -344,7 +343,7 @@ class _ReportHazardFormScreenState
                 // 4. Sector / Specific Location Field
                 Text(
                   'SECTOR OR WALL AREA (OPTIONAL)',
-                  style: AppTextStyles.labelSmall.copyWith(
+                  style: context.textStyles.labelSmall.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     letterSpacing: 1.0,
                   ),
@@ -352,7 +351,7 @@ class _ReportHazardFormScreenState
                 const SizedBox(height: 8),
                 TextFormField(
                   controller: _sectorController,
-                  style: AppTextStyles.bodyMedium
+                  style: context.textStyles.bodyMedium
                       .copyWith(color: colorScheme.onSurface),
                   decoration: const InputDecoration(
                     hintText: 'e.g. Damai Wall, Cave Entrance, Approach Trail',
@@ -364,7 +363,7 @@ class _ReportHazardFormScreenState
                 // 5. Severity Level Selector
                 Text(
                   'SEVERITY LEVEL',
-                  style: AppTextStyles.labelSmall.copyWith(
+                  style: context.textStyles.labelSmall.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     letterSpacing: 1.0,
                   ),
@@ -384,7 +383,7 @@ class _ReportHazardFormScreenState
                 // 6. Description Input
                 Text(
                   'DESCRIPTION & PRECAUTIONS *',
-                  style: AppTextStyles.labelSmall.copyWith(
+                  style: context.textStyles.labelSmall.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     letterSpacing: 1.0,
                   ),
@@ -400,7 +399,7 @@ class _ReportHazardFormScreenState
                     }
                     return null;
                   },
-                  style: AppTextStyles.bodyMedium
+                  style: context.textStyles.bodyMedium
                       .copyWith(color: colorScheme.onSurface),
                   decoration: const InputDecoration(
                     hintText:
@@ -412,7 +411,7 @@ class _ReportHazardFormScreenState
                 // 7. Photo Attachment Placeholder
                 Text(
                   'PHOTO ATTACHMENT (OPTIONAL)',
-                  style: AppTextStyles.labelSmall.copyWith(
+                  style: context.textStyles.labelSmall.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     letterSpacing: 1.0,
                   ),
@@ -450,7 +449,7 @@ class _ReportHazardFormScreenState
                         const SizedBox(height: 6),
                         Text(
                           'Add Photo of Hazard',
-                          style: AppTextStyles.bodySmall.copyWith(
+                          style: context.textStyles.bodySmall.copyWith(
                             color: colorScheme.onSurface,
                             fontWeight: FontWeight.w600,
                           ),
@@ -466,7 +465,7 @@ class _ReportHazardFormScreenState
                     padding: const EdgeInsets.only(bottom: 16),
                     child: Text(
                       formState.errorMessage!,
-                      style: TextStyle(color: colorScheme.error, fontSize: 13),
+                      style: context.textStyles.bodySmall.copyWith(color: colorScheme.error),
                     ),
                   ),
 
@@ -496,7 +495,7 @@ class _ReportHazardFormScreenState
                           )
                         : Text(
                             'SUBMIT HAZARD REPORT',
-                            style: AppTextStyles.labelLarge.copyWith(
+                            style: context.textStyles.labelLarge.copyWith(
                               color: colorScheme.onPrimary,
                               fontWeight: FontWeight.w700,
                               letterSpacing: 0.8,
@@ -529,7 +528,7 @@ class _ReportHazardFormScreenState
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
       decoration: BoxDecoration(
-        color: AppColors.surfaceInput,
+        color: context.palette.surfaceInput,
         borderRadius: AppRadius.borderSm,
         border: Border.all(
           color: formState.routeName.isNotEmpty
@@ -543,10 +542,10 @@ class _ReportHazardFormScreenState
           key: const Key('report_form_route_dropdown'),
           value: selectedDropdownValue,
           isExpanded: true,
-          dropdownColor: AppColors.surfaceElevated,
+          dropdownColor: context.palette.surfaceElevated,
           hint: Text(
             'Entire Crag / General Area (No specific route)',
-            style: AppTextStyles.bodySmall.copyWith(
+            style: context.textStyles.bodySmall.copyWith(
               color: colorScheme.onSurfaceVariant,
             ),
           ),
@@ -555,7 +554,7 @@ class _ReportHazardFormScreenState
               value: null,
               child: Text(
                 'Entire Crag / General Area',
-                style: AppTextStyles.bodySmall.copyWith(
+                style: context.textStyles.bodySmall.copyWith(
                   color: colorScheme.onSurface,
                   fontWeight: FontWeight.w600,
                 ),
@@ -566,7 +565,7 @@ class _ReportHazardFormScreenState
                 value: route.name,
                 child: Text(
                   '${route.name} (${route.grade})',
-                  style: AppTextStyles.bodySmall.copyWith(
+                  style: context.textStyles.bodySmall.copyWith(
                     color: colorScheme.onSurface,
                   ),
                   overflow: TextOverflow.ellipsis,
@@ -579,7 +578,7 @@ class _ReportHazardFormScreenState
                 isCustom
                     ? 'Custom: ${formState.routeName} (Tap to change)'
                     : '+ Enter custom route name...',
-                style: AppTextStyles.bodySmall.copyWith(
+                style: context.textStyles.bodySmall.copyWith(
                   color: colorScheme.primary,
                   fontWeight: FontWeight.w600,
                 ),
@@ -658,8 +657,8 @@ class _ReportHazardFormScreenState
       label: Text(key.toUpperCase()),
       selected: isSelected,
       selectedColor: colorScheme.primary,
-      backgroundColor: AppColors.surfaceInput,
-      labelStyle: AppTextStyles.bodySmall.copyWith(
+      backgroundColor: context.palette.surfaceInput,
+      labelStyle: context.textStyles.bodySmall.copyWith(
         color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface,
         fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
       ),

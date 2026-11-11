@@ -19,8 +19,8 @@ class SessionRatingBar extends StatelessWidget {
       children: [
         Text(
           'SESSION RATING',
-          style: AppTextStyles.labelSmall.copyWith(
-            color: AppColors.textMuted,
+          style: context.textStyles.labelSmall.copyWith(
+            color: context.palette.textMuted,
             letterSpacing: 1.0,
             fontWeight: FontWeight.w600,
           ),
@@ -30,9 +30,9 @@ class SessionRatingBar extends StatelessWidget {
           height: 52,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: context.palette.surface,
             borderRadius: BorderRadius.circular(AppRadius.lg),
-            border: Border.all(color: AppColors.borderSubtle),
+            border: Border.all(color: context.palette.borderSubtle),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,7 +50,7 @@ class SessionRatingBar extends StatelessWidget {
                       child: Icon(
                         isFilled ? Icons.star_rounded : Icons.star_outline_rounded,
                         size: 28,
-                        color: isFilled ? AppColors.warning : AppColors.textMuted,
+                        color: isFilled ? context.palette.warning : context.palette.textMuted,
                       ),
                     ),
                   );
@@ -58,8 +58,8 @@ class SessionRatingBar extends StatelessWidget {
               ),
               Text(
                 rating != null ? '$rating / 5' : 'Unrated',
-                style: AppTextStyles.titleSmall.copyWith(
-                  color: rating != null ? AppColors.textPrimary : AppColors.textMuted,
+                style: context.textStyles.titleSmall.copyWith(
+                  color: rating != null ? context.palette.textPrimary : context.palette.textMuted,
                   fontWeight: FontWeight.w600,
                 ),
               ),

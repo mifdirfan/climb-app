@@ -27,10 +27,10 @@ class TopoVideoCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(20),
+        color: context.palette.surface,
+        borderRadius: AppRadius.borderXl,
         border: Border.all(
-          color: AppColors.borderSubtle,
+          color: context.palette.borderSubtle,
           width: 1.0,
         ),
       ),
@@ -45,12 +45,12 @@ class TopoVideoCard extends StatelessWidget {
                 width: 32,
                 height: 32,
                 decoration: BoxDecoration(
-                  color: AppColors.surfaceInput,
+                  color: context.palette.surfaceInput,
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.play_arrow_rounded,
-                  color: AppColors.primary,
+                  color: context.palette.accent,
                   size: 20,
                 ),
               ),
@@ -61,8 +61,8 @@ class TopoVideoCard extends StatelessWidget {
                   children: [
                     Text(
                       'TOPO VIDEO BETA LINK',
-                      style: AppTextStyles.titleSmall.copyWith(
-                        color: AppColors.textPrimary,
+                      style: context.textStyles.titleSmall.copyWith(
+                        color: context.palette.textPrimary,
                         fontSize: 12,
                         letterSpacing: 0.5,
                       ),
@@ -70,10 +70,9 @@ class TopoVideoCard extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       'VIDEO EMBED BETA',
-                      style: AppTextStyles.caption.copyWith(
-                        color: AppColors.primary,
+                      style: context.textStyles.micro.copyWith(
+                        color: context.palette.accent,
                         fontWeight: FontWeight.w600,
-                        fontSize: 9,
                         letterSpacing: 0.6,
                       ),
                     ),
@@ -88,8 +87,8 @@ class TopoVideoCard extends StatelessWidget {
           // Explanatory Subtitle
           Text(
             'Just share the link to the topo video you uploaded on platforms like YouTube, Instagram Reels, TikTok, or Vimeo.',
-            style: AppTextStyles.bodySmall.copyWith(
-              color: AppColors.textMuted,
+            style: context.textStyles.bodySmall.copyWith(
+              color: context.palette.textMuted,
               fontSize: 11,
               height: 1.4,
             ),
@@ -101,29 +100,29 @@ class TopoVideoCard extends StatelessWidget {
           TextFormField(
             controller: controller,
             onChanged: onChanged,
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textPrimary,
+            style: context.textStyles.bodyMedium.copyWith(
+              color: context.palette.textPrimary,
             ),
             decoration: InputDecoration(
               hintText: 'https://www.youtube.com/watch?v=... or reel URL',
-              hintStyle: AppTextStyles.bodySmall.copyWith(
-                color: AppColors.textMuted,
+              hintStyle: context.textStyles.bodySmall.copyWith(
+                color: context.palette.textMuted,
               ),
-              prefixIcon: const Icon(
+              prefixIcon: Icon(
                 Icons.link_rounded,
                 size: 18,
-                color: AppColors.textMuted,
+                color: context.palette.textMuted,
               ),
               contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               filled: true,
-              fillColor: AppColors.surfaceInput,
+              fillColor: context.palette.surfaceInput,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppRadius.lg),
-                borderSide: const BorderSide(color: AppColors.borderSubtle),
+                borderSide: BorderSide(color: context.palette.borderSubtle),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppRadius.lg),
-                borderSide: const BorderSide(color: AppColors.borderSubtle),
+                borderSide: BorderSide(color: context.palette.borderSubtle),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -142,10 +141,9 @@ class TopoVideoCard extends StatelessWidget {
             children: [
               Text(
                 'SUPPORTED:',
-                style: AppTextStyles.caption.copyWith(
-                  color: AppColors.textMuted,
+                style: context.textStyles.micro.copyWith(
+                  color: context.palette.textMuted,
                   fontWeight: FontWeight.w600,
-                  fontSize: 9,
                   letterSpacing: 0.8,
                 ),
               ),
@@ -153,10 +151,10 @@ class TopoVideoCard extends StatelessWidget {
                 (platform) => Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: AppColors.surfaceElevated,
-                    borderRadius: BorderRadius.circular(6),
+                    color: context.palette.surfaceElevated,
+                    borderRadius: AppRadius.borderSm,
                     border: Border.all(
-                      color: AppColors.borderSubtle,
+                      color: context.palette.borderSubtle,
                       width: 1.0,
                     ),
                   ),
@@ -166,17 +164,16 @@ class TopoVideoCard extends StatelessWidget {
                       Container(
                         width: 6,
                         height: 6,
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary,
+                        decoration: BoxDecoration(
+                          color: context.palette.primary,
                           shape: BoxShape.circle,
                         ),
                       ),
                       const SizedBox(width: 5),
                       Text(
                         platform,
-                        style: AppTextStyles.caption.copyWith(
-                          color: AppColors.textMuted,
-                          fontSize: 10,
+                        style: context.textStyles.caption.copyWith(
+                          color: context.palette.textMuted,
                         ),
                       ),
                     ],

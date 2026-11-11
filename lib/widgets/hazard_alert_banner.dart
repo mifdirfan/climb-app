@@ -31,25 +31,25 @@ class HazardAlertBanner extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
-          color: AppColors.hazardContainer,
+          color: context.palette.hazardContainer,
           borderRadius: AppRadius.borderSm,
           border: Border.all(
-            color: AppColors.hazardText.withAlpha(80),
+            color: context.palette.hazardText.withAlpha(80),
             width: 1.0,
           ),
         ),
         child: Row(
           children: [
-            const Icon(
+            Icon(
               Icons.warning_amber_rounded,
-              color: AppColors.hazardText,
+              color: context.palette.hazardText,
               size: 20,
             ),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
                 message,
-                style: AppTextStyles.hazardAlert.copyWith(
+                style: context.textStyles.hazardAlert.copyWith(
                   fontWeight: FontWeight.w600,
                   fontSize: 13,
                 ),
@@ -59,20 +59,20 @@ class HazardAlertBanner extends StatelessWidget {
             ),
             if (onDismiss != null)
               IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.close,
                   size: 16,
-                  color: AppColors.hazardText,
+                  color: context.palette.hazardText,
                 ),
                 onPressed: onDismiss,
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
               )
             else
-              const Icon(
+              Icon(
                 Icons.chevron_right,
                 size: 18,
-                color: AppColors.hazardText,
+                color: context.palette.hazardText,
               ),
           ],
         ),

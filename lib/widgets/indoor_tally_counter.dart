@@ -17,11 +17,11 @@ class IndoorTallyCounter extends StatelessWidget {
   });
 
   // Helper to convert hex strings like "#10B981" to Flutter Colors
-  Color _parseHex(String? hexString) {
-    if (hexString == null || hexString.isEmpty) return AppColors.primary;
+  Color _parseHex(BuildContext context, String? hexString) {
+    if (hexString == null || hexString.isEmpty) return context.palette.primary;
     final cleanHex = hexString.replaceAll('#', '');
     final intVal = int.tryParse(cleanHex, radix: 16);
-    return intVal != null ? Color(0xFF000000 | intVal) : AppColors.primary;
+    return intVal != null ? Color(0xFF000000 | intVal) : context.palette.primary;
   }
 
   @override
@@ -39,8 +39,8 @@ class IndoorTallyCounter extends StatelessWidget {
       children: [
         Text(
           'BOULDER SENDS TALLY',
-          style: AppTextStyles.labelSmall.copyWith(
-            color: AppColors.textMuted,
+          style: context.textStyles.labelSmall.copyWith(
+            color: context.palette.textMuted,
             letterSpacing: 1.0,
             fontWeight: FontWeight.w600,
           ),
@@ -49,9 +49,9 @@ class IndoorTallyCounter extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: context.palette.surface,
             borderRadius: BorderRadius.circular(AppRadius.lg),
-            border: Border.all(color: AppColors.borderSubtle),
+            border: Border.all(color: context.palette.borderSubtle),
           ),
           child: Column(
             children: items.map((gradeLabel) {
@@ -73,17 +73,17 @@ class IndoorTallyCounter extends StatelessWidget {
                             width: 14,
                             height: 14,
                             decoration: BoxDecoration(
-                              color: _parseHex(tagInfo.hex),
+                              color: _parseHex(context, tagInfo.hex),
                               shape: BoxShape.circle,
-                              border: Border.all(color: AppColors.borderSubtle, width: 1.0),
+                              border: Border.all(color: context.palette.borderSubtle, width: 1.0),
                             ),
                           ),
                           const SizedBox(width: 8),
                         ],
                         Text(
                           gradeLabel,
-                          style: AppTextStyles.titleSmall.copyWith(
-                            color: AppColors.textPrimary,
+                          style: context.textStyles.titleSmall.copyWith(
+                            color: context.palette.textPrimary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -94,7 +94,7 @@ class IndoorTallyCounter extends StatelessWidget {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.remove_circle_outline, size: 22),
-                          color: count > 0 ? AppColors.textPrimary : AppColors.textMuted,
+                          color: count > 0 ? context.palette.textPrimary : context.palette.textMuted,
                           onPressed: count > 0 ? () => onDecrement(gradeLabel) : null,
                           splashRadius: 20,
                         ),
@@ -103,15 +103,15 @@ class IndoorTallyCounter extends StatelessWidget {
                           child: Text(
                             count.toString(),
                             textAlign: TextAlign.center,
-                            style: AppTextStyles.bodyMedium.copyWith(
+                            style: context.textStyles.bodyMedium.copyWith(
                               fontWeight: FontWeight.w700,
-                              color: count > 0 ? AppColors.primary : AppColors.textMuted,
+                              color: count > 0 ? context.palette.accent : context.palette.textMuted,
                             ),
                           ),
                         ),
                         IconButton(
                           icon: const Icon(Icons.add_circle_outline, size: 22),
-                          color: AppColors.primary,
+                          color: context.palette.accent,
                           onPressed: () => onIncrement(gradeLabel),
                           splashRadius: 20,
                         ),

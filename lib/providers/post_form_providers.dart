@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/legacy.dart';
 import '../repositories/session_repository.dart';
 import '../repositories/tick_repository.dart';
 import 'auth_providers.dart';
+import 'logbook_providers.dart';
 import '../models/indoor_session.dart';
 
 
@@ -178,6 +179,9 @@ class OutdoorPostFormNotifier extends Notifier<OutdoorPostFormState> {
         'notes': state.notes.trim(),
         'climbed_at': state.date.toIso8601String().split('T').first,
       });
+      // Keep Profile > Tick History in sync with the new send.
+      ref.invalidate(myTicksProvider);
+      debugPrint('--> [TICKS:STATE] Tick saved; invalidated myTicksProvider');
       state = state.copyWith(isSubmitting: false);
     } catch (e) {
       state = state.copyWith(isSubmitting: false);

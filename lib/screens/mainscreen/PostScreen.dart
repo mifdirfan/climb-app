@@ -2,9 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/router/app_router.dart';
 import '../../core/theme/app_theme.dart';
+import '../../providers/auth_providers.dart';
 import '../../providers/home_providers.dart';
 import '../../providers/post_form_providers.dart';
+import '../../widgets/auth_required_view.dart';
 import '../../widgets/form/form.dart';
 import '../../widgets/post_type_selector.dart';
 
@@ -42,6 +45,19 @@ class _PostPageState extends ConsumerState<PostPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isAuthenticated = ref.watch(isAuthenticatedProvider);
+
+    // If unauthenticated, display a clean blank screen with the sign in button in the middle
+    if (!isAuthenticated) {
+      return AuthRequiredView(
+        title: 'Sign In to Log Sends',
+        subtitle: 'Sign in to record your climbing sends, ticks, and personal gym sessions.',
+        categoryLabel: 'SIGN IN REQUIRED',
+        redirectPath: AppRoutes.ticks,
+        onBack: widget.onBack != null || context.canPop() ? _navigateAfterSubmit : null,
+      );
+    }
+
     final postType = ref.watch(postTypeProvider);
     final isOutdoor = postType == ClimbPostType.outdoor;
 
@@ -71,9 +87,8 @@ class _PostPageState extends ConsumerState<PostPage> {
         scrolledUnderElevation: 0,
         title: Text(
           isOutdoor ? 'LOG A SEND' : 'LOG GYM SESSION',
-          style: AppTextStyles.displayLarge.copyWith(
-            fontSize: 28,
-            color: AppColors.textPrimary,
+          style: context.textStyles.screenTitle.copyWith(
+          color: context.palette.textPrimary,
           ),
         ),
         centerTitle: false,

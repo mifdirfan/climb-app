@@ -222,7 +222,7 @@ class _MapScreenState extends ConsumerState<MapScreen>
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.15),
+                        color: context.palette.shadow.withValues(alpha: 0.15),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -289,7 +289,7 @@ class _MapScreenState extends ConsumerState<MapScreen>
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.15),
+                            color: context.palette.shadow.withValues(alpha: 0.15),
                             blurRadius: 8,
                             offset: const Offset(0, 2),
                           ),
@@ -318,7 +318,7 @@ class _MapScreenState extends ConsumerState<MapScreen>
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.15),
+                        color: context.palette.shadow.withValues(alpha: 0.15),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -372,12 +372,10 @@ class _MapScreenState extends ConsumerState<MapScreen>
           ),
 
           // 4. Sliding Visible Places Sheet at the bottom
+          // Tapping a row opens the venue's detail page (sheet default).
           VisiblePlacesSheet(
             venues: visibleVenues,
             selectedVenue: _selectedVenue,
-            onVenueTap: (venue) {
-              // Clickable venue element; no action performed yet as requested
-            },
           ),
         ],
       ),

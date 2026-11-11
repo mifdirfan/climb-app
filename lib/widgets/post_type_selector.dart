@@ -20,10 +20,10 @@ class PostTypeSelector extends StatelessWidget {
       height: 42,
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.pill),
         border: Border.all(
-          color: AppColors.borderSubtle,
+          color: context.palette.borderSubtle,
           width: 1,
         ),
       ),
@@ -95,13 +95,13 @@ class _PillOption extends StatelessWidget {
             Icon(
               icon,
               size: 16,
-              color: isSelected ? AppColors.onPrimary : AppColors.textMuted,
+              color: isSelected ? context.palette.onPrimary : context.palette.textMuted,
             ),
             const SizedBox(width: 6),
             Text(
               label,
-              style: AppTextStyles.labelMedium.copyWith(
-                color: isSelected ? AppColors.onPrimary : AppColors.textMuted,
+              style: context.textStyles.labelMedium.copyWith(
+                color: isSelected ? context.palette.onPrimary : context.palette.textMuted,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                 letterSpacing: 0.4,
               ),

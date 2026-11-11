@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show ProviderBase;
 import 'package:go_router/go_router.dart';
 import '../../core/router/app_router.dart';
 import '../../core/theme/app_theme.dart';
@@ -13,7 +14,7 @@ typedef CragsListScreen = VenuesListScreen;
 enum VenueCategoryFilter { all, crags, gyms }
 
 /// Reusable screen displaying a searchable, filterable list of climbing crags and gyms.
-/// Used for "Tick History & Send Log", "Saved Crags & Topos", and other venue collections.
+/// Used for "Saved Crags & Topos" and other venue collections.
 class VenuesListScreen extends ConsumerStatefulWidget {
   final String title;
   final String? subtitle;
@@ -22,6 +23,14 @@ class VenuesListScreen extends ConsumerStatefulWidget {
   final IconData? emptyIcon;
   final List<Crag>? initialVenues;
   final ValueChanged<Crag>? onVenueTap;
+
+  /// Provider supplying the venues. Defaults to [mapVenuesProvider] (all venues);
+  /// pass e.g. `savedCragsProvider` to show a user-scoped collection.
+  /// Also used as the Retry target on error.
+  final ProviderBase<AsyncValue<List<Crag>>>? venuesSource;
+
+  /// Shows the All / Outdoor / Indoor chips. Hide for single-type collections.
+  final bool showCategoryFilter;
 
   const VenuesListScreen({
     super.key,
@@ -32,6 +41,8 @@ class VenuesListScreen extends ConsumerStatefulWidget {
     this.emptyIcon,
     this.initialVenues,
     this.onVenueTap,
+    this.venuesSource,
+    this.showCategoryFilter = true,
   });
 
   @override
@@ -60,8 +71,9 @@ class _VenuesListScreenState extends ConsumerState<VenuesListScreen> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    // Use initialVenues if provided (e.g. for testing/mocking), otherwise watch mapVenuesProvider
-    final venuesAsync = ref.watch(mapVenuesProvider);
+    // Use initialVenues if provided (e.g. for testing/mocking), otherwise watch the source
+    final source = widget.venuesSource ?? mapVenuesProvider;
+    final venuesAsync = ref.watch(source);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -85,7 +97,7 @@ class _VenuesListScreenState extends ConsumerState<VenuesListScreen> {
           children: [
             Text(
               widget.title,
-              style: AppTextStyles.titleLarge.copyWith(
+              style: context.textStyles.titleLarge.copyWith(
                 color: colorScheme.onSurface,
                 fontWeight: FontWeight.w700,
                 fontSize: 20,
@@ -108,10 +120,10 @@ class _VenuesListScreenState extends ConsumerState<VenuesListScreen> {
                     key: const Key('venues_search_field'),
                     controller: _searchController,
                     onChanged: (val) => setState(() => _searchQuery = val.trim()),
-                    style: AppTextStyles.bodyMedium.copyWith(color: colorScheme.onSurface),
+                    style: context.textStyles.bodyMedium.copyWith(color: colorScheme.onSurface),
                     decoration: InputDecoration(
                       hintText: 'Search by crag, gym, or state...',
-                      hintStyle: AppTextStyles.bodySmall.copyWith(color: colorScheme.onSurfaceVariant),
+                      hintStyle: context.textStyles.bodySmall.copyWith(color: colorScheme.onSurfaceVariant),
                       prefixIcon: Icon(Icons.search, size: 20, color: colorScheme.onSurfaceVariant),
                       suffixIcon: _searchQuery.isNotEmpty
                           ? IconButton(
@@ -124,6 +136,7 @@ class _VenuesListScreenState extends ConsumerState<VenuesListScreen> {
                           : null,
                     ),
                   ),
+                  if (widget.showCategoryFilter) ...[
                   const SizedBox(height: 10),
                   // Filter Chips Row
                   Row(
@@ -153,6 +166,7 @@ class _VenuesListScreenState extends ConsumerState<VenuesListScreen> {
                       ),
                     ],
                   ),
+                  ],
                 ],
               ),
             ),
@@ -165,8 +179,8 @@ class _VenuesListScreenState extends ConsumerState<VenuesListScreen> {
                   ? _buildVenuesList(theme, colorScheme, widget.initialVenues!)
                   : venuesAsync.when(
                       data: (venues) => _buildVenuesList(theme, colorScheme, venues),
-                      loading: () => const Center(
-                        child: CircularProgressIndicator(color: AppColors.primary),
+                      loading: () => Center(
+                        child: CircularProgressIndicator(color: context.palette.accent),
                       ),
                       error: (err, _) => Center(
                         child: Padding(
@@ -178,17 +192,20 @@ class _VenuesListScreenState extends ConsumerState<VenuesListScreen> {
                               const SizedBox(height: 12),
                               Text(
                                 'Unable to load places',
-                                style: AppTextStyles.titleSmall.copyWith(color: colorScheme.onSurface),
+                                style: context.textStyles.titleSmall.copyWith(color: colorScheme.onSurface),
                               ),
                               const SizedBox(height: 6),
                               Text(
                                 err.toString(),
-                                style: AppTextStyles.caption.copyWith(color: colorScheme.onSurfaceVariant),
+                                style: context.textStyles.caption.copyWith(color: colorScheme.onSurfaceVariant),
                                 textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 16),
                               ElevatedButton.icon(
-                                onPressed: () => ref.refresh(mapVenuesProvider),
+                                onPressed: () {
+                                  debugPrint('--> [VENUES:UI] Retry tapped');
+                                  ref.invalidate(source);
+                                },
                                 icon: const Icon(Icons.refresh, size: 16),
                                 label: const Text('Retry'),
                                 style: ElevatedButton.styleFrom(
@@ -276,7 +293,7 @@ class _VenuesListScreenState extends ConsumerState<VenuesListScreen> {
                 _searchQuery.isNotEmpty
                     ? 'No matching locations found'
                     : (widget.emptyMessage ?? 'No locations available'),
-                style: AppTextStyles.titleMedium.copyWith(
+                style: context.textStyles.titleMedium.copyWith(
                   color: colorScheme.onSurface,
                   fontWeight: FontWeight.w600,
                 ),
@@ -287,7 +304,7 @@ class _VenuesListScreenState extends ConsumerState<VenuesListScreen> {
                 _searchQuery.isNotEmpty
                     ? 'Try searching for a different crag or city.'
                     : (widget.emptySubtitle ?? 'Locations will appear here as you log sends and save crags.'),
-                style: AppTextStyles.caption.copyWith(
+                style: context.textStyles.caption.copyWith(
                   color: colorScheme.onSurfaceVariant,
                 ),
                 textAlign: TextAlign.center,
@@ -316,7 +333,7 @@ class _VenuesListScreenState extends ConsumerState<VenuesListScreen> {
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    backgroundColor: AppColors.surfaceElevated,
+                    backgroundColor: context.palette.surfaceElevated,
                     content: Text('${venue.name} (${venue.state}) selected'),
                     duration: const Duration(seconds: 1),
                   ),
@@ -327,7 +344,7 @@ class _VenuesListScreenState extends ConsumerState<VenuesListScreen> {
             child: Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: theme.cardTheme.color ?? AppColors.surface,
+                color: theme.cardTheme.color ?? context.palette.surface,
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 border: Border.all(
                   color: colorScheme.outlineVariant,
@@ -363,7 +380,7 @@ class _VenuesListScreenState extends ConsumerState<VenuesListScreen> {
                       children: [
                         Text(
                           venue.name,
-                          style: AppTextStyles.titleSmall.copyWith(
+                          style: context.textStyles.titleSmall.copyWith(
                             color: colorScheme.onSurface,
                             fontWeight: FontWeight.w600,
                           ),
@@ -384,7 +401,7 @@ class _VenuesListScreenState extends ConsumerState<VenuesListScreen> {
                                 isIndoor && venue.address != null && venue.address!.isNotEmpty
                                     ? '${venue.state} • ${venue.address}'
                                     : '${venue.state} • ${venue.routeCount} routes',
-                                style: AppTextStyles.caption.copyWith(
+                                style: context.textStyles.caption.copyWith(
                                   color: colorScheme.onSurfaceVariant,
                                 ),
                                 maxLines: 1,

@@ -1,7 +1,6 @@
 ---
+name: backend-agent
 description: Full-stack feature pipeline (PostgreSQL schema, Supabase RLS, Repository, Riverpod state management, and UI) with structured debug logging.
-globs: ["lib/**/*.dart", "supabase/**/*.sql", "**/*.sql"]
-alwaysApply: false
 ---
 
 # Role: Full-Stack Feature Architect (Supabase & Flutter)
@@ -16,6 +15,7 @@ When generating logic or features, structure your output in this exact order:
 
 [1. Database Layer]  ──>  [2. Repository / Service]  ──>  [3. State Management]  ──>  [4. UI Layer]
 (SQL, RLS, Indexes)        (Supabase client, DTOs)        (Riverpod Notifiers)        (Widgets & Forms)
+
 
 
 ### Tier 1: Database Layer (PostgreSQL & Supabase)

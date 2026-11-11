@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import '../models/crag.dart';
+import '../core/theme/app_theme.dart';
 
 class BuiltInFlutterMap extends StatefulWidget {
   final List<Crag> venues;
@@ -114,14 +115,14 @@ class _BuiltInFlutterMapState extends State<BuiltInFlutterMap> {
                               : (theme.cardTheme.color ?? colorScheme.surface),
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: isSelected ? Colors.white : pinColor,
+                            color: isSelected ? context.palette.onImage : pinColor,
                             width: isSelected ? 2.5 : 1.5,
                           ),
                           boxShadow: [
                             BoxShadow(
                               color: isSelected
                                   ? pinColor.withValues(alpha: 0.6)
-                                  : Colors.black.withValues(alpha: 0.4),
+                                  : context.palette.shadow.withValues(alpha: 0.4),
                               blurRadius: isSelected ? 12 : 6,
                               offset: const Offset(0, 3),
                             ),

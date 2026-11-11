@@ -17,18 +17,18 @@ class GradeChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: isHighlighted ? AppColors.primary : AppColors.surfaceInput,
+        color: isHighlighted ? context.palette.primary : context.palette.surfaceInput,
         borderRadius: AppRadius.borderSm,
         border: Border.all(
-          color: isHighlighted ? AppColors.primary : AppColors.border,
+          color: isHighlighted ? context.palette.accent : context.palette.border,
           width: 1.0,
         ),
       ),
       child: Text(
         grade,
-        style: AppTextStyles.grade.copyWith(
+        style: context.textStyles.grade.copyWith(
           fontSize: 16,
-          color: isHighlighted ? AppColors.onPrimary : AppColors.primary,
+          color: isHighlighted ? context.palette.onPrimary : context.palette.accent,
         ),
       ),
     );

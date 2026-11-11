@@ -29,7 +29,7 @@ class CragCard extends StatelessWidget {
         width: 250,
         margin: const EdgeInsets.only(right: 14),
         decoration: BoxDecoration(
-          color: theme.cardTheme.color ?? AppColors.surface,
+          color: theme.cardTheme.color ?? context.palette.surface,
           borderRadius: AppRadius.borderMd,
           border: Border.all(
             color: theme.colorScheme.outlineVariant,
@@ -57,7 +57,7 @@ class CragCard extends StatelessWidget {
             // 2. Solid Tint Scrim for High-Contrast Text Legibility (No Gradient)
             Positioned.fill(
               child: Container(
-                color: Colors.black.withValues(alpha: 0.38),
+                color: context.palette.shadow.withValues(alpha: 0.38),
               ),
             ),
 
@@ -85,7 +85,7 @@ class CragCard extends StatelessWidget {
                           crag.routeCount > 0
                               ? '${crag.routeCount}+ Routes'
                               : 'Explore Routes',
-                          style: AppTextStyles.labelSmall.copyWith(
+                          style: context.textStyles.labelSmall.copyWith(
                             color: theme.colorScheme.onPrimary,
                             fontWeight: FontWeight.w700,
                           ),
@@ -116,10 +116,9 @@ class CragCard extends StatelessWidget {
                               const SizedBox(width: 4),
                               Text(
                                 'GYM',
-                                style: AppTextStyles.caption.copyWith(
+                                style: context.textStyles.micro.copyWith(
                                   color: theme.colorScheme.primary,
                                   fontWeight: FontWeight.w700,
-                                  fontSize: 9,
                                 ),
                               ),
                             ],
@@ -139,13 +138,13 @@ class CragCard extends StatelessWidget {
                         // Crag Name
                         Text(
                           crag.name,
-                          style: AppTextStyles.titleLarge.copyWith(
+                          style: context.textStyles.titleLarge.copyWith(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                            shadows: const [
+                            color: context.palette.onImage,
+                            shadows: [
                               Shadow(
-                                color: Colors.black54,
+                                color: context.palette.imageTextShadow,
                                 blurRadius: 4,
                                 offset: Offset(0, 1),
                               ),
@@ -159,13 +158,13 @@ class CragCard extends StatelessWidget {
                         // Location Row
                         Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.place_outlined,
                               size: 14,
-                              color: Colors.white70,
+                              color: context.palette.onImageMuted,
                               shadows: [
                                 Shadow(
-                                  color: Colors.black54,
+                                  color: context.palette.imageTextShadow,
                                   blurRadius: 4,
                                   offset: Offset(0, 1),
                                 ),
@@ -175,12 +174,12 @@ class CragCard extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 crag.state,
-                                style: AppTextStyles.bodySmall.copyWith(
-                                  color: Colors.white70,
+                                style: context.textStyles.bodySmall.copyWith(
+                                  color: context.palette.onImageMuted,
                                   fontWeight: FontWeight.w500,
-                                  shadows: const [
+                                  shadows: [
                                     Shadow(
-                                      color: Colors.black54,
+                                      color: context.palette.imageTextShadow,
                                       blurRadius: 4,
                                       offset: Offset(0, 1),
                                     ),
@@ -214,8 +213,7 @@ class CragCard extends StatelessWidget {
                               ),
                               child: Text(
                                 style,
-                                style: AppTextStyles.caption.copyWith(
-                                  fontSize: 9,
+                                style: context.textStyles.micro.copyWith(
                                   fontWeight: FontWeight.w700,
                                   color: theme.colorScheme.primary,
                                   letterSpacing: 0.5,

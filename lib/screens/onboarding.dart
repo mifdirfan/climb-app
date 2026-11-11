@@ -94,9 +94,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         ),
         title: Text(
           'Crag',
-          style: AppTextStyles.displayLarge.copyWith(
-            fontSize: 28,
-            color: AppColors.primaryContainer,
+          style: context.textStyles.screenTitle.copyWith(
+          color: context.palette.primaryContainer,
           ),
         ),
         centerTitle: false,
@@ -127,8 +126,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         // Title
                         Text(
                           slide.title,
-                          style: AppTextStyles.headlineMedium.copyWith(
-                            color: AppColors.primary,
+                          style: context.textStyles.headlineMedium.copyWith(
+                            color: context.palette.accent,
                             fontWeight: FontWeight.w700,
                           ),
                           textAlign: TextAlign.center,
@@ -139,8 +138,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         // Description
                         Text(
                           slide.description,
-                          style: AppTextStyles.bodyMedium.copyWith(
-                            color: AppColors.textSecondary,
+                          style: context.textStyles.bodyMedium.copyWith(
+                            color: context.palette.textSecondary,
                             height: 1.5,
                           ),
                           textAlign: TextAlign.center,
@@ -153,15 +152,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           width: 192,
                           height: 192,
                           decoration: BoxDecoration(
-                            color: AppColors.surfaceInput,
+                            color: context.palette.surfaceInput,
                             borderRadius: AppRadius.borderMd,
                             border: Border.all(
-                              color: AppColors.border,
+                              color: context.palette.border,
                               width: 1.0,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withAlpha(50),
+                                color: context.palette.shadow.withAlpha(50),
                                 blurRadius: 16,
                                 offset: const Offset(0, 8),
                               ),
@@ -171,7 +170,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             child: Icon(
                               slide.icon,
                               size: 72,
-                              color: AppColors.primary,
+                              color: context.palette.accent,
                             ),
                           ),
                         ),
@@ -212,15 +211,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     child: ElevatedButton(
                       onPressed: _onNext,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: AppColors.onPrimary,
+                        backgroundColor: context.palette.primary,
+                        foregroundColor: context.palette.onPrimary,
                         shape: const RoundedRectangleBorder(
                           borderRadius: AppRadius.borderSm,
                         ),
                       ),
                       child: Text(
                         isLastPage ? 'GET STARTED' : 'NEXT',
-                        style: AppTextStyles.labelLarge.copyWith(
+                        style: context.textStyles.labelLarge.copyWith(
                           fontWeight: FontWeight.w700,
                           letterSpacing: 0.8,
                         ),
@@ -237,12 +236,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     child: TextButton(
                       onPressed: _navigateToHome,
                       style: TextButton.styleFrom(
-                        foregroundColor: AppColors.textSecondary,
+                        foregroundColor: context.palette.textSecondary,
                       ),
                       child: Text(
                         'SKIP',
-                        style: AppTextStyles.labelLarge.copyWith(
-                          color: AppColors.textSecondary,
+                        style: context.textStyles.labelLarge.copyWith(
+                          color: context.palette.textSecondary,
                           letterSpacing: 0.8,
                         ),
                       ),

@@ -6,11 +6,9 @@ import '../../core/router/app_router.dart';
 import '../../core/theme/app_theme.dart';
 import '../../models/crag.dart';
 import '../../models/route.dart';
-import '../../models/hazard_alert.dart';
 import '../../providers/home_providers.dart';
 import '../../widgets/crag_card.dart';
 import '../../widgets/route_item_card.dart';
-import '../../widgets/hazard_alert_banner.dart';
 import '../../widgets/filter_chip_bar.dart';
 
 /// Main Home screen of ClimbApp matching the Figma 'Home' frame (Node 5315:2).
@@ -46,12 +44,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final theme = Theme.of(context);
     final cragsAsync = ref.watch(cragsProvider);
     final routesAsync = ref.watch(recentRoutesProvider);
-    final alertsAsync = ref.watch(hazardAlertsProvider);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: _buildCragsAppBar(),
-      body: _buildCragsHomeContent(theme, cragsAsync, routesAsync, alertsAsync),
+      body: _buildCragsHomeContent(theme, cragsAsync, routesAsync),
     );
   }
 
@@ -65,9 +62,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       title: Text(
         'Crag',
-        style: AppTextStyles.displayLarge.copyWith(
-          fontSize: 28, 
-          color: AppColors.textPrimary
+        style: context.textStyles.screenTitle.copyWith(
+          color: context.palette.textPrimary
         ),
       ),
       centerTitle: false,
@@ -86,15 +82,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ThemeData theme,
     AsyncValue<List<Crag>> cragsAsync,
     AsyncValue<List<RouteItem>> routesAsync,
-    AsyncValue<List<HazardAlert>> alertsAsync,
   ) {
     return SafeArea(
         child: RefreshIndicator(
-          color: AppColors.primary,
+          color: context.palette.accent,
           onRefresh: () async {
             ref.invalidate(cragsProvider);
             ref.invalidate(recentRoutesProvider);
-            ref.invalidate(hazardAlertsProvider);
           },
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -108,21 +102,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   onChanged: (value) {
                     ref.read(searchQueryProvider.notifier).setQuery(value);
                   },
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    color: AppColors.textPrimary,
+                  style: context.textStyles.bodyMedium.copyWith(
+                    color: context.palette.textPrimary,
                   ),
                   decoration: InputDecoration(
                     hintText: 'Search Crag',
-                    prefixIcon: const Icon(
+                    prefixIcon: Icon(
                       Icons.search,
-                      color: AppColors.textSecondary,
+                      color: context.palette.textSecondary,
                     ),
                     suffixIcon: _searchController.text.isNotEmpty
                         ? IconButton(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.clear,
                               size: 18,
-                              color: AppColors.textSecondary,
+                              color: context.palette.textSecondary,
                             ),
                             onPressed: () {
                               _searchController.clear();
@@ -138,42 +132,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 // 2. Horizontal State Filter Chips
                 const FilterChipBar(),
 
-                // 3. Active Hazard Alert Banner (Riverpod bound) implementation on hold
-                // alertsAsync.when(
-                //   data: (alerts) {
-                //     if (alerts.isEmpty) {
-                //       return const SizedBox.shrink();
-                //     }
-                //     return Padding(
-                //       padding: const EdgeInsets.only(top: 12),
-                //       child: HazardAlertBanner(
-                //         alert: alerts.first,
-                //         onTap: () {
-                //           if (alerts.first.routeId != null && alerts.first.routeId!.isNotEmpty) {
-                //             context.push(AppRoutes.routeDetailPath(alerts.first.routeId!));
-                //           }
-                //         },
-                //       ),
-                //     );
-                //   },
-                //   loading: () => const SizedBox.shrink(),
-                //   error: (_, _) => const SizedBox.shrink(),
-                // ),
-
                 const SizedBox(height: 20),
 
-                // 4. Section: Popular Crags Header
+                // 3. Section: Popular Crags Header
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Popular Crags',
-                      style: AppTextStyles.headlineSmall,
+                      style: context.textStyles.headlineSmall,
                     ),
                     IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_forward_rounded,
-                        color: AppColors.textSecondary,
+                        color: context.palette.textSecondary,
                         size: 20,
                       ),
                       onPressed: () {
@@ -200,7 +172,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     padding: const EdgeInsets.all(16),
                     child: Text(
                       'Error loading crags: $error',
-                      style: AppTextStyles.bodyMedium.copyWith(
+                      style: context.textStyles.bodyMedium.copyWith(
                         color: theme.colorScheme.error,
                       ),
                       textAlign: TextAlign.center,
@@ -208,12 +180,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                   data: (crags) {
                     if (crags.isEmpty) {
-                      return const SizedBox(
+                      return SizedBox(
                         height: 120,
                         child: Center(
                           child: Text(
                             'No items found',
-                            style: TextStyle(color: AppColors.textSecondary),
+                            style: context.textStyles.bodyMedium,
                           ),
                         ),
                       );
@@ -246,7 +218,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   children: [
                     Text(
                       'Recently Added Routes',
-                      style: AppTextStyles.headlineSmall,
+                      style: context.textStyles.headlineSmall,
                     ),
 
                     TextButton(
@@ -255,8 +227,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       },
                       child: Text(
                         'Add New Route',
-                        style: AppTextStyles.labelSmall.copyWith(
-                          color: AppColors.textSecondary,
+                        style: context.textStyles.labelSmall.copyWith(
+                          color: context.palette.textSecondary,
                           letterSpacing: 1.0,
                         ),
                       ),
@@ -279,7 +251,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     padding: const EdgeInsets.all(16),
                     child: Text(
                       'Error loading routes: $error',
-                      style: AppTextStyles.bodyMedium.copyWith(
+                      style: context.textStyles.bodyMedium.copyWith(
                         color: theme.colorScheme.error,
                       ),
                       textAlign: TextAlign.center,
@@ -287,12 +259,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                   data: (routes) {
                     if (routes.isEmpty) {
-                      return const Padding(
+                      return Padding(
                         padding: EdgeInsets.symmetric(vertical: 32),
                         child: Center(
                           child: Text(
                             'No items found',
-                            style: TextStyle(color: AppColors.textSecondary),
+                            style: context.textStyles.bodyMedium,
                           ),
                         ),
                       );

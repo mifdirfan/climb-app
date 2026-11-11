@@ -27,8 +27,8 @@ class AscentStyleSelector extends StatelessWidget {
       children: [
         Text(
           'ASCENT STYLE',
-          style: AppTextStyles.labelSmall.copyWith(
-            color: AppColors.textMuted,
+          style: context.textStyles.labelSmall.copyWith(
+            color: context.palette.textMuted,
             letterSpacing: 1.0,
             fontWeight: FontWeight.w600,
           ),
@@ -48,17 +48,17 @@ class AscentStyleSelector extends StatelessWidget {
                     height: 36,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: isSelected ? AppColors.primary : AppColors.surfaceInput,
+                      color: isSelected ? context.palette.primary : context.palette.surfaceInput,
                       borderRadius: BorderRadius.circular(AppRadius.md),
                       border: Border.all(
-                        color: isSelected ? AppColors.primary : AppColors.borderSubtle,
+                        color: isSelected ? context.palette.accent : context.palette.borderSubtle,
                         width: 1.0,
                       ),
                     ),
                     child: Text(
                       style,
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: isSelected ? AppColors.onPrimary : AppColors.textMuted,
+                      style: context.textStyles.bodySmall.copyWith(
+                        color: isSelected ? context.palette.onPrimary : context.palette.textMuted,
                         fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                         fontSize: 12,
                       ),

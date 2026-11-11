@@ -30,10 +30,10 @@ class DotsIndicator extends StatelessWidget {
             width: isActive ? 24.0 : 8.0,
             height: 8.0,
             decoration: BoxDecoration(
-              color: isActive ? AppColors.primary : AppColors.surfaceElevated,
+              color: isActive ? context.palette.primary : context.palette.surfaceElevated,
               borderRadius: AppRadius.borderXs,
               border: Border.all(
-                color: isActive ? AppColors.primary : AppColors.border,
+                color: isActive ? context.palette.accent : context.palette.border,
                 width: 0.8,
               ),
             ),

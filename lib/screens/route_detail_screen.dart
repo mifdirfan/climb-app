@@ -108,7 +108,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColors.surface,
+      backgroundColor: context.palette.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
       ),
@@ -128,10 +128,10 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
               children: [
                 Text(
                   'Add Climber Note',
-                  style: AppTextStyles.titleMedium.copyWith(fontWeight: FontWeight.w700),
+                  style: context.textStyles.titleMedium.copyWith(fontWeight: FontWeight.w700),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.close, color: AppColors.textSecondary, size: 20),
+                  icon: Icon(Icons.close, color: context.palette.textSecondary, size: 20),
                   onPressed: () => Navigator.of(ctx).pop(),
                 ),
               ],
@@ -141,10 +141,10 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
               controller: noteController,
               autofocus: true,
               maxLines: 4,
-              style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
+              style: context.textStyles.bodyMedium.copyWith(color: context.palette.textPrimary),
               decoration: InputDecoration(
                 hintText: 'Share gear requirements, sequence beta, or hold conditions...',
-                hintStyle: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+                hintStyle: context.textStyles.bodySmall.copyWith(color: context.palette.textSecondary),
               ),
             ),
             const SizedBox(height: 16),
@@ -165,10 +165,10 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                     Navigator.of(ctx).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        backgroundColor: AppColors.surfaceElevated,
+                        backgroundColor: context.palette.surfaceElevated,
                         content: Text(
                           'Beta note added to route community log',
-                          style: AppTextStyles.bodySmall.copyWith(color: AppColors.textPrimary),
+                          style: context.textStyles.bodySmall.copyWith(color: context.palette.textPrimary),
                         ),
                       ),
                     );
@@ -205,34 +205,34 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
         );
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.palette.background,
       appBar: AppBar(
-        backgroundColor: AppColors.surface,
+        backgroundColor: context.palette.surface,
         elevation: 0,
         scrolledUnderElevation: 0,
         leading: IconButton(
           key: const Key('route_back_button'),
-          icon: const Icon(Icons.arrow_back_rounded, color: AppColors.textPrimary),
+          icon: Icon(Icons.arrow_back_rounded, color: context.palette.textPrimary),
           onPressed: _onBack,
         ),
         title: Text(
           'ROUTE DETAIL',
-          style: AppTextStyles.labelLarge.copyWith(
-            color: AppColors.primary,
+          style: context.textStyles.labelLarge.copyWith(
+            color: context.palette.accent,
             letterSpacing: 2.0,
             fontSize: 16,
           ),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.share_outlined, color: AppColors.textSecondary),
+            icon: Icon(Icons.share_outlined, color: context.palette.textSecondary),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  backgroundColor: AppColors.surfaceElevated,
+                  backgroundColor: context.palette.surfaceElevated,
                   content: Text(
                     'Link to ${route.name} copied to clipboard',
-                    style: AppTextStyles.bodySmall.copyWith(color: AppColors.textPrimary),
+                    style: context.textStyles.bodySmall.copyWith(color: context.palette.textPrimary),
                   ),
                 ),
               );
@@ -309,9 +309,9 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: AppRadius.borderSm,
-        border: Border.all(color: AppColors.border, width: 1.0),
+        border: Border.all(color: context.palette.border, width: 1.0),
       ),
       child: Row(
         children: [
@@ -319,13 +319,13 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: AppColors.primaryContainer,
+              color: context.palette.primaryContainer,
               borderRadius: AppRadius.borderXs,
             ),
             child: Text(
               route.sectorName?.toUpperCase() ?? 'DAMAI WALL',
-              style: AppTextStyles.labelSmall.copyWith(
-                color: AppColors.onPrimary,
+              style: context.textStyles.labelSmall.copyWith(
+                color: context.palette.onPrimary,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -336,8 +336,8 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           Expanded(
             child: Text(
               route.locationSubtitle.toUpperCase(),
-              style: AppTextStyles.caption.copyWith(
-                color: AppColors.textSecondary,
+              style: context.textStyles.caption.copyWith(
+                color: context.palette.textSecondary,
                 letterSpacing: 0.5,
                 fontWeight: FontWeight.w600,
               ),
@@ -357,8 +357,8 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             ),
             child: Text(
               'LOG SEND',
-              style: AppTextStyles.labelSmall.copyWith(
-                color: AppColors.primary,
+              style: context.textStyles.labelSmall.copyWith(
+                color: context.palette.accent,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -378,14 +378,14 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
-            color: AppColors.primary,
+            color: context.palette.primary,
             borderRadius: AppRadius.borderSm,
           ),
           child: Text(
             route.grade,
-            style: AppTextStyles.displayLarge.copyWith(
+            style: context.textStyles.displayLarge.copyWith(
               fontSize: 26,
-              color: AppColors.onPrimary,
+              color: context.palette.onPrimary,
               fontWeight: FontWeight.w800,
             ),
           ),
@@ -399,17 +399,17 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             children: [
               Text(
                 route.name.toUpperCase(),
-                style: AppTextStyles.headlineSmall.copyWith(
+                style: context.textStyles.headlineSmall.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: AppColors.textLight,
+                  color: context.palette.textStrong,
                   letterSpacing: -0.5,
                 ),
               ),
               const SizedBox(height: 4),
               Text(
                 subgrade,
-                style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.primaryLight,
+                style: context.textStyles.bodySmall.copyWith(
+                  color: context.palette.primaryLight,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -459,19 +459,19 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: AppColors.surfaceElevated,
+          color: context.palette.surfaceElevated,
           borderRadius: AppRadius.borderSm,
-          border: Border.all(color: AppColors.border, width: 1.0),
+          border: Border.all(color: context.palette.border, width: 1.0),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 14, color: AppColors.primary),
+            Icon(icon, size: 14, color: context.palette.accent),
             const SizedBox(width: 6),
             Text(
               label,
-              style: AppTextStyles.caption.copyWith(
-                color: AppColors.textPrimary,
+              style: context.textStyles.caption.copyWith(
+                color: context.palette.textPrimary,
                 fontWeight: FontWeight.w600,
                 fontSize: 11,
               ),
@@ -489,9 +489,9 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
       width: double.infinity,
       height: 280,
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: AppRadius.borderMd,
-        border: Border.all(color: AppColors.border, width: 1.0),
+        border: Border.all(color: context.palette.border, width: 1.0),
       ),
       clipBehavior: Clip.antiAlias,
       child: Stack(
@@ -508,7 +508,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
 
           Positioned.fill(
             child: Container(
-              color: Colors.black.withValues(alpha: 0.25),
+              color: context.palette.shadow.withValues(alpha: 0.25),
             ),
           ),
 
@@ -519,14 +519,14 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: AppColors.background.withValues(alpha: 0.85),
+                color: context.palette.background.withValues(alpha: 0.85),
                 borderRadius: AppRadius.borderXs,
-                border: Border.all(color: AppColors.border, width: 1.0),
+                border: Border.all(color: context.palette.border, width: 1.0),
               ),
               child: Text(
                 'BOULDER PROBLEM • ${route.grade}',
-                style: AppTextStyles.caption.copyWith(
-                  color: AppColors.primary,
+                style: context.textStyles.caption.copyWith(
+                  color: context.palette.accent,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -539,16 +539,16 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
 
   Widget _buildTopoPlaceholder() {
     return Container(
-      color: AppColors.surfaceElevated,
-      child: const Center(
+      color: context.palette.surfaceElevated,
+      child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.terrain_rounded, size: 54, color: AppColors.border),
+            Icon(Icons.terrain_rounded, size: 54, color: context.palette.border),
             SizedBox(height: 8),
             Text(
               'Limestone Pillar Topo',
-              style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+              style: context.textStyles.bodySmall,
             ),
           ],
         ),
@@ -560,9 +560,9 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: AppRadius.borderSm,
-        border: Border.all(color: AppColors.border, width: 1.0),
+        border: Border.all(color: context.palette.border, width: 1.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -572,18 +572,18 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.star_rounded, size: 18, color: AppColors.primary),
+                  Icon(Icons.star_rounded, size: 18, color: context.palette.accent),
                   const SizedBox(width: 4),
                   Text(
                     '4.9 (68 reviews)',
-                    style: AppTextStyles.titleSmall.copyWith(fontWeight: FontWeight.w700),
+                    style: context.textStyles.titleSmall.copyWith(fontWeight: FontWeight.w700),
                   ),
                 ],
               ),
               Text(
                 '148 Logged Sends',
-                style: AppTextStyles.caption.copyWith(
-                  color: AppColors.textSecondary,
+                style: context.textStyles.caption.copyWith(
+                  color: context.palette.textSecondary,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -597,14 +597,14 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             children: [
               Text(
                 '88% Consensus: ${route.grade}',
-                style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.primaryLight,
+                style: context.textStyles.bodySmall.copyWith(
+                  color: context.palette.primaryLight,
                   fontWeight: FontWeight.w700,
                 ),
               ),
               Text(
                 'Solid ${route.grade} • Crux at B4',
-                style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+                style: context.textStyles.caption.copyWith(color: context.palette.textSecondary),
               ),
             ],
           ),
@@ -617,17 +617,17 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
               children: [
                 Expanded(
                   flex: 56, // Redpoint (84 / 148)
-                  child: Container(height: 8, color: AppColors.primary),
+                  child: Container(height: 8, color: context.palette.primary),
                 ),
                 const SizedBox(width: 2),
                 Expanded(
                   flex: 22, // Flash (32 / 148)
-                  child: Container(height: 8, color: AppColors.primaryVariant),
+                  child: Container(height: 8, color: context.palette.primaryVariant),
                 ),
                 const SizedBox(width: 2),
                 Expanded(
                   flex: 22, // Onsight (32 / 148)
-                  child: Container(height: 8, color: AppColors.primaryLight),
+                  child: Container(height: 8, color: context.palette.primaryLight),
                 ),
               ],
             ),
@@ -637,11 +637,11 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           // Ratio breakdown legend
           Row(
             children: [
-              _buildLegendDot(AppColors.primary, 'Redpoint 56% (84)'),
+              _buildLegendDot(context.palette.primary, 'Redpoint 56% (84)'),
               const Spacer(),
-              _buildLegendDot(AppColors.primaryVariant, 'Flash 22% (32)'),
+              _buildLegendDot(context.palette.primaryVariant, 'Flash 22% (32)'),
               const Spacer(),
-              _buildLegendDot(AppColors.primaryLight, 'Onsight 22% (32)'),
+              _buildLegendDot(context.palette.primaryLight, 'Onsight 22% (32)'),
             ],
           ),
         ],
@@ -661,9 +661,8 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
         const SizedBox(width: 4),
         Text(
           label,
-          style: AppTextStyles.caption.copyWith(
-            color: AppColors.textSecondary,
-            fontSize: 10,
+          style: context.textStyles.caption.copyWith(
+            color: context.palette.textSecondary,
           ),
         ),
       ],
@@ -678,17 +677,17 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: AppRadius.borderSm,
-        border: Border.all(color: AppColors.border, width: 1.0),
+        border: Border.all(color: context.palette.border, width: 1.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'BOULDER BETA & SEQUENCE',
-            style: AppTextStyles.labelSmall.copyWith(
-              color: AppColors.textSecondary,
+            style: context.textStyles.labelSmall.copyWith(
+              color: context.palette.textSecondary,
               letterSpacing: 1.0,
               fontWeight: FontWeight.w700,
             ),
@@ -696,8 +695,8 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           const SizedBox(height: 8),
           Text(
             betaText,
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textPrimary,
+            style: context.textStyles.bodyMedium.copyWith(
+              color: context.palette.textPrimary,
               height: 1.45,
             ),
           ),
@@ -706,19 +705,19 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.surfaceElevated,
+              color: context.palette.surfaceElevated,
               borderRadius: AppRadius.borderSm,
-              border: Border.all(color: AppColors.border, width: 1.0),
+              border: Border.all(color: context.palette.border, width: 1.0),
             ),
             child: Row(
               children: [
-                const Icon(Icons.shield_outlined, size: 16, color: AppColors.primary),
+                Icon(Icons.shield_outlined, size: 16, color: context.palette.accent),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     'GEAR: Crash pads, chalk, and active spotter recommended.',
-                    style: AppTextStyles.caption.copyWith(
-                      color: AppColors.textPrimary,
+                    style: context.textStyles.caption.copyWith(
+                      color: context.palette.textPrimary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -735,9 +734,9 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: AppRadius.borderSm,
-        border: Border.all(color: AppColors.border, width: 1.0),
+        border: Border.all(color: context.palette.border, width: 1.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -747,8 +746,8 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             children: [
               Text(
                 'ACTIVE ROUTE HAZARDS (${hazards.length})',
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.hazardText,
+                style: context.textStyles.labelSmall.copyWith(
+                  color: context.palette.hazardText,
                   letterSpacing: 1.0,
                   fontWeight: FontWeight.w700,
                 ),
@@ -757,15 +756,14 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(
-                    color: AppColors.hazardContainer,
+                    color: context.palette.hazardContainer,
                     borderRadius: AppRadius.borderXs,
                   ),
                   child: Text(
                     'CAUTION',
-                    style: AppTextStyles.caption.copyWith(
-                      color: AppColors.hazardText,
+                    style: context.textStyles.caption.copyWith(
+                      color: context.palette.hazardText,
                       fontWeight: FontWeight.w700,
-                      fontSize: 10,
                     ),
                   ),
                 ),
@@ -778,13 +776,13 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
               padding: const EdgeInsets.symmetric(vertical: 8),
               child: Row(
                 children: [
-                  const Icon(Icons.check_circle_outline_rounded,
-                      size: 18, color: AppColors.primary),
+                  Icon(Icons.check_circle_outline_rounded,
+                      size: 18, color: context.palette.accent),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       'No active safety hazards reported for this pitch.',
-                      style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+                      style: context.textStyles.caption.copyWith(color: context.palette.textSecondary),
                     ),
                   ),
                 ],
@@ -796,14 +794,14 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                 margin: const EdgeInsets.only(bottom: 8),
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: AppColors.hazardContainer.withValues(alpha: 0.5),
+                  color: context.palette.hazardContainer.withValues(alpha: 0.5),
                   borderRadius: AppRadius.borderSm,
-                  border: Border.all(color: AppColors.hazardText.withValues(alpha: 0.3)),
+                  border: Border.all(color: context.palette.hazardText.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.warning_amber_rounded, size: 18, color: AppColors.hazardText),
+                    Icon(Icons.warning_amber_rounded, size: 18, color: context.palette.hazardText),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Column(
@@ -811,16 +809,16 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                         children: [
                           Text(
                             hazard.hazardType.toUpperCase(),
-                            style: AppTextStyles.caption.copyWith(
-                              color: AppColors.hazardText,
+                            style: context.textStyles.caption.copyWith(
+                              color: context.palette.hazardText,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                           const SizedBox(height: 2),
                           Text(
                             hazard.description,
-                            style: AppTextStyles.bodySmall.copyWith(
-                              color: AppColors.textPrimary,
+                            style: context.textStyles.bodySmall.copyWith(
+                              color: context.palette.textPrimary,
                             ),
                           ),
                         ],
@@ -841,11 +839,11 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
               onPressed: () {
                 context.push(AppRoutes.reportHazardForm);
               },
-              icon: const Icon(Icons.add_alert_rounded, size: 16, color: AppColors.warning),
+              icon: Icon(Icons.add_alert_rounded, size: 16, color: context.palette.warning),
               label: Text(
                 '+ REPORT NEW HAZARD',
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.warning,
+                style: context.textStyles.labelSmall.copyWith(
+                  color: context.palette.warning,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -865,8 +863,8 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           children: [
             Text(
               'CLIMBER NOTES & BETA (${_notes.length})',
-              style: AppTextStyles.labelSmall.copyWith(
-                color: AppColors.textSecondary,
+              style: context.textStyles.labelSmall.copyWith(
+                color: context.palette.textSecondary,
                 letterSpacing: 1.0,
                 fontWeight: FontWeight.w700,
               ),
@@ -881,8 +879,8 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
               ),
               child: Text(
                 '+ ADD NOTE',
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.primary,
+                style: context.textStyles.labelSmall.copyWith(
+                  color: context.palette.accent,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -896,9 +894,9 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             margin: const EdgeInsets.only(bottom: 8),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.surface,
+              color: context.palette.surface,
               borderRadius: AppRadius.borderSm,
-              border: Border.all(color: AppColors.border, width: 1.0),
+              border: Border.all(color: context.palette.border, width: 1.0),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -907,12 +905,11 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                   children: [
                     CircleAvatar(
                       radius: 12,
-                      backgroundColor: AppColors.surfaceElevated,
+                      backgroundColor: context.palette.surfaceElevated,
                       child: Text(
                         note['user']!.substring(0, 1),
-                        style: const TextStyle(
-                          color: AppColors.primary,
-                          fontSize: 11,
+                        style: context.textStyles.labelSmall.copyWith(
+                          color: context.palette.accent,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -920,8 +917,8 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                     const SizedBox(width: 8),
                     Text(
                       note['user']!,
-                      style: AppTextStyles.caption.copyWith(
-                        color: AppColors.textPrimary,
+                      style: context.textStyles.caption.copyWith(
+                        color: context.palette.textPrimary,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -929,28 +926,27 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                       decoration: BoxDecoration(
-                        color: AppColors.surfaceElevated,
+                        color: context.palette.surfaceElevated,
                         borderRadius: AppRadius.borderXs,
                       ),
                       child: Text(
                         note['style']!,
-                        style: AppTextStyles.caption.copyWith(
-                          color: AppColors.primaryLight,
-                          fontSize: 9,
+                        style: context.textStyles.micro.copyWith(
+                          color: context.palette.primaryLight,
                         ),
                       ),
                     ),
                     const Spacer(),
                     Text(
                       note['date']!,
-                      style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
+                      style: context.textStyles.caption.copyWith(color: context.palette.textMuted),
                     ),
                   ],
                 ),
                 const SizedBox(height: 6),
                 Text(
                   note['comment']!,
-                  style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+                  style: context.textStyles.bodySmall.copyWith(color: context.palette.textSecondary),
                 ),
               ],
             ),
@@ -967,9 +963,9 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
   //     width: double.infinity,
   //     padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
   //     decoration: BoxDecoration(
-  //       color: AppColors.surface,
+  //       color: context.palette.surface,
   //       border: Border(
-  //         top: BorderSide(color: AppColors.border, width: 1.0),
+  //         top: BorderSide(color: context.palette.border, width: 1.0),
   //       ),
   //     ),
   //     child: ElevatedButton.icon(
@@ -978,10 +974,10 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
   //       icon: const Icon(Icons.check_circle_outline_rounded, size: 20),
   //       label: const Text('LOG ASCENT / TICK'),
   //       style: ElevatedButton.styleFrom(
-  //         backgroundColor: AppColors.primary,
-  //         foregroundColor: AppColors.onPrimary,
+  //         backgroundColor: context.palette.primary,
+  //         foregroundColor: context.palette.onPrimary,
   //         padding: const EdgeInsets.symmetric(vertical: 14),
-  //         textStyle: AppTextStyles.labelLarge.copyWith(fontWeight: FontWeight.w800),
+  //         textStyle: context.textStyles.labelLarge.copyWith(fontWeight: FontWeight.w800),
   //         shape: RoundedRectangleBorder(borderRadius: AppRadius.borderSm),
   //       ),
   //     ),

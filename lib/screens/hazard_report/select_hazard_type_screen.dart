@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/router/app_router.dart';
 import '../../core/theme/app_theme.dart';
-import '../../util/hazard_type.dart'; 
+import '../../providers/auth_providers.dart';
 import '../../providers/hazard_report_providers.dart';
+import '../../util/hazard_type.dart';
+import '../../widgets/auth_required_view.dart';
 
 /// Screen 1: Select Hazard Type (Figma Node 5315-425).
 ///
@@ -16,6 +18,17 @@ class SelectHazardTypeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isAuthenticated = ref.watch(isAuthenticatedProvider);
+    if (!isAuthenticated) {
+      return AuthRequiredView(
+        title: 'Report Crag Hazards',
+        subtitle: 'Sign in to report safety hazards and alert the climbing community.',
+        categoryLabel: 'SIGN IN REQUIRED',
+        redirectPath: AppRoutes.reportHazardSelect,
+        showAppBar: true,
+      );
+    }
+
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
@@ -41,7 +54,7 @@ class SelectHazardTypeScreen extends ConsumerWidget {
         ),
         title: Text(
           'REPORT HAZARD',
-          style: AppTextStyles.labelLarge.copyWith(
+          style: context.textStyles.labelLarge.copyWith(
             fontWeight: FontWeight.w700,
             letterSpacing: 1.2,
             color: colorScheme.onSurface,
@@ -77,7 +90,7 @@ class SelectHazardTypeScreen extends ConsumerWidget {
                       children: [
                         Text(
                           'Select Hazard Type',
-                          style: AppTextStyles.headlineSmall.copyWith(
+                          style: context.textStyles.headlineSmall.copyWith(
                             fontWeight: FontWeight.w700,
                             color: colorScheme.onSurface,
                           ),
@@ -85,7 +98,7 @@ class SelectHazardTypeScreen extends ConsumerWidget {
                         const SizedBox(height: 2),
                         Text(
                           'Step 1 of 2',
-                          style: AppTextStyles.caption.copyWith(
+                          style: context.textStyles.caption.copyWith(
                             color: colorScheme.primary,
                             fontWeight: FontWeight.w700,
                           ),
@@ -99,7 +112,7 @@ class SelectHazardTypeScreen extends ConsumerWidget {
 
               Text(
                 'Choose the category that best describes the danger encountered so climbers in this area receive prompt, clear alerts.',
-                style: AppTextStyles.bodyMedium.copyWith(
+                style: context.textStyles.bodyMedium.copyWith(
                   color: colorScheme.onSurfaceVariant,
                   height: 1.4,
                 ),
@@ -122,7 +135,7 @@ class SelectHazardTypeScreen extends ConsumerWidget {
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: theme.cardTheme.color ?? AppColors.surface,
+                        color: theme.cardTheme.color ?? context.palette.surface,
                         borderRadius: AppRadius.borderMd,
                         border: Border.all(
                           color: colorScheme.outlineVariant,
@@ -147,7 +160,7 @@ class SelectHazardTypeScreen extends ConsumerWidget {
                             ),
                             child: Text(
                               hazard.iconEmoji,
-                              style: const TextStyle(fontSize: 22),
+                              style: context.textStyles.emoji,
                             ),
                           ),
                           const SizedBox(width: 14),
@@ -162,7 +175,7 @@ class SelectHazardTypeScreen extends ConsumerWidget {
                                     Expanded(
                                       child: Text(
                                         hazard.title,
-                                        style: AppTextStyles.titleMedium.copyWith(
+                                        style: context.textStyles.titleMedium.copyWith(
                                           fontWeight: FontWeight.w700,
                                           color: colorScheme.onSurface,
                                         ),
@@ -183,8 +196,7 @@ class SelectHazardTypeScreen extends ConsumerWidget {
                                       ),
                                       child: Text(
                                         hazard.tag,
-                                        style: AppTextStyles.caption.copyWith(
-                                          fontSize: 9,
+                                        style: context.textStyles.micro.copyWith(
                                           fontWeight: FontWeight.w700,
                                           color: colorScheme.primary,
                                           letterSpacing: 0.5,
@@ -196,7 +208,7 @@ class SelectHazardTypeScreen extends ConsumerWidget {
                                 const SizedBox(height: 4),
                                 Text(
                                   hazard.subtitle,
-                                  style: AppTextStyles.bodySmall.copyWith(
+                                  style: context.textStyles.bodySmall.copyWith(
                                     color: colorScheme.onSurfaceVariant,
                                     height: 1.3,
                                   ),
@@ -246,7 +258,7 @@ class SelectHazardTypeScreen extends ConsumerWidget {
                     Expanded(
                       child: Text(
                         'For urgent rescue or medical emergencies, contact emergency rescue services (999) directly.',
-                        style: AppTextStyles.caption.copyWith(
+                        style: context.textStyles.caption.copyWith(
                           color: colorScheme.onSurfaceVariant,
                           height: 1.3,
                         ),

@@ -107,6 +107,42 @@ class AppColors {
 
   /// Warning accent (#F59E0B)
   static const Color warning = Color(0xFFF59E0B);
+
+  // --- Theme-internal tones (previously unnamed literals) ---
+  /// Dark-mode tinted lime container (#22300C)
+  static const Color darkPrimaryContainer = Color(0xFF22300C);
+
+  /// Light-mode deep lime used for text/icons on light surfaces (#3F5A06)
+  static const Color lightAccent = Color(0xFF3F5A06);
+
+  /// Light-mode secondary lime for tints and focus rings (#4C6D08)
+  static const Color lightAccentSoft = Color(0xFF4C6D08);
+
+  /// Light-mode hazard container (#FEE2E2)
+  static const Color lightHazardContainer = Color(0xFFFEE2E2);
+
+  /// Light-mode hazard text/icon (#B91C1C)
+  static const Color lightHazardText = Color(0xFFB91C1C);
+
+  /// Light-mode warning, darkened for contrast on white (#D97706)
+  static const Color lightWarning = Color(0xFFD97706);
+
+  // --- Effects & overlays ---
+  /// Base shadow / scrim tone; apply alpha at call site.
+  static const Color shadow = Color(0xFF000000);
+
+  /// Text/icons drawn over photography (both themes).
+  static const Color onImage = Color(0xFFFFFFFF);
+
+  /// Secondary text/icons over photography (white @ 70%).
+  static const Color onImageMuted = Color(0xB3FFFFFF);
+
+  /// Legibility shadow behind text over photography (black @ 54%).
+  static const Color imageTextShadow = Color(0x8A000000);
+
+  // --- Third-party brand ---
+  /// Google "G" sign-in mark (#4285F4)
+  static const Color googleBlue = Color(0xFF4285F4);
 }
 
 /// Global border radiuses identified across ClimbMY frames.
@@ -125,6 +161,15 @@ class AppRadius {
   /// 16.0 - Dialogs, larger containers
   static const double lg = 16.0;
 
+  /// 20.0 - Feature cards (topo video card)
+  static const double xl = 20.0;
+
+  /// 28.0 - Floating bottom navigation bar
+  static const double navBar = 28.0;
+
+  /// 2.0 - Bottom-sheet drag handles
+  static const double handle = 2.0;
+
   /// 9999.0 - Pill / Stadium buttons ("SUBMIT NEW ROUTE", "REPORT HAZARD")
   static const double pill = 9999.0;
 
@@ -132,7 +177,18 @@ class AppRadius {
   static const BorderRadius borderSm = BorderRadius.all(Radius.circular(sm));
   static const BorderRadius borderMd = BorderRadius.all(Radius.circular(md));
   static const BorderRadius borderLg = BorderRadius.all(Radius.circular(lg));
+  static const BorderRadius borderXl = BorderRadius.all(Radius.circular(xl));
+  static const BorderRadius borderNavBar = BorderRadius.all(Radius.circular(navBar));
+  static const BorderRadius borderHandle = BorderRadius.all(Radius.circular(handle));
   static const BorderRadius borderPill = BorderRadius.all(Radius.circular(pill));
+
+  /// Deliberately irregular "boulder" blob used by the indoor log calendar.
+  static const BorderRadius borderBoulder = BorderRadius.only(
+    topLeft: Radius.circular(14),
+    topRight: Radius.circular(18),
+    bottomLeft: Radius.circular(16),
+    bottomRight: Radius.circular(10),
+  );
 }
 
 /// Typography tokens combining Space Grotesk (headers) and JetBrains Mono (technical body/data).
@@ -262,6 +318,317 @@ class AppTextStyles {
     letterSpacing: -0.3,
     height: 16.0 / 12,
   );
+
+  /// Top-level screen title (Home "Crag", "Profile", "Post"): displayLarge at 28.
+  static TextStyle screenTitle = displayLarge.copyWith(fontSize: 28);
+
+  /// 9px badge / tag text: [caption] one step smaller (same weight & leading).
+  static TextStyle micro = caption.copyWith(fontSize: 9);
+
+  /// Emoji glyphs (hazard type icons). No font family: uses the platform emoji font.
+  static const TextStyle emoji = TextStyle(fontSize: 22);
+}
+
+/// Brightness-aware semantic colours. **UI code must read colours from here**
+/// (`context.palette.x`) rather than [AppColors], which holds raw constants
+/// for building the themes.
+///
+/// [dark] mirrors the original dark-only palette 1:1 so dark mode is
+/// visually unchanged; [light] supplies readable equivalents.
+///
+/// `primary` is a *fill* (buttons, selected chips). Use `accent` for lime
+/// *foreground* (text, icons, borders): it stays lime in dark mode but becomes
+/// deep olive in light mode, where lime-on-white is unreadable.
+@immutable
+class AppPalette extends ThemeExtension<AppPalette> {
+  const AppPalette({
+    required this.background,
+    required this.surface,
+    required this.surfaceElevated,
+    required this.surfaceInput,
+    required this.border,
+    required this.borderSubtle,
+    required this.textPrimary,
+    required this.textSecondary,
+    required this.textMuted,
+    required this.textStrong,
+    required this.primary,
+    required this.onPrimary,
+    required this.primaryVariant,
+    required this.primaryLight,
+    required this.primaryContainer,
+    required this.accent,
+    required this.hazardContainer,
+    required this.hazardText,
+    required this.warning,
+    required this.shadow,
+    required this.pressedOverlay,
+    required this.iconDim,
+    required this.onImage,
+    required this.onImageMuted,
+    required this.imageTextShadow,
+    required this.googleBlue,
+  });
+
+  final Color background;
+  final Color surface;
+  final Color surfaceElevated;
+  final Color surfaceInput;
+  final Color border;
+  final Color borderSubtle;
+
+  final Color textPrimary;
+  final Color textSecondary;
+  final Color textMuted;
+
+  /// Highest-emphasis text/icons (pure white in dark, near-black in light).
+  final Color textStrong;
+
+  /// Brand lime *fill*.
+  final Color primary;
+  final Color onPrimary;
+  final Color primaryVariant;
+
+  /// Lime tint for foreground highlights (lighter in dark, deeper in light).
+  final Color primaryLight;
+  final Color primaryContainer;
+
+  /// Brand lime *foreground* (text, icons, borders on surfaces).
+  final Color accent;
+
+  final Color hazardContainer;
+  final Color hazardText;
+  final Color warning;
+
+  /// Shadow/scrim base; apply alpha at call site.
+  final Color shadow;
+
+  /// Ink highlight on pressed controls.
+  final Color pressedOverlay;
+
+  /// Very low-emphasis decorative icon dots.
+  final Color iconDim;
+
+  /// Foreground over photography (same in both themes).
+  final Color onImage;
+  final Color onImageMuted;
+  final Color imageTextShadow;
+
+  final Color googleBlue;
+
+  static const AppPalette dark = AppPalette(
+    background: AppColors.background,
+    surface: AppColors.surface,
+    surfaceElevated: AppColors.surfaceElevated,
+    surfaceInput: AppColors.surfaceInput,
+    border: AppColors.border,
+    borderSubtle: AppColors.borderSubtle,
+    textPrimary: AppColors.textPrimary,
+    textSecondary: AppColors.textSecondary,
+    textMuted: AppColors.textMuted,
+    textStrong: AppColors.textLight,
+    primary: AppColors.primary,
+    onPrimary: AppColors.onPrimary,
+    primaryVariant: AppColors.primaryVariant,
+    primaryLight: AppColors.primaryLight,
+    primaryContainer: AppColors.primaryContainer,
+    accent: AppColors.primary,
+    hazardContainer: AppColors.hazardContainer,
+    hazardText: AppColors.hazardText,
+    warning: AppColors.warning,
+    shadow: AppColors.shadow,
+    pressedOverlay: Color(0x0DFFFFFF), // white @ 5%
+    iconDim: Color(0x3DFFFFFF), // white @ 24%
+    onImage: AppColors.onImage,
+    onImageMuted: AppColors.onImageMuted,
+    imageTextShadow: AppColors.imageTextShadow,
+    googleBlue: AppColors.googleBlue,
+  );
+
+  static const AppPalette light = AppPalette(
+    background: AppColors.lightBackground,
+    surface: AppColors.lightSurface,
+    surfaceElevated: AppColors.lightSurfaceElevated,
+    surfaceInput: AppColors.lightSurfaceInput,
+    border: AppColors.lightBorder,
+    borderSubtle: AppColors.lightBorderSubtle,
+    textPrimary: AppColors.lightTextPrimary,
+    textSecondary: AppColors.lightTextSecondary,
+    textMuted: AppColors.lightTextMuted,
+    textStrong: AppColors.lightTextPrimary,
+    primary: AppColors.primary,
+    onPrimary: AppColors.onPrimary,
+    primaryVariant: AppColors.primaryVariant,
+    primaryLight: AppColors.lightAccentSoft,
+    primaryContainer: AppColors.lightPrimaryContainer,
+    accent: AppColors.lightAccent,
+    hazardContainer: AppColors.lightHazardContainer,
+    hazardText: AppColors.lightHazardText,
+    warning: AppColors.lightWarning,
+    shadow: AppColors.shadow,
+    pressedOverlay: Color(0x0D000000), // black @ 5%
+    iconDim: Color(0x42000000), // black @ 26%
+    onImage: AppColors.onImage,
+    onImageMuted: AppColors.onImageMuted,
+    imageTextShadow: AppColors.imageTextShadow,
+    googleBlue: AppColors.googleBlue,
+  );
+
+  /// Resolves the palette for [context]; falls back to [dark] if a widget is
+  /// built outside an [AppTheme] (e.g. a bare test harness).
+  static AppPalette of(BuildContext context) =>
+      Theme.of(context).extension<AppPalette>() ?? dark;
+
+  @override
+  AppPalette copyWith() => this;
+
+  @override
+  AppPalette lerp(covariant AppPalette? other, double t) {
+    if (other == null) return this;
+    Color l(Color a, Color b) => Color.lerp(a, b, t)!;
+    return AppPalette(
+      background: l(background, other.background),
+      surface: l(surface, other.surface),
+      surfaceElevated: l(surfaceElevated, other.surfaceElevated),
+      surfaceInput: l(surfaceInput, other.surfaceInput),
+      border: l(border, other.border),
+      borderSubtle: l(borderSubtle, other.borderSubtle),
+      textPrimary: l(textPrimary, other.textPrimary),
+      textSecondary: l(textSecondary, other.textSecondary),
+      textMuted: l(textMuted, other.textMuted),
+      textStrong: l(textStrong, other.textStrong),
+      primary: l(primary, other.primary),
+      onPrimary: l(onPrimary, other.onPrimary),
+      primaryVariant: l(primaryVariant, other.primaryVariant),
+      primaryLight: l(primaryLight, other.primaryLight),
+      primaryContainer: l(primaryContainer, other.primaryContainer),
+      accent: l(accent, other.accent),
+      hazardContainer: l(hazardContainer, other.hazardContainer),
+      hazardText: l(hazardText, other.hazardText),
+      warning: l(warning, other.warning),
+      shadow: l(shadow, other.shadow),
+      pressedOverlay: l(pressedOverlay, other.pressedOverlay),
+      iconDim: l(iconDim, other.iconDim),
+      onImage: l(onImage, other.onImage),
+      onImageMuted: l(onImageMuted, other.onImageMuted),
+      imageTextShadow: l(imageTextShadow, other.imageTextShadow),
+      googleBlue: l(googleBlue, other.googleBlue),
+    );
+  }
+}
+
+/// Brightness-aware text styles: every [AppTextStyles] entry with its colour
+/// taken from an [AppPalette]. **UI code reads `context.textStyles.x`.**
+@immutable
+class AppTypography extends ThemeExtension<AppTypography> {
+  const AppTypography({
+    required this.displayLarge,
+    required this.headlineLarge,
+    required this.headlineMedium,
+    required this.headlineSmall,
+    required this.titleLarge,
+    required this.titleMedium,
+    required this.titleSmall,
+    required this.bodyLarge,
+    required this.bodyMedium,
+    required this.bodySmall,
+    required this.labelLarge,
+    required this.labelMedium,
+    required this.labelSmall,
+    required this.caption,
+    required this.micro,
+    required this.grade,
+    required this.hazardAlert,
+    required this.screenTitle,
+    required this.emoji,
+  });
+
+  final TextStyle displayLarge;
+  final TextStyle headlineLarge;
+  final TextStyle headlineMedium;
+  final TextStyle headlineSmall;
+  final TextStyle titleLarge;
+  final TextStyle titleMedium;
+  final TextStyle titleSmall;
+  final TextStyle bodyLarge;
+  final TextStyle bodyMedium;
+  final TextStyle bodySmall;
+  final TextStyle labelLarge;
+  final TextStyle labelMedium;
+  final TextStyle labelSmall;
+  final TextStyle caption;
+  final TextStyle micro;
+  final TextStyle grade;
+  final TextStyle hazardAlert;
+  final TextStyle screenTitle;
+  final TextStyle emoji;
+
+  /// Same roles as the original dark-only [AppTextStyles], recoloured by [p].
+  factory AppTypography.fromPalette(AppPalette p) => AppTypography(
+        displayLarge: AppTextStyles.displayLarge.copyWith(color: p.accent),
+        headlineLarge: AppTextStyles.headlineLarge.copyWith(color: p.textPrimary),
+        headlineMedium: AppTextStyles.headlineMedium.copyWith(color: p.textPrimary),
+        headlineSmall: AppTextStyles.headlineSmall.copyWith(color: p.textPrimary),
+        titleLarge: AppTextStyles.titleLarge.copyWith(color: p.textStrong),
+        titleMedium: AppTextStyles.titleMedium.copyWith(color: p.textPrimary),
+        titleSmall: AppTextStyles.titleSmall.copyWith(color: p.textPrimary),
+        bodyLarge: AppTextStyles.bodyLarge.copyWith(color: p.textSecondary),
+        bodyMedium: AppTextStyles.bodyMedium.copyWith(color: p.textSecondary),
+        bodySmall: AppTextStyles.bodySmall.copyWith(color: p.textSecondary),
+        labelLarge: AppTextStyles.labelLarge.copyWith(color: p.onPrimary),
+        labelMedium: AppTextStyles.labelMedium.copyWith(color: p.textPrimary),
+        labelSmall: AppTextStyles.labelSmall.copyWith(color: p.primaryLight),
+        caption: AppTextStyles.caption.copyWith(color: p.textSecondary),
+        micro: AppTextStyles.micro.copyWith(color: p.textSecondary),
+        grade: AppTextStyles.grade.copyWith(color: p.accent),
+        hazardAlert: AppTextStyles.hazardAlert.copyWith(color: p.hazardText),
+        screenTitle: AppTextStyles.screenTitle.copyWith(color: p.accent),
+        emoji: AppTextStyles.emoji,
+      );
+
+  static AppTypography of(BuildContext context) =>
+      Theme.of(context).extension<AppTypography>() ?? _fallback;
+
+  static final AppTypography _fallback = AppTypography.fromPalette(AppPalette.dark);
+
+  @override
+  AppTypography copyWith() => this;
+
+  @override
+  AppTypography lerp(covariant AppTypography? other, double t) {
+    if (other == null) return this;
+    TextStyle l(TextStyle a, TextStyle b) => TextStyle.lerp(a, b, t)!;
+    return AppTypography(
+      displayLarge: l(displayLarge, other.displayLarge),
+      headlineLarge: l(headlineLarge, other.headlineLarge),
+      headlineMedium: l(headlineMedium, other.headlineMedium),
+      headlineSmall: l(headlineSmall, other.headlineSmall),
+      titleLarge: l(titleLarge, other.titleLarge),
+      titleMedium: l(titleMedium, other.titleMedium),
+      titleSmall: l(titleSmall, other.titleSmall),
+      bodyLarge: l(bodyLarge, other.bodyLarge),
+      bodyMedium: l(bodyMedium, other.bodyMedium),
+      bodySmall: l(bodySmall, other.bodySmall),
+      labelLarge: l(labelLarge, other.labelLarge),
+      labelMedium: l(labelMedium, other.labelMedium),
+      labelSmall: l(labelSmall, other.labelSmall),
+      caption: l(caption, other.caption),
+      micro: l(micro, other.micro),
+      grade: l(grade, other.grade),
+      hazardAlert: l(hazardAlert, other.hazardAlert),
+      screenTitle: l(screenTitle, other.screenTitle),
+      emoji: l(emoji, other.emoji),
+    );
+  }
+}
+
+/// Shorthand accessors for UI code.
+extension AppThemeContext on BuildContext {
+  /// Brightness-aware colours. Prefer this over [AppColors] in widgets.
+  AppPalette get palette => AppPalette.of(this);
+
+  /// Brightness-aware text styles. Prefer this over [AppTextStyles] in widgets.
+  AppTypography get textStyles => AppTypography.of(this);
 }
 
 /// Material 3 ThemeData with #CFFF74 prime brand color and dynamic system display adaptability.
@@ -289,7 +656,7 @@ class AppTheme {
     const colorScheme = ColorScheme.dark(
       primary: AppColors.primary,
       onPrimary: AppColors.onPrimary,
-      primaryContainer: Color(0xFF22300C),
+      primaryContainer: AppColors.darkPrimaryContainer,
       onPrimaryContainer: AppColors.primary,
       secondary: AppColors.primaryLight,
       onSecondary: AppColors.onPrimary,
@@ -308,6 +675,10 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.background,
       colorScheme: colorScheme,
       textTheme: textTheme,
+      extensions: <ThemeExtension<dynamic>>[
+        AppPalette.dark,
+        AppTypography.fromPalette(AppPalette.dark),
+      ],
       appBarTheme: AppBarTheme(
         backgroundColor: AppColors.background,
         foregroundColor: AppColors.textPrimary,
@@ -397,7 +768,7 @@ class AppTheme {
   /// Light Theme (Scaffold #F8F9FA, Cards #FFFFFF, Prime #CFFF74 / Dark Lime accents)
   static ThemeData get lightTheme {
     final textTheme = TextTheme(
-      displayLarge: AppTextStyles.displayLarge.copyWith(color: const Color(0xFF3F5A06)),
+      displayLarge: AppTextStyles.displayLarge.copyWith(color: AppColors.lightAccent),
       headlineLarge: AppTextStyles.headlineLarge.copyWith(color: AppColors.lightTextPrimary),
       headlineMedium: AppTextStyles.headlineMedium.copyWith(color: AppColors.lightTextPrimary),
       headlineSmall: AppTextStyles.headlineSmall.copyWith(color: AppColors.lightTextPrimary),
@@ -409,21 +780,21 @@ class AppTheme {
       bodySmall: AppTextStyles.bodySmall.copyWith(color: AppColors.lightTextSecondary),
       labelLarge: AppTextStyles.labelLarge.copyWith(color: AppColors.onPrimary),
       labelMedium: AppTextStyles.labelMedium.copyWith(color: AppColors.lightTextPrimary),
-      labelSmall: AppTextStyles.labelSmall.copyWith(color: const Color(0xFF4C6D08)),
+      labelSmall: AppTextStyles.labelSmall.copyWith(color: AppColors.lightAccentSoft),
     );
 
     const colorScheme = ColorScheme.light(
       primary: AppColors.primary,
       onPrimary: AppColors.onPrimary,
       primaryContainer: AppColors.lightPrimaryContainer,
-      onPrimaryContainer: Color(0xFF1E2E04),
-      secondary: Color(0xFF4C6D08),
+      onPrimaryContainer: AppColors.primaryDark,
+      secondary: AppColors.lightAccentSoft,
       onSecondary: Colors.white,
       surface: AppColors.lightSurface,
       onSurface: AppColors.lightTextPrimary,
       surfaceContainerHighest: AppColors.lightSurfaceElevated,
-      error: Color(0xFFFEE2E2),
-      onError: Color(0xFFB91C1C),
+      error: AppColors.lightHazardContainer,
+      onError: AppColors.lightHazardText,
       outline: AppColors.lightBorder,
       outlineVariant: AppColors.lightBorderSubtle,
     );
@@ -434,6 +805,10 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.lightBackground,
       colorScheme: colorScheme,
       textTheme: textTheme,
+      extensions: <ThemeExtension<dynamic>>[
+        AppPalette.light,
+        AppTypography.fromPalette(AppPalette.light),
+      ],
       appBarTheme: AppBarTheme(
         backgroundColor: AppColors.lightBackground,
         foregroundColor: AppColors.lightTextPrimary,
@@ -488,7 +863,7 @@ class AppTheme {
         ),
         focusedBorder: const OutlineInputBorder(
           borderRadius: AppRadius.borderSm,
-          borderSide: BorderSide(color: Color(0xFF4C6D08), width: 1.5),
+          borderSide: BorderSide(color: AppColors.lightAccentSoft, width: 1.5),
         ),
       ),
       chipTheme: ChipThemeData(
@@ -503,7 +878,7 @@ class AppTheme {
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: AppColors.lightSurface,
-        selectedItemColor: Color(0xFF3F5A06),
+        selectedItemColor: AppColors.lightAccent,
         unselectedItemColor: AppColors.lightTextSecondary,
         type: BottomNavigationBarType.fixed,
         elevation: 0,

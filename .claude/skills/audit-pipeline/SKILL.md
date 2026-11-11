@@ -1,3 +1,8 @@
+---
+name: audit-pipeline
+description: Audits Flutter and Supabase code against ClimbMY's mandatory 4-Tier Feature Pipeline. Triggers when checking PRs, reviewing code changes, or enforcing architecture boundaries.
+---
+
 # Skill: Universal Code Documentation & Change Audit
 
 ## Description
@@ -65,3 +70,38 @@ Before completing changes to any source file, add or update docstrings and inlin
 
 ---
 
+## 4-Tier Enforcement Checklist
+
+### Tier 1 — Database Layer (PostgreSQL / Supabase)
+- [ ] Primary keys use `id uuid default gen_random_uuid() primary key`.
+- [ ] Table names and columns use `snake_case`.
+- [ ] Timestamps use `created_at timestamptz default now()`.
+- [ ] Explicit RLS is enabled (`alter table ... enable row level security;`).
+- [ ] Foreign keys have explicit B-tree indexes (`create index on <table> (<fk_col>);`).
+- [ ] Schema reloads end with `notify pgrst, 'reload schema';`.
+
+### Tier 2 — Repository / Service Layer (Dart)
+- [ ] All `Supabase.instance.client` calls are strictly contained inside `lib/repositories/`.
+- [ ] Every query catches `PostgrestException` and `AuthException` explicitly.
+- [ ] Returns typed immutable DTO models or domain entities.
+- [ ] Logs errors via `debugPrint('--> [<FEATURE>:REPO] ...')`.
+
+### Tier 3 — State Management Layer (Riverpod)
+- [ ] State logic is isolated in `AsyncNotifier` or `Notifier` classes in `lib/providers/`.
+- [ ] State transitions properly use `AsyncLoading`, `AsyncData`, and `AsyncError`.
+- [ ] Stream providers auto-dispose or re-evaluate upon auth state changes (`ref.invalidate()`).
+- [ ] Logs state transitions via `debugPrint('--> [<FEATURE>:STATE] ...')`.
+
+### Tier 4 — UI Layer (Flutter)
+- [ ] NO direct `Supabase.instance.client` calls or SQL table names in widgets.
+- [ ] Consumes state via `ConsumerWidget` or `ConsumerStatefulWidget`.
+- [ ] Uses `.when()` or `state.isLoading` for state rendering.
+- [ ] Styling strictly pulls from `Theme.of(context)` or `AppTheme` design tokens (`AppColors`, `AppRadius`).
+- [ ] Flat surfaces only (NO multi-color background gradients).
+- [ ] Uses `debugPrint('--> [<FEATURE>:UI] ...')` instead of `print()`.
+
+## Output Report Format
+Always format the audit result as:
+1. **Pipeline Compliance Score:** PASS / FAIL
+2. **Violations List:** File path, line number, tier violation, and concrete fix snippet.
+3. **Refactored Code:** Clean replacement code for any failing component.

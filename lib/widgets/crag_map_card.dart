@@ -34,12 +34,12 @@ class CragMapCard extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: theme.cardTheme.color ?? AppColors.surface,
+        color: theme.cardTheme.color ?? context.palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.borderSubtle, width: 1.0),
+        border: Border.all(color: context.palette.borderSubtle, width: 1.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.4),
+            color: context.palette.shadow.withValues(alpha: 0.4),
             blurRadius: 16,
             offset: const Offset(0, 6),
           ),
@@ -60,9 +60,9 @@ class CragMapCard extends StatelessWidget {
                   children: [
                     Text(
                       crag.name,
-                      style: AppTextStyles.titleMedium.copyWith(
+                      style: context.textStyles.titleMedium.copyWith(
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
+                        color: context.palette.textPrimary,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -76,27 +76,26 @@ class CragMapCard extends StatelessWidget {
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: AppColors.surfaceInput,
+                            color: context.palette.surfaceInput,
                             borderRadius: AppRadius.borderXs,
                             border: Border.all(
-                              color: AppColors.border,
+                              color: context.palette.border,
                               width: 0.8,
                             ),
                           ),
                           child: Text(
                             crag.venueType.toUpperCase(),
-                            style: AppTextStyles.caption.copyWith(
-                              color: AppColors.primaryLight,
+                            style: context.textStyles.caption.copyWith(
+                              color: context.palette.primaryLight,
                               fontWeight: FontWeight.w600,
-                              fontSize: 10,
                             ),
                           ),
                         ),
                         const SizedBox(width: 8),
                         Text(
                           crag.state,
-                          style: AppTextStyles.bodySmall.copyWith(
-                            color: AppColors.textSecondary,
+                          style: context.textStyles.bodySmall.copyWith(
+                            color: context.palette.textSecondary,
                           ),
                         ),
                       ],
@@ -109,10 +108,10 @@ class CragMapCard extends StatelessWidget {
                   visualDensity: VisualDensity.compact,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.close_rounded,
                     size: 20,
-                    color: AppColors.textMuted,
+                    color: context.palette.textMuted,
                   ),
                   onPressed: onClose,
                 ),
@@ -124,32 +123,32 @@ class CragMapCard extends StatelessWidget {
           // Metadata row: Route count & styles
           Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.terrain_rounded,
                 size: 16,
-                color: AppColors.primary,
+                color: context.palette.accent,
               ),
               const SizedBox(width: 6),
               Text(
                 '${crag.routeCount} routes',
-                style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.textPrimary,
+                style: context.textStyles.bodySmall.copyWith(
+                  color: context.palette.textPrimary,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(width: 14),
               if (crag.styles.isNotEmpty) ...[
-                const Icon(
+                Icon(
                   Icons.straighten_rounded,
                   size: 15,
-                  color: AppColors.textMuted,
+                  color: context.palette.textMuted,
                 ),
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
                     crag.styles.join(' • '),
-                    style: AppTextStyles.caption.copyWith(
-                      color: AppColors.textMuted,
+                    style: context.textStyles.caption.copyWith(
+                      color: context.palette.textMuted,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -163,8 +162,8 @@ class CragMapCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               crag.approachNotes!,
-              style: AppTextStyles.caption.copyWith(
-                color: AppColors.textMuted,
+              style: context.textStyles.caption.copyWith(
+                color: context.palette.textMuted,
                 fontStyle: FontStyle.italic,
               ),
               maxLines: 2,
@@ -185,7 +184,7 @@ class CragMapCard extends StatelessWidget {
                     label: const Text('DIRECTIONS'),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      textStyle: AppTextStyles.labelMedium,
+                      textStyle: context.textStyles.labelMedium,
                     ),
                   ),
                 ),
@@ -197,7 +196,7 @@ class CragMapCard extends StatelessWidget {
                   label: const Text('VIEW CRAG'),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 10),
-                    textStyle: AppTextStyles.labelMedium,
+                    textStyle: context.textStyles.labelMedium,
                   ),
                 ),
               ),

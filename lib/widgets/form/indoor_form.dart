@@ -63,10 +63,10 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
         return Theme(
           data: theme.copyWith(
             colorScheme: theme.colorScheme.copyWith(
-              primary: AppColors.primary,
-              onPrimary: AppColors.onPrimary,
-              surface: AppColors.surface,
-              onSurface: AppColors.textPrimary,
+              primary: context.palette.primary,
+              onPrimary: context.palette.onPrimary,
+              surface: context.palette.surface,
+              onSurface: context.palette.textPrimary,
             ),
           ),
           child: child!,
@@ -101,7 +101,7 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Indoor session at ${indoorState.selectedGym!.name} logged!'),
-          backgroundColor: AppColors.surfaceElevated,
+          backgroundColor: context.palette.surfaceElevated,
         ),
       );
       widget.onSubmitted?.call();
@@ -135,8 +135,8 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
             children: [
               Text(
                 'SELECT CLIMBING GYM *',
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.textMuted,
+                style: context.textStyles.labelSmall.copyWith(
+                  color: context.palette.textMuted,
                   letterSpacing: 1.0,
                   fontWeight: FontWeight.w600,
                 ),
@@ -148,11 +148,11 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: context.palette.surface,
                     borderRadius: BorderRadius.circular(AppRadius.lg),
-                    border: Border.all(color: AppColors.borderSubtle),
+                    border: Border.all(color: context.palette.borderSubtle),
                   ),
-                  child: const Row(
+                  child: Row(
                     children: [
                       SizedBox(
                         width: 18,
@@ -162,7 +162,7 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
                       SizedBox(width: 12),
                       Text(
                         'Loading gyms...',
-                        style: TextStyle(color: AppColors.textMuted, fontSize: 13),
+                        style: context.textStyles.bodySmall.copyWith(color: context.palette.textMuted),
                       ),
                     ],
                   ),
@@ -171,7 +171,7 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: context.palette.surface,
                     borderRadius: BorderRadius.circular(AppRadius.lg),
                     border: Border.all(color: theme.colorScheme.error),
                   ),
@@ -182,12 +182,12 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
                       Expanded(
                         child: Text(
                           'Error loading gyms',
-                          style: AppTextStyles.bodySmall.copyWith(color: theme.colorScheme.error),
+                          style: context.textStyles.bodySmall.copyWith(color: theme.colorScheme.error),
                         ),
                       ),
                       TextButton(
                         onPressed: () => ref.refresh(cragsProvider),
-                        child: const Text('Retry', style: TextStyle(color: AppColors.primary)),
+                        child: Text('Retry', style: context.textStyles.labelMedium.copyWith(color: context.palette.accent)),
                       ),
                     ],
                   ),
@@ -207,20 +207,20 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: context.palette.surface,
                         borderRadius: BorderRadius.circular(AppRadius.lg),
                         border: Border.all(
                           color: indoorState.selectedGym != null
-                              ? AppColors.primary.withValues(alpha: 0.6)
-                              : AppColors.borderSubtle,
+                              ? context.palette.accent.withValues(alpha: 0.6)
+                              : context.palette.borderSubtle,
                         ),
                       ),
                       child: Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.fitness_center_rounded,
                             size: 18,
-                            color: AppColors.textMuted,
+                            color: context.palette.textMuted,
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -228,10 +228,10 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
                               indoorState.selectedGym != null
                                   ? '${indoorState.selectedGym!.name} (${indoorState.selectedGym!.state})'
                                   : 'Select Climbing Gym...',
-                              style: AppTextStyles.bodyMedium.copyWith(
+                              style: context.textStyles.bodyMedium.copyWith(
                                 color: indoorState.selectedGym != null
-                                    ? AppColors.textPrimary
-                                    : AppColors.textMuted,
+                                    ? context.palette.textPrimary
+                                    : context.palette.textMuted,
                                 fontWeight: indoorState.selectedGym != null
                                     ? FontWeight.w600
                                     : FontWeight.w400,
@@ -240,10 +240,10 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          const Icon(
+                          Icon(
                             Icons.keyboard_arrow_down_rounded,
                             size: 20,
-                            color: AppColors.textMuted,
+                            color: context.palette.textMuted,
                           ),
                         ],
                       ),
@@ -266,8 +266,8 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
                   children: [
                     Text(
                       'SESSION DATE',
-                      style: AppTextStyles.labelSmall.copyWith(
-                        color: AppColors.textMuted,
+                      style: context.textStyles.labelSmall.copyWith(
+                        color: context.palette.textMuted,
                         letterSpacing: 1.0,
                         fontWeight: FontWeight.w600,
                       ),
@@ -280,23 +280,23 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
                         height: 52,
                         padding: const EdgeInsets.symmetric(horizontal: 14),
                         decoration: BoxDecoration(
-                          color: AppColors.surface,
+                          color: context.palette.surface,
                           borderRadius: BorderRadius.circular(AppRadius.lg),
-                          border: Border.all(color: AppColors.borderSubtle),
+                          border: Border.all(color: context.palette.borderSubtle),
                         ),
                         child: Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.calendar_today_rounded,
                               size: 16,
-                              color: AppColors.textMuted,
+                              color: context.palette.textMuted,
                             ),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(
                                 _formatDate(indoorState.sessionDate),
-                                style: AppTextStyles.bodySmall.copyWith(
-                                  color: AppColors.textPrimary,
+                                style: context.textStyles.bodySmall.copyWith(
+                                  color: context.palette.textPrimary,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
@@ -317,8 +317,8 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
                   children: [
                     Text(
                       'DURATION (MIN)',
-                      style: AppTextStyles.labelSmall.copyWith(
-                        color: AppColors.textMuted,
+                      style: context.textStyles.labelSmall.copyWith(
+                        color: context.palette.textMuted,
                         letterSpacing: 1.0,
                         fontWeight: FontWeight.w600,
                       ),
@@ -329,15 +329,15 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
                       alignment: Alignment.center, 
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: context.palette.surface,
                         borderRadius: BorderRadius.circular(AppRadius.lg),
-                        border: Border.all(color: AppColors.borderSubtle),
+                        border: Border.all(color: context.palette.borderSubtle),
                       ),
                       child: TextFormField(
                         initialValue: indoorState.durationMinutes.toString(),
                         keyboardType: TextInputType.number,
                         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
+                        style: context.textStyles.bodyMedium.copyWith(color: context.palette.textPrimary),
                         decoration: InputDecoration(
                           // THIS is the magic property. It removes all hidden min-heights 
                           // and error-text padding from the Material spec.
@@ -349,7 +349,7 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
                           errorBorder: InputBorder.none,
                           filled: false,
                           hintText: 'Duration (mins)',
-                          hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textMuted),
+                          hintStyle: context.textStyles.bodyMedium.copyWith(color: context.palette.textMuted),
                         ),
                         onChanged: (value) {
                           final parsed = int.tryParse(value);
@@ -400,8 +400,8 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
             children: [
               Text(
                 'SESSION NOTES & DRILLS',
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.textMuted,
+                style: context.textStyles.labelSmall.copyWith(
+                  color: context.palette.textMuted,
                   letterSpacing: 1.0,
                   fontWeight: FontWeight.w600,
                 ),
@@ -410,23 +410,23 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
               TextFormField(
                 controller: _notesController,
                 maxLines: 3,
-                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
+                style: context.textStyles.bodyMedium.copyWith(color: context.palette.textPrimary),
                 decoration: InputDecoration(
                   hintText: 'Training focus, drills completed, fatigue levels...',
-                  hintStyle: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textMuted,
+                  hintStyle: context.textStyles.bodySmall.copyWith(
+                    color: context.palette.textMuted,
                     height: 1.4,
                   ),
                   filled: true,
-                  fillColor: AppColors.surface,
+                  fillColor: context.palette.surface,
                   contentPadding: const EdgeInsets.all(14),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.lg),
-                    borderSide: const BorderSide(color: AppColors.borderSubtle),
+                    borderSide: BorderSide(color: context.palette.borderSubtle),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.lg),
-                    borderSide: const BorderSide(color: AppColors.borderSubtle),
+                    borderSide: BorderSide(color: context.palette.borderSubtle),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -446,20 +446,20 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
             child: ElevatedButton(
               onPressed: indoorState.isSubmitting ? null : _handleSubmit,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.onPrimary,
+                backgroundColor: context.palette.primary,
+                foregroundColor: context.palette.onPrimary,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppRadius.lg),
                 ),
               ),
               child: indoorState.isSubmitting
-                  ? const SizedBox(
+                  ? SizedBox(
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        color: AppColors.onPrimary,
+                        color: context.palette.onPrimary,
                       ),
                     )
                   : Row(
@@ -467,17 +467,17 @@ class _IndoorFormState extends ConsumerState<IndoorForm> {
                       children: [
                         Text(
                           'LOG GYM SESSION',
-                          style: AppTextStyles.titleSmall.copyWith(
-                            color: AppColors.onPrimary,
+                          style: context.textStyles.titleSmall.copyWith(
+                            color: context.palette.onPrimary,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 0.8,
                           ),
                         ),
                         const SizedBox(width: 8),
-                        const Icon(
+                        Icon(
                           Icons.arrow_forward_rounded,
                           size: 18,
-                          color: AppColors.onPrimary,
+                          color: context.palette.onPrimary,
                         ),
                       ],
                     ),

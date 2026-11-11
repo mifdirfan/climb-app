@@ -7,6 +7,8 @@ import '../models/crag.dart';
 import '../models/hazard_alert.dart';
 import '../models/route.dart';
 import '../providers/home_providers.dart';
+import '../providers/logbook_providers.dart';
+import '../util/auth_guard.dart';
 import '../util/grade_utils.dart';
 import '../widgets/grade_chip.dart';
 import '../widgets/hazard_alert_banner.dart';
@@ -43,7 +45,9 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
   String _selectedSector = 'ALL SECTORS';
   String _searchQuery = '';
   CragRouteSort _sortOption = CragRouteSort.gradeHardToEasy;
-  bool _isOfflineSaved = false;
+  /// Local-only flag for the (not yet implemented) offline topo download.
+  /// Distinct from bookmarking, which persists via [savedCragsProvider].
+  bool _isOfflineTopoCached = false;
 
   @override
   void initState() {
@@ -65,6 +69,38 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
     }
   }
 
+  /// Persists the bookmark via [SavedCragsNotifier] (optimistic, rolls back on error).
+  Future<void> _toggleSaved(Crag crag) async {
+    debugPrint('--> [SAVED_CRAGS:UI] Bookmark tapped for ${crag.id}');
+    // Resolve everything context-dependent before the await (async-gap safe).
+    final messenger = ScaffoldMessenger.of(context);
+    final palette = context.palette;
+    final snackStyle = context.textStyles.bodySmall.copyWith(color: palette.textPrimary);
+    try {
+      final nowSaved = await ref.read(savedCragsProvider.notifier).toggle(crag);
+      messenger.showSnackBar(
+        SnackBar(
+          backgroundColor: palette.surfaceElevated,
+          content: Text(
+            nowSaved ? '${crag.name} saved to your crags' : '${crag.name} removed from saved crags',
+            style: snackStyle,
+          ),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    } catch (e) {
+      messenger.showSnackBar(
+        SnackBar(
+          backgroundColor: palette.surfaceElevated,
+          content: Text(
+            'Could not update saved crags. Please try again.',
+            style: snackStyle,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -78,30 +114,30 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
     if (crag == null) {
       if (cragAsync.isLoading) {
         return Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: context.palette.background,
           appBar: AppBar(
-            backgroundColor: AppColors.surface,
+            backgroundColor: context.palette.surface,
             elevation: 0,
             leading: IconButton(
               key: const Key('crag_back_button'),
-              icon: const Icon(Icons.arrow_back_rounded, color: AppColors.textPrimary),
+              icon: Icon(Icons.arrow_back_rounded, color: context.palette.textPrimary),
               onPressed: _onBack,
             ),
           ),
-          body: const Center(
-            child: CircularProgressIndicator(color: AppColors.primary),
+          body: Center(
+            child: CircularProgressIndicator(color: context.palette.accent),
           ),
         );
       }
 
       return Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: context.palette.background,
         appBar: AppBar(
-          backgroundColor: AppColors.surface,
+          backgroundColor: context.palette.surface,
           elevation: 0,
           leading: IconButton(
             key: const Key('crag_back_button'),
-            icon: const Icon(Icons.arrow_back_rounded, color: AppColors.textPrimary),
+            icon: Icon(Icons.arrow_back_rounded, color: context.palette.textPrimary),
             onPressed: _onBack,
           ),
         ),
@@ -111,16 +147,16 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.error_outline_rounded, size: 48, color: AppColors.hazardText),
+                Icon(Icons.error_outline_rounded, size: 48, color: context.palette.hazardText),
                 const SizedBox(height: 12),
                 Text(
                   'Venue Not Found',
-                  style: AppTextStyles.titleMedium.copyWith(color: AppColors.textPrimary),
+                  style: context.textStyles.titleMedium.copyWith(color: context.palette.textPrimary),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Could not locate venue records in Supabase.',
-                  style: AppTextStyles.caption.copyWith(color: AppColors.textSecondary),
+                  style: context.textStyles.caption.copyWith(color: context.palette.textSecondary),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
@@ -138,53 +174,48 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
     final isIndoor = crag.isIndoor;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: context.palette.background,
       appBar: AppBar(
-        backgroundColor: AppColors.surface,
+        backgroundColor: context.palette.surface,
         elevation: 0,
         scrolledUnderElevation: 0,
         leading: IconButton(
           key: const Key('crag_back_button'),
-          icon: const Icon(Icons.arrow_back_rounded, color: AppColors.textPrimary),
+          icon: Icon(Icons.arrow_back_rounded, color: context.palette.textPrimary),
           onPressed: _onBack,
         ),
         title: Text(
           isIndoor ? 'GYM' : 'CRAG',
-          style: AppTextStyles.labelLarge.copyWith(
-            color: AppColors.primary,
+          style: context.textStyles.labelLarge.copyWith(
+            color: context.palette.accent,
             letterSpacing: 2.0,
             fontSize: 16,
           ),
         ),
         actions: [
           if (!isIndoor)
-            IconButton(
-              icon: Icon(
-                _isOfflineSaved ? Icons.bookmark_rounded : Icons.bookmark_outline_rounded,
-                color: _isOfflineSaved ? AppColors.primary : AppColors.textSecondary,
-              ),
-              onPressed: () {
-                setState(() => _isOfflineSaved = !_isOfflineSaved);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: AppColors.surfaceElevated,
-                    content: Text(
-                      _isOfflineSaved
-                          ? '${crag.name} saved for offline topo guide'
-                          : '${crag.name} removed from offline storage',
-                      style: AppTextStyles.bodySmall.copyWith(color: AppColors.textPrimary),
-                    ),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
-              },
-            ),
+            Builder(builder: (context) {
+              final isSaved = ref.watch(isCragSavedProvider(crag.id));
+              return IconButton(
+                key: const Key('save_crag_button'),
+                tooltip: isSaved ? 'Remove from saved crags' : 'Save crag',
+                icon: Icon(
+                  isSaved ? Icons.bookmark_rounded : Icons.bookmark_outline_rounded,
+                  color: isSaved ? context.palette.accent : context.palette.textSecondary,
+                ),
+                onPressed: () => requireAuth(
+                  context,
+                  ref,
+                  action: () => _toggleSaved(crag),
+                ),
+              );
+            }),
         ],
       ),
       body: routesAsync.when(
         data: (routes) => _buildContent(theme, crag, routes, hazardsAsync.value ?? []),
-        loading: () => const Center(
-          child: CircularProgressIndicator(color: AppColors.primary),
+        loading: () => Center(
+          child: CircularProgressIndicator(color: context.palette.accent),
         ),
         error: (err, _) => Center(
           child: Padding(
@@ -192,11 +223,11 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.error_outline_rounded, size: 48, color: AppColors.hazardText),
+                Icon(Icons.error_outline_rounded, size: 48, color: context.palette.hazardText),
                 const SizedBox(height: 12),
-                Text('Error loading routes', style: AppTextStyles.titleMedium),
+                Text('Error loading routes', style: context.textStyles.titleMedium),
                 const SizedBox(height: 8),
-                Text('$err', style: AppTextStyles.caption, textAlign: TextAlign.center),
+                Text('$err', style: context.textStyles.caption, textAlign: TextAlign.center),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () => ref.refresh(cragRoutesProvider(widget.cragId)),
@@ -310,13 +341,13 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
                 key: const Key('crag_routes_search_field'),
                 controller: _searchController,
                 onChanged: (val) => setState(() => _searchQuery = val.trim()),
-                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
+                style: context.textStyles.bodyMedium.copyWith(color: context.palette.textPrimary),
                 decoration: InputDecoration(
                   hintText: 'Filter by name, grade, or style...',
-                  prefixIcon: const Icon(Icons.search, size: 20, color: AppColors.textSecondary),
+                  prefixIcon: Icon(Icons.search, size: 20, color: context.palette.textSecondary),
                   suffixIcon: _searchQuery.isNotEmpty
                       ? IconButton(
-                          icon: const Icon(Icons.clear, size: 18, color: AppColors.textSecondary),
+                          icon: Icon(Icons.clear, size: 18, color: context.palette.textSecondary),
                           onPressed: () {
                             _searchController.clear();
                             setState(() => _searchQuery = '');
@@ -357,10 +388,10 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
 
     return Container(
       width: double.infinity,
-      decoration: const BoxDecoration(
-        color: AppColors.surface,
+      decoration: BoxDecoration(
+        color: context.palette.surface,
         border: Border(
-          bottom: BorderSide(color: AppColors.border, width: 1.0),
+          bottom: BorderSide(color: context.palette.border, width: 1.0),
         ),
       ),
       child: Column(
@@ -372,7 +403,7 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
               Container(
                 height: 200,
                 width: double.infinity,
-                color: AppColors.surfaceElevated,
+                color: context.palette.surfaceElevated,
                 child: crag.imageUrl != null && crag.imageUrl!.isNotEmpty
                     ? Image.network(
                         crag.imageUrl!,
@@ -386,7 +417,7 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
               Container(
                 height: 200,
                 width: double.infinity,
-                color: Colors.black.withValues(alpha: 0.45),
+                color: context.palette.shadow.withValues(alpha: 0.45),
               ),
               // Subtitle & Heading over Image
               Positioned(
@@ -399,13 +430,13 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: AppColors.background.withValues(alpha: 0.85),
+                        color: context.palette.background.withValues(alpha: 0.85),
                         borderRadius: AppRadius.borderXs,
                       ),
                       child: Text(
                         '${crag.state.toUpperCase()}, MALAYSIA • $typeLabel$countSuffix',
-                        style: AppTextStyles.labelSmall.copyWith(
-                          color: AppColors.primary,
+                        style: context.textStyles.labelSmall.copyWith(
+                          color: context.palette.accent,
                           letterSpacing: 1.0,
                           fontWeight: FontWeight.w700,
                         ),
@@ -414,8 +445,8 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
                     const SizedBox(height: 8),
                     Text(
                       crag.name,
-                      style: AppTextStyles.headlineMedium.copyWith(
-                        color: AppColors.textLight,
+                      style: context.textStyles.headlineMedium.copyWith(
+                        color: context.palette.onImage,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -428,15 +459,14 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
                           return Container(
                             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
-                              color: AppColors.surfaceElevated.withValues(alpha: 0.9),
+                              color: context.palette.surfaceElevated.withValues(alpha: 0.9),
                               borderRadius: AppRadius.borderXs,
-                              border: Border.all(color: AppColors.border, width: 0.8),
+                              border: Border.all(color: context.palette.border, width: 0.8),
                             ),
                             child: Text(
                               style.toUpperCase(),
-                              style: AppTextStyles.caption.copyWith(
-                                color: AppColors.textPrimary,
-                                fontSize: 10,
+                              style: context.textStyles.caption.copyWith(
+                                color: context.palette.textPrimary,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -498,34 +528,34 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
             child: OutlinedButton.icon(
               key: const Key('offline_topo_button'),
               onPressed: () {
-                setState(() => _isOfflineSaved = !_isOfflineSaved);
+                setState(() => _isOfflineTopoCached = !_isOfflineTopoCached);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    backgroundColor: AppColors.surfaceElevated,
+                    backgroundColor: context.palette.surfaceElevated,
                     content: Text(
-                      _isOfflineSaved
+                      _isOfflineTopoCached
                           ? '${crag.name} offline topo guide cached'
                           : '${crag.name} offline topo guide removed',
-                      style: AppTextStyles.bodySmall.copyWith(color: AppColors.textPrimary),
+                      style: context.textStyles.bodySmall.copyWith(color: context.palette.textPrimary),
                     ),
                     duration: const Duration(seconds: 2),
                   ),
                 );
               },
               icon: Icon(
-                _isOfflineSaved ? Icons.check_circle_rounded : Icons.file_download_outlined,
+                _isOfflineTopoCached ? Icons.check_circle_rounded : Icons.file_download_outlined,
                 size: 18,
-                color: _isOfflineSaved ? AppColors.primary : AppColors.textPrimary,
+                color: _isOfflineTopoCached ? context.palette.accent : context.palette.textPrimary,
               ),
               label: Text(
-                _isOfflineSaved ? 'OFFLINE TOPO DOWNLOADED' : 'DOWNLOAD OFFLINE TOPO',
-                style: AppTextStyles.labelMedium.copyWith(
-                  color: _isOfflineSaved ? AppColors.primary : AppColors.textPrimary,
+                _isOfflineTopoCached ? 'OFFLINE TOPO DOWNLOADED' : 'DOWNLOAD OFFLINE TOPO',
+                style: context.textStyles.labelMedium.copyWith(
+                  color: _isOfflineTopoCached ? context.palette.accent : context.palette.textPrimary,
                 ),
               ),
               style: OutlinedButton.styleFrom(
                 side: BorderSide(
-                  color: _isOfflineSaved ? AppColors.primary : AppColors.border,
+                  color: _isOfflineTopoCached ? context.palette.accent : context.palette.border,
                   width: 1.0,
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 12),
@@ -617,11 +647,11 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: isAlert
-            ? AppColors.hazardContainer.withValues(alpha: 0.3)
-            : AppColors.surface,
+            ? context.palette.hazardContainer.withValues(alpha: 0.3)
+            : context.palette.surface,
         borderRadius: AppRadius.borderSm,
         border: Border.all(
-          color: isAlert ? AppColors.hazardText.withValues(alpha: 0.3) : AppColors.border,
+          color: isAlert ? context.palette.hazardText.withValues(alpha: 0.3) : context.palette.border,
           width: 1.0,
         ),
       ),
@@ -631,7 +661,7 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
           Icon(
             icon,
             size: 18,
-            color: isAlert ? AppColors.hazardText : AppColors.primary,
+            color: isAlert ? context.palette.hazardText : context.palette.accent,
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -640,8 +670,8 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
               children: [
                 Text(
                   title,
-                  style: AppTextStyles.caption.copyWith(
-                    color: isAlert ? AppColors.hazardText : AppColors.textSecondary,
+                  style: context.textStyles.caption.copyWith(
+                    color: isAlert ? context.palette.hazardText : context.palette.textSecondary,
                     letterSpacing: 0.8,
                     fontWeight: FontWeight.w700,
                   ),
@@ -649,8 +679,8 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
                 const SizedBox(height: 4),
                 Text(
                   content,
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textPrimary,
+                  style: context.textStyles.bodySmall.copyWith(
+                    color: context.palette.textPrimary,
                     height: 1.4,
                   ),
                 ),
@@ -666,20 +696,20 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: AppRadius.borderSm,
-        border: Border.all(color: AppColors.border, width: 1.0),
+        border: Border.all(color: context.palette.border, width: 1.0),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16, color: AppColors.primary),
+          Icon(icon, size: 16, color: context.palette.accent),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               label,
-              style: AppTextStyles.caption.copyWith(
-                color: AppColors.textPrimary,
+              style: context.textStyles.caption.copyWith(
+                color: context.palette.textPrimary,
                 fontWeight: FontWeight.w600,
               ),
               maxLines: 1,
@@ -696,13 +726,13 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: AppRadius.borderSm,
-        border: Border.all(color: AppColors.border, width: 1.0),
+        border: Border.all(color: context.palette.border, width: 1.0),
       ),
       child: Row(
         children: [
-          const Icon(Icons.local_parking_rounded, size: 18, color: AppColors.primary),
+          Icon(Icons.local_parking_rounded, size: 18, color: context.palette.accent),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
@@ -710,8 +740,8 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
               children: [
                 Text(
                   'PARKING COORDINATES',
-                  style: AppTextStyles.caption.copyWith(
-                    color: AppColors.textSecondary,
+                  style: context.textStyles.caption.copyWith(
+                    color: context.palette.textSecondary,
                     letterSpacing: 0.8,
                     fontWeight: FontWeight.w700,
                   ),
@@ -719,8 +749,8 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
                 const SizedBox(height: 2),
                 Text(
                   '${lat.toStringAsFixed(4)}, ${lng.toStringAsFixed(4)}',
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textPrimary,
+                  style: context.textStyles.bodySmall.copyWith(
+                    color: context.palette.textPrimary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -737,17 +767,17 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: AppRadius.borderSm,
-        border: Border.all(color: AppColors.border, width: 1.0),
+        border: Border.all(color: context.palette.border, width: 1.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'GYM GRADING SCALE',
-            style: AppTextStyles.caption.copyWith(
-              color: AppColors.textSecondary,
+            style: context.textStyles.caption.copyWith(
+              color: context.palette.textSecondary,
               letterSpacing: 1.0,
               fontWeight: FontWeight.w700,
             ),
@@ -757,7 +787,7 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
             spacing: 8,
             runSpacing: 6,
             children: scale.map((tag) {
-              Color tagColor = AppColors.primary;
+              Color tagColor = context.palette.primary;
               if (tag.hex != null && tag.hex!.isNotEmpty) {
                 final cleanHex = tag.hex!.replaceAll('#', '');
                 final intVal = int.tryParse(cleanHex, radix: 16);
@@ -773,9 +803,9 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: AppColors.surfaceElevated,
+                  color: context.palette.surfaceElevated,
                   borderRadius: AppRadius.borderXs,
-                  border: Border.all(color: AppColors.border, width: 1.0),
+                  border: Border.all(color: context.palette.border, width: 1.0),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -791,8 +821,8 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
                     const SizedBox(width: 6),
                     Text(
                       '${tag.label}$rangeText',
-                      style: AppTextStyles.caption.copyWith(
-                        color: AppColors.textPrimary,
+                      style: context.textStyles.caption.copyWith(
+                        color: context.palette.textPrimary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -808,12 +838,12 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
 
   Widget _buildHeroPlaceholder(bool isIndoor) {
     return Container(
-      color: AppColors.surfaceElevated,
+      color: context.palette.surfaceElevated,
       child: Center(
         child: Icon(
           isIndoor ? Icons.fitness_center_rounded : Icons.terrain_rounded,
           size: 56,
-          color: AppColors.border,
+          color: context.palette.border,
         ),
       ),
     );
@@ -834,16 +864,16 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
             children: [
               Text(
                 'SECTOR SELECT',
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.textSecondary,
+                style: context.textStyles.labelSmall.copyWith(
+                  color: context.palette.textSecondary,
                   letterSpacing: 1.2,
                   fontWeight: FontWeight.w700,
                 ),
               ),
               Text(
                 '${sectors.length} zones available',
-                style: AppTextStyles.caption.copyWith(
-                  color: AppColors.textSecondary,
+                style: context.textStyles.caption.copyWith(
+                  color: context.palette.textSecondary,
                 ),
               ),
             ],
@@ -896,10 +926,10 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.primary : AppColors.surfaceElevated,
+            color: isSelected ? context.palette.primary : context.palette.surfaceElevated,
             borderRadius: AppRadius.borderXs,
             border: Border.all(
-              color: isSelected ? AppColors.primary : AppColors.border,
+              color: isSelected ? context.palette.accent : context.palette.border,
               width: 1.0,
             ),
           ),
@@ -908,8 +938,8 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
             children: [
               Text(
                 label,
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: isSelected ? AppColors.onPrimary : AppColors.textPrimary,
+                style: context.textStyles.labelSmall.copyWith(
+                  color: isSelected ? context.palette.onPrimary : context.palette.textPrimary,
                   fontWeight: FontWeight.w700,
                   fontSize: 11,
                 ),
@@ -917,10 +947,9 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
               const SizedBox(width: 6),
               Text(
                 '($count)',
-                style: AppTextStyles.caption.copyWith(
-                  color: isSelected ? AppColors.onPrimary.withValues(alpha: 0.8) : AppColors.textSecondary,
+                style: context.textStyles.caption.copyWith(
+                  color: isSelected ? context.palette.onPrimary.withValues(alpha: 0.8) : context.palette.textSecondary,
                   fontWeight: FontWeight.w600,
-                  fontSize: 10,
                 ),
               ),
             ],
@@ -941,16 +970,16 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
           _selectedSector == 'ALL SECTORS'
               ? (crag.isIndoor ? 'All Gym Routes' : 'Routes in All Sectors')
               : 'Routes in $_selectedSector',
-          style: AppTextStyles.titleLarge.copyWith(
-            color: AppColors.textPrimary,
+          style: context.textStyles.titleLarge.copyWith(
+            color: context.palette.textPrimary,
             fontWeight: FontWeight.w700,
           ),
         ),
         const SizedBox(height: 2),
         Text(
           'SHOWING $routeCount $countLabel$styleSummary',
-          style: AppTextStyles.caption.copyWith(
-            color: AppColors.textSecondary,
+          style: context.textStyles.caption.copyWith(
+            color: context.palette.textSecondary,
             letterSpacing: 0.8,
             fontWeight: FontWeight.w600,
           ),
@@ -964,8 +993,8 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
       children: [
         Text(
           'SORT:',
-          style: AppTextStyles.caption.copyWith(
-            color: AppColors.textSecondary,
+          style: context.textStyles.caption.copyWith(
+            color: context.palette.textSecondary,
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -987,19 +1016,18 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.surfaceElevated : Colors.transparent,
+          color: isSelected ? context.palette.surfaceElevated : Colors.transparent,
           borderRadius: AppRadius.borderXs,
           border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.border,
+            color: isSelected ? context.palette.accent : context.palette.border,
             width: 1.0,
           ),
         ),
         child: Text(
           label,
-          style: AppTextStyles.caption.copyWith(
-            color: isSelected ? AppColors.primary : AppColors.textSecondary,
+          style: context.textStyles.caption.copyWith(
+            color: isSelected ? context.palette.accent : context.palette.textSecondary,
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-            fontSize: 10,
           ),
         ),
       ),
@@ -1013,15 +1041,15 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
         alignment: Alignment.center,
         child: Column(
           children: [
-            const Icon(
+            Icon(
               Icons.terrain_outlined,
               size: 40,
-              color: AppColors.textSecondary,
+              color: context.palette.textSecondary,
             ),
             const SizedBox(height: 12),
             Text(
               'No boulder problems found',
-              style: AppTextStyles.titleSmall.copyWith(color: AppColors.textSecondary),
+              style: context.textStyles.titleSmall.copyWith(color: context.palette.textSecondary),
             ),
           ],
         ),
@@ -1046,9 +1074,9 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppColors.surface,
+              color: context.palette.surface,
               borderRadius: AppRadius.borderSm,
-              border: Border.all(color: AppColors.border, width: 1.0),
+              border: Border.all(color: context.palette.border, width: 1.0),
             ),
             child: Row(
               children: [
@@ -1060,9 +1088,9 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
                     children: [
                       Text(
                         route.name,
-                        style: AppTextStyles.titleSmall.copyWith(
+                        style: context.textStyles.titleSmall.copyWith(
                           fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
+                          color: context.palette.textPrimary,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -1070,8 +1098,8 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
                       const SizedBox(height: 2),
                       Text(
                         subgrade,
-                        style: AppTextStyles.caption.copyWith(
-                          color: AppColors.primaryLight,
+                        style: context.textStyles.caption.copyWith(
+                          color: context.palette.primaryLight,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -1079,8 +1107,8 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
                         const SizedBox(height: 4),
                         Text(
                           'FA: ${route.firstAscent}',
-                          style: AppTextStyles.caption.copyWith(
-                            color: AppColors.textSecondary,
+                          style: context.textStyles.caption.copyWith(
+                            color: context.palette.textSecondary,
                           ),
                         ),
                       ],
@@ -1088,9 +1116,9 @@ class _CragDetailScreenState extends ConsumerState<CragDetailScreen> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                const Icon(
+                Icon(
                   Icons.chevron_right_rounded,
-                  color: AppColors.textSecondary,
+                  color: context.palette.textSecondary,
                   size: 20,
                 ),
               ],

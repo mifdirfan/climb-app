@@ -59,7 +59,7 @@ class ReportConfirmationScreen extends ConsumerWidget {
                 // 2. Headline & Thank You Copy
                 Text(
                   'Hazard Reported!',
-                  style: AppTextStyles.headlineMedium.copyWith(
+                  style: context.textStyles.headlineMedium.copyWith(
                     fontWeight: FontWeight.w700,
                     color: colorScheme.onSurface,
                   ),
@@ -68,7 +68,7 @@ class ReportConfirmationScreen extends ConsumerWidget {
                 const SizedBox(height: 10),
                 Text(
                   'Thank you for contributing to crag safety. Your report is now live and alert banners have been broadcasted to climbers in this sector.',
-                  style: AppTextStyles.bodyMedium.copyWith(
+                  style: context.textStyles.bodyMedium.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     height: 1.4,
                   ),
@@ -81,7 +81,7 @@ class ReportConfirmationScreen extends ConsumerWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.all(18),
                   decoration: BoxDecoration(
-                    color: theme.cardTheme.color ?? AppColors.surface,
+                    color: theme.cardTheme.color ?? context.palette.surface,
                     borderRadius: AppRadius.borderMd,
                     border: Border.all(
                       color: colorScheme.outlineVariant,
@@ -99,12 +99,12 @@ class ReportConfirmationScreen extends ConsumerWidget {
                             children: [
                               Text(
                                 currentOption.iconEmoji,
-                                style: const TextStyle(fontSize: 18),
+                                style: context.textStyles.emoji.copyWith(fontSize: 18),
                               ),
                               const SizedBox(width: 8),
                               Text(
                                 currentOption.title,
-                                style: AppTextStyles.titleSmall.copyWith(
+                                style: context.textStyles.titleSmall.copyWith(
                                   fontWeight: FontWeight.w700,
                                   color: colorScheme.onSurface,
                                 ),
@@ -138,8 +138,7 @@ class ReportConfirmationScreen extends ConsumerWidget {
                                 const SizedBox(width: 5),
                                 Text(
                                   'ACTIVE ALERT',
-                                  style: AppTextStyles.caption.copyWith(
-                                    fontSize: 9,
+                                  style: context.textStyles.micro.copyWith(
                                     fontWeight: FontWeight.w700,
                                     color: colorScheme.primary,
                                     letterSpacing: 0.5,
@@ -205,7 +204,7 @@ class ReportConfirmationScreen extends ConsumerWidget {
                     ),
                     child: Text(
                       'BACK TO CRAGS',
-                      style: AppTextStyles.labelLarge.copyWith(
+                      style: context.textStyles.labelLarge.copyWith(
                         color: colorScheme.onPrimary,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0.8,
@@ -234,7 +233,7 @@ class ReportConfirmationScreen extends ConsumerWidget {
                     ),
                     child: Text(
                       'VIEW ON MAP',
-                      style: AppTextStyles.labelMedium.copyWith(
+                      style: context.textStyles.labelMedium.copyWith(
                         color: colorScheme.onSurface,
                         fontWeight: FontWeight.w600,
                       ),
@@ -263,14 +262,14 @@ class ReportConfirmationScreen extends ConsumerWidget {
         const SizedBox(width: 8),
         Text(
           '$label: ',
-          style: AppTextStyles.bodySmall.copyWith(
+          style: context.textStyles.bodySmall.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
         Expanded(
           child: Text(
             value,
-            style: AppTextStyles.bodySmall.copyWith(
+            style: context.textStyles.bodySmall.copyWith(
               color: theme.colorScheme.onSurface,
               fontWeight: FontWeight.w600,
             ),

@@ -47,19 +47,18 @@ class ProfileScreen extends ConsumerWidget {
         scrolledUnderElevation: 0,
         title: Text(
           'Profile',
-          style: AppTextStyles.displayLarge.copyWith(
-            fontSize: 28,
-            color: AppColors.textPrimary,
+          style: context.textStyles.screenTitle.copyWith(
+          color: context.palette.textPrimary,
           ),
         ),
         centerTitle: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings_outlined, color: AppColors.textSecondary),
+            icon: Icon(Icons.settings_outlined, color: context.palette.textSecondary),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  backgroundColor: AppColors.surfaceElevated,
+                SnackBar(
+                  backgroundColor: context.palette.surfaceElevated,
                   content: Text('Profile settings coming soon.'),
                   duration: Duration(seconds: 2),
                 ),
@@ -79,9 +78,9 @@ class ProfileScreen extends ConsumerWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: AppColors.surface,
+                  color: context.palette.surface,
                   borderRadius: BorderRadius.circular(AppRadius.lg),
-                  border: Border.all(color: AppColors.borderSubtle, width: 1.0),
+                  border: Border.all(color: context.palette.borderSubtle, width: 1.0),
                 ),
                 child: Column(
                   children: [
@@ -92,17 +91,17 @@ class ProfileScreen extends ConsumerWidget {
                           width: 80,
                           height: 80,
                           decoration: BoxDecoration(
-                            color: AppColors.surfaceElevated,
+                            color: context.palette.surfaceElevated,
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: AppColors.primary,
+                              color: context.palette.accent,
                               width: 2.0,
                             ),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.person_rounded,
                             size: 44,
-                            color: AppColors.primaryLight,
+                            color: context.palette.primaryLight,
                           ),
                         ),
                         Positioned(
@@ -110,14 +109,14 @@ class ProfileScreen extends ConsumerWidget {
                           right: 0,
                           child: Container(
                             padding: const EdgeInsets.all(4),
-                            decoration: const BoxDecoration(
-                              color: AppColors.primary,
+                            decoration: BoxDecoration(
+                              color: context.palette.primary,
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.edit,
                               size: 14,
-                              color: AppColors.onPrimary,
+                              color: context.palette.onPrimary,
                             ),
                           ),
                         ),
@@ -127,14 +126,14 @@ class ProfileScreen extends ConsumerWidget {
 
                     Text(
                       displayName,
-                      style: AppTextStyles.titleLarge,
+                      style: context.textStyles.titleLarge,
                     ),
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
                       textAlign: TextAlign.center,
-                      style: AppTextStyles.caption.copyWith(
-                        color: AppColors.textMuted,
+                      style: context.textStyles.caption.copyWith(
+                        color: context.palette.textMuted,
                       ),
                     ),
                     const SizedBox(height: 14),
@@ -150,8 +149,8 @@ class ProfileScreen extends ConsumerWidget {
                                 key: const Key('edit_profile_button'),
                                 onPressed: onEditProfile ?? () {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      backgroundColor: AppColors.surfaceElevated,
+                                    SnackBar(
+                                      backgroundColor: context.palette.surfaceElevated,
                                       content: Text('Edit profile coming soon.'),
                                       duration: Duration(seconds: 2),
                                     ),
@@ -160,12 +159,12 @@ class ProfileScreen extends ConsumerWidget {
                                 icon: const Icon(Icons.edit_outlined, size: 16),
                                 label: const Text('Edit Profile'),
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor: AppColors.textPrimary,
-                                  side: const BorderSide(color: AppColors.borderSubtle, width: 1.0),
+                                  foregroundColor: context.palette.textPrimary,
+                                  side: BorderSide(color: context.palette.borderSubtle, width: 1.0),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(AppRadius.sm),
                                   ),
-                                  textStyle: AppTextStyles.labelMedium.copyWith(
+                                  textStyle: context.textStyles.labelMedium.copyWith(
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -180,8 +179,8 @@ class ProfileScreen extends ConsumerWidget {
                                 key: const Key('share_profile_button'),
                                 onPressed: onShareProfile ?? () {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      backgroundColor: AppColors.surfaceElevated,
+                                    SnackBar(
+                                      backgroundColor: context.palette.surfaceElevated,
                                       content: Text('Profile link copied to clipboard!'),
                                       duration: Duration(seconds: 2),
                                     ),
@@ -190,12 +189,12 @@ class ProfileScreen extends ConsumerWidget {
                                 icon: const Icon(Icons.share_outlined, size: 16),
                                 label: const Text('Share Profile'),
                                 style: OutlinedButton.styleFrom(
-                                  foregroundColor: AppColors.textPrimary,
-                                  side: const BorderSide(color: AppColors.borderSubtle, width: 1.0),
+                                  foregroundColor: context.palette.textPrimary,
+                                  side: BorderSide(color: context.palette.borderSubtle, width: 1.0),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(AppRadius.sm),
                                   ),
-                                  textStyle: AppTextStyles.labelMedium.copyWith(
+                                  textStyle: context.textStyles.labelMedium.copyWith(
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -225,15 +224,15 @@ class ProfileScreen extends ConsumerWidget {
               Row(
                 children: [
                   Expanded(
-                    child: _buildStatBox(label: 'POSTS', value: '0', icon: Icons.check_circle_outline),
+                    child: _buildStatBox(context, label: 'POSTS', value: '0', icon: Icons.check_circle_outline),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: _buildStatBox(label: 'PROJECTS', value: '0', icon: Icons.flag_outlined),
+                    child: _buildStatBox(context, label: 'PROJECTS', value: '0', icon: Icons.flag_outlined),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: _buildStatBox(label: 'CRAGS VISITED', value: '0', icon: Icons.landscape_outlined),
+                    child: _buildStatBox(context, label: 'CRAGS VISITED', value: '0', icon: Icons.landscape_outlined),
                   ),
                 ],
               ),
@@ -243,29 +242,29 @@ class ProfileScreen extends ConsumerWidget {
               // Menu & Action List
               Text(
                 'LOGBOOK',
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.textMuted,
+                style: context.textStyles.labelSmall.copyWith(
+                  color: context.palette.textMuted,
                   letterSpacing: 1.0,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 10),
 
-              _buildMenuTile(
+              _buildMenuTile(context,
                 icon: Icons.history_rounded,
                 title: 'Tick History & Send Log',
                 subtitle: 'View your redpoints, flashes, and on-sights',
                 onTap: () => context.push(AppRoutes.tickHistory),
               ),
               const SizedBox(height: 8),
-              _buildMenuTile(
+              _buildMenuTile(context,
                 icon: Icons.bookmark_border_rounded,
                 title: 'Saved Crags & Topos',
                 subtitle: 'Cached sectors for offline climbing',
                 onTap: () => context.push(AppRoutes.savedCrags),
               ),
               const SizedBox(height: 8),
-              _buildMenuTile(
+              _buildMenuTile(context,
                 icon: Icons.fitness_center_rounded,
                 title: 'Indoor Climbing Log',
                 subtitle: 'Track your indoor bouldering and training sessions',
@@ -273,7 +272,7 @@ class ProfileScreen extends ConsumerWidget {
               ),
               if (isAuthenticated) ...[
                 const SizedBox(height: 8),
-                _buildMenuTile(
+                _buildMenuTile(context,
                   icon: Icons.logout_rounded,
                   title: 'Sign Out',
                   subtitle: 'Log out of ${user?.email ?? 'account'}',
@@ -297,7 +296,7 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildStatBox({
+  Widget _buildStatBox(BuildContext context, {
     required String label,
     required String value,
     required IconData icon,
@@ -305,27 +304,26 @@ class ProfileScreen extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: context.palette.surface,
         borderRadius: BorderRadius.circular(AppRadius.md),
-        border: Border.all(color: AppColors.borderSubtle, width: 1.0),
+        border: Border.all(color: context.palette.borderSubtle, width: 1.0),
       ),
       child: Column(
         children: [
-          Icon(icon, size: 20, color: AppColors.primary),
+          Icon(icon, size: 20, color: context.palette.accent),
           const SizedBox(height: 8),
           Text(
             value,
-            style: AppTextStyles.headlineSmall.copyWith(
-              color: AppColors.textPrimary,
+            style: context.textStyles.headlineSmall.copyWith(
+              color: context.palette.textPrimary,
               fontWeight: FontWeight.w700,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             label,
-            style: AppTextStyles.caption.copyWith(
-              color: AppColors.textMuted,
-              fontSize: 10,
+            style: context.textStyles.caption.copyWith(
+              color: context.palette.textMuted,
               letterSpacing: 0.6,
             ),
           ),
@@ -334,7 +332,7 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildMenuTile({
+  Widget _buildMenuTile(BuildContext context, {
     required IconData icon,
     required String title,
     required String subtitle,
@@ -346,19 +344,19 @@ class ProfileScreen extends ConsumerWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: context.palette.surface,
           borderRadius: BorderRadius.circular(AppRadius.md),
-          border: Border.all(color: AppColors.borderSubtle, width: 1.0),
+          border: Border.all(color: context.palette.borderSubtle, width: 1.0),
         ),
         child: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.surfaceInput,
+                color: context.palette.surfaceInput,
                 borderRadius: BorderRadius.circular(AppRadius.sm),
               ),
-              child: Icon(icon, size: 20, color: AppColors.primaryLight),
+              child: Icon(icon, size: 20, color: context.palette.primaryLight),
             ),
             const SizedBox(width: 14),
             Expanded(
@@ -367,17 +365,17 @@ class ProfileScreen extends ConsumerWidget {
                 children: [
                   Text(
                     title,
-                    style: AppTextStyles.titleSmall.copyWith(fontSize: 14),
+                    style: context.textStyles.titleSmall.copyWith(fontSize: 14),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
-                    style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
+                    style: context.textStyles.caption.copyWith(color: context.palette.textMuted),
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right_rounded, size: 20, color: AppColors.textMuted),
+            Icon(Icons.chevron_right_rounded, size: 20, color: context.palette.textMuted),
           ],
         ),
       ),

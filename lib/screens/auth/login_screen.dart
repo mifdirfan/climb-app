@@ -725,16 +725,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       width: 20,
       height: 20,
       alignment: Alignment.center,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white,
+        color: context.palette.onImage,
       ),
       child: Text(
         'G',
         style: theme.textTheme.titleSmall?.copyWith(
           fontSize: 14,
           fontWeight: FontWeight.w900,
-          color: const Color(0xFF4285F4),
+          color: context.palette.googleBlue,
         ),
       ),
     );

@@ -3,7 +3,7 @@ class Tick {
   final String id;
   final String userId;
   final String routeId;
-  final String tickType; // 'flash' | 'send' | 'onsight' | 'dab' | 'repeat' | 'project'
+  final String tickType; // 'flash' | 'send' | 'redpoint' | 'onsight' | 'repeat' | 'project' (legacy: 'dab')
   final String? notes;
   final String? videoUrl; 
   final DateTime climbedAt;
@@ -37,7 +37,11 @@ class Tick {
   /// Returns true if this tick counts as a completed clean ascent.
   bool get isCleanSend {
     final lower = tickType.toLowerCase();
-    return lower == 'flash' || lower == 'send' || lower == 'onsight' || lower == 'repeat';
+    return lower == 'flash' ||
+        lower == 'send' ||
+        lower == 'redpoint' ||
+        lower == 'onsight' ||
+        lower == 'repeat';
   }
 
   /// Human-readable title for tick type pill.
@@ -48,6 +52,7 @@ class Tick {
       case 'flash':
         return 'Flash';
       case 'send':
+      case 'redpoint':
         return 'Redpoint / Send';
       case 'repeat':
         return 'Repeat';
@@ -81,6 +86,11 @@ class Tick {
           cName = (sMap['crags'] as Map<String, dynamic>)['name'] as String?;
         }
       }
+
+      // routes.crag_id is a direct FK; prefer it since sector_id is nullable.
+      if (rMap['crags'] is Map<String, dynamic>) {
+        cName = (rMap['crags'] as Map<String, dynamic>)['name'] as String? ?? cName;
+      }
     }
 
     if (json['profiles'] is Map<String, dynamic>) {
@@ -102,6 +112,7 @@ class Tick {
       routeId: (json['route_id'] ?? json['routeId']) as String? ?? '',
       tickType: (json['tick_type'] ?? json['tickType']) as String? ?? 'send',
       notes: json['notes'] as String?,
+      videoUrl: (json['video_url'] ?? json['videoUrl']) as String?,
       climbedAt: parsedClimbedAt,
       createdAt: json['created_at'] != null
           ? DateTime.tryParse(json['created_at'] as String)
@@ -122,6 +133,7 @@ class Tick {
       'route_id': routeId,
       'tick_type': tickType,
       if (notes != null) 'notes': notes,
+      if (videoUrl != null) 'video_url': videoUrl,
       'climbed_at':
           '${climbedAt.year.toString().padLeft(4, '0')}-${climbedAt.month.toString().padLeft(2, '0')}-${climbedAt.day.toString().padLeft(2, '0')}',
       if (createdAt != null) 'created_at': createdAt?.toIso8601String(),
@@ -134,6 +146,7 @@ class Tick {
     String? routeId,
     String? tickType,
     String? notes,
+    String? videoUrl,
     DateTime? climbedAt,
     DateTime? createdAt,
     String? routeName,
@@ -149,6 +162,7 @@ class Tick {
       routeId: routeId ?? this.routeId,
       tickType: tickType ?? this.tickType,
       notes: notes ?? this.notes,
+      videoUrl: videoUrl ?? this.videoUrl,
       climbedAt: climbedAt ?? this.climbedAt,
       createdAt: createdAt ?? this.createdAt,
       routeName: routeName ?? this.routeName,

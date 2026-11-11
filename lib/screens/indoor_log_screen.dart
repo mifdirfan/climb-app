@@ -39,7 +39,7 @@ class IndoorLogCalendarScreen extends ConsumerWidget {
             ),
             Text(
               '${currentMonth.year}. ${currentMonth.month.toString().padLeft(2, '0')}',
-              style: AppTextStyles.headlineSmall.copyWith(
+              style: context.textStyles.headlineSmall.copyWith(
                 fontWeight: FontWeight.w800,
                 color: theme.colorScheme.onSurface,
               ),
@@ -68,8 +68,8 @@ class IndoorLogCalendarScreen extends ConsumerWidget {
                   child: Text(
                     day,
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.caption.copyWith(
-                      color: AppColors.textSecondary,
+                    style: context.textStyles.caption.copyWith(
+                      color: context.palette.textSecondary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -116,20 +116,20 @@ class IndoorLogCalendarScreen extends ConsumerWidget {
                           },
                         );
                       },
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: AppRadius.borderLg,
                       child: Column(
                         children: [
                           // Day Number or "Today" badge
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
                             decoration: BoxDecoration(
-                              color: isToday ? AppColors.primary : Colors.transparent,
-                              borderRadius: BorderRadius.circular(12),
+                              color: isToday ? context.palette.primary : Colors.transparent,
+                              borderRadius: AppRadius.borderMd,
                             ),
                             child: Text(
                               isToday ? 'Today' : day.toString(),
-                              style: AppTextStyles.caption.copyWith(
-                                color: isToday ? Colors.black : AppColors.textPrimary,
+                              style: context.textStyles.caption.copyWith(
+                                color: isToday ? context.palette.onPrimary : context.palette.textPrimary,
                                 fontWeight: isToday ? FontWeight.w700 : FontWeight.w500,
                                 fontSize: isToday ? 11 : 12,
                               ),
@@ -138,7 +138,7 @@ class IndoorLogCalendarScreen extends ConsumerWidget {
                           const SizedBox(height: 8),
                           // Custom Boulder Icon if session exists, otherwise empty spacing
                           if (hasSession) 
-                            _buildBoulderIcon()
+                            _buildBoulderIcon(context)
                           else
                             const SizedBox(height: 28), // Explicit height to maintain grid alignment
                         ],
@@ -154,25 +154,20 @@ class IndoorLogCalendarScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildBoulderIcon() {
+  Widget _buildBoulderIcon(BuildContext context) {
     return Container(
       width: 36,
       height: 28,
-      decoration: const BoxDecoration(
-        color: AppColors.surfaceElevated,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(14),
-          topRight: Radius.circular(18),
-          bottomLeft: Radius.circular(16),
-          bottomRight: Radius.circular(10),
-        ),
+      decoration: BoxDecoration(
+        color: context.palette.surfaceElevated,
+        borderRadius: AppRadius.borderBoulder,
       ),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircleAvatar(radius: 2, backgroundColor: Colors.white24),
+          CircleAvatar(radius: 2, backgroundColor: context.palette.iconDim),
           SizedBox(width: 6),
-          CircleAvatar(radius: 2, backgroundColor: Colors.white24),
+          CircleAvatar(radius: 2, backgroundColor: context.palette.iconDim),
         ],
       ),
     );

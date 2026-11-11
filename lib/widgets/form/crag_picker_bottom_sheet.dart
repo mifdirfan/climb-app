@@ -120,7 +120,7 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
         maxHeight: MediaQuery.of(context).size.height * 0.85,
       ),
       decoration: BoxDecoration(
-        color: theme.cardTheme.color ?? AppColors.surface,
+        color: theme.cardTheme.color ?? context.palette.surface,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.md)),
         border: Border.all(
           color: colorScheme.outlineVariant,
@@ -139,7 +139,7 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
               height: 4,
               decoration: BoxDecoration(
                 color: colorScheme.outlineVariant,
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: AppRadius.borderHandle,
               ),
             ),
           ),
@@ -151,7 +151,7 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
             children: [
               Text(
                 widget.title,
-                style: AppTextStyles.titleLarge.copyWith(
+                style: context.textStyles.titleLarge.copyWith(
                   fontWeight: FontWeight.w700,
                   color: colorScheme.onSurface,
                 ),
@@ -169,7 +169,7 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
           TextField(
             controller: _filterController,
             onChanged: (val) => setState(() => _searchQuery = val),
-            style: AppTextStyles.bodyMedium.copyWith(color: colorScheme.onSurface),
+            style: context.textStyles.bodyMedium.copyWith(color: colorScheme.onSurface),
             decoration: InputDecoration(
               hintText: 'Search by name or state (e.g. Selangor)...',
               prefixIcon: Icon(Icons.search, size: 20, color: colorScheme.onSurfaceVariant),
@@ -207,7 +207,7 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
                           const SizedBox(height: 12),
                           Text(
                             'No locations found',
-                            style: AppTextStyles.titleSmall.copyWith(
+                            style: context.textStyles.titleSmall.copyWith(
                               color: colorScheme.onSurface,
                             ),
                           ),
@@ -216,7 +216,7 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
                             _searchQuery.isNotEmpty
                                 ? 'Try searching for a different keyword'
                                 : 'No locations available in this category.',
-                            style: AppTextStyles.caption.copyWith(
+                            style: context.textStyles.caption.copyWith(
                               color: colorScheme.onSurfaceVariant,
                             ),
                             textAlign: TextAlign.center,
@@ -256,14 +256,14 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
                           ),
                           title: Text(
                             venue.name,
-                            style: AppTextStyles.titleSmall.copyWith(
+                            style: context.textStyles.titleSmall.copyWith(
                               color: isSelected ? colorScheme.primary : colorScheme.onSurface,
                               fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                             ),
                           ),
                           subtitle: Text(
                             '${venue.state} • ${venue.venueType.toUpperCase()}',
-                            style: AppTextStyles.caption.copyWith(
+                            style: context.textStyles.caption.copyWith(
                               color: colorScheme.onSurfaceVariant,
                             ),
                           ),
@@ -308,7 +308,7 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
                     _selectedRoute != null
                         ? 'SELECT CRAG & ROUTE'
                         : 'SELECT CRAG (ALL ROUTES)',
-                    style: AppTextStyles.labelLarge.copyWith(
+                    style: context.textStyles.labelLarge.copyWith(
                       color: colorScheme.onPrimary,
                       fontWeight: FontWeight.w700,
                     ),
@@ -349,7 +349,7 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
               Expanded(
                 child: Text(
                   'Route in ${_selectedCrag!.name}:',
-                  style: AppTextStyles.labelSmall.copyWith(
+                  style: context.textStyles.labelSmall.copyWith(
                     fontWeight: FontWeight.w700,
                     color: colorScheme.onSurface,
                   ),
@@ -363,7 +363,7 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-              color: AppColors.surfaceInput,
+              color: context.palette.surfaceInput,
               borderRadius: AppRadius.borderXs,
               border: Border.all(
                 color: colorScheme.outlineVariant,
@@ -375,10 +375,10 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
                 key: const Key('crag_route_dropdown'),
                 value: _selectedRoute,
                 isExpanded: true,
-                dropdownColor: AppColors.surfaceElevated,
+                dropdownColor: context.palette.surfaceElevated,
                 hint: Text(
                   'Entire Crag / General Area (No specific route)',
-                  style: AppTextStyles.bodySmall.copyWith(
+                  style: context.textStyles.bodySmall.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),
@@ -387,7 +387,7 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
                     value: null,
                     child: Text(
                       'Entire Crag / General Area',
-                      style: AppTextStyles.bodySmall.copyWith(
+                      style: context.textStyles.bodySmall.copyWith(
                         color: colorScheme.onSurface,
                         fontWeight: FontWeight.w600,
                       ),
@@ -401,7 +401,7 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
                           Expanded(
                             child: Text(
                               route.name,
-                              style: AppTextStyles.bodySmall.copyWith(
+                              style: context.textStyles.bodySmall.copyWith(
                                 color: colorScheme.onSurface,
                               ),
                               overflow: TextOverflow.ellipsis,
@@ -415,10 +415,9 @@ class _VenuePickerBottomSheetState extends ConsumerState<VenuePickerBottomSheet>
                             ),
                             child: Text(
                               route.grade,
-                              style: AppTextStyles.caption.copyWith(
+                              style: context.textStyles.caption.copyWith(
                                 color: colorScheme.primary,
                                 fontWeight: FontWeight.w700,
-                                fontSize: 10,
                               ),
                             ),
                           ),

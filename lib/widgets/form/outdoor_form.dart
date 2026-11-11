@@ -68,10 +68,10 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
         return Theme(
           data: theme.copyWith(
             colorScheme: theme.colorScheme.copyWith(
-              primary: AppColors.primary,
-              onPrimary: AppColors.onPrimary,
-              surface: AppColors.surface,
-              onSurface: AppColors.textPrimary,
+              primary: context.palette.primary,
+              onPrimary: context.palette.onPrimary,
+              surface: context.palette.surface,
+              onSurface: context.palette.textPrimary,
             ),
           ),
           child: child!,
@@ -141,7 +141,7 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Send logged for ${outdoorState.routeName}!'),
-          backgroundColor: AppColors.surfaceElevated,
+          backgroundColor: context.palette.surfaceElevated,
         ),
       );
       widget.onSubmitted?.call();
@@ -189,8 +189,8 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
             children: [
               Text(
                 'SELECT CRAG / LOCATION *',
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.textMuted,
+                style: context.textStyles.labelSmall.copyWith(
+                  color: context.palette.textMuted,
                   letterSpacing: 1.0,
                   fontWeight: FontWeight.w600,
                 ),
@@ -202,11 +202,11 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: context.palette.surface,
                     borderRadius: BorderRadius.circular(AppRadius.lg),
-                    border: Border.all(color: AppColors.borderSubtle),
+                    border: Border.all(color: context.palette.borderSubtle),
                   ),
-                  child: const Row(
+                  child: Row(
                     children: [
                       SizedBox(
                         width: 18,
@@ -216,7 +216,7 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                       SizedBox(width: 12),
                       Text(
                         'Loading crags...',
-                        style: TextStyle(color: AppColors.textMuted, fontSize: 13),
+                        style: context.textStyles.bodySmall.copyWith(color: context.palette.textMuted),
                       ),
                     ],
                   ),
@@ -225,7 +225,7 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: context.palette.surface,
                     borderRadius: BorderRadius.circular(AppRadius.lg),
                     border: Border.all(color: theme.colorScheme.error),
                   ),
@@ -236,12 +236,12 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                       Expanded(
                         child: Text(
                           'Error loading crags',
-                          style: AppTextStyles.bodySmall.copyWith(color: theme.colorScheme.error),
+                          style: context.textStyles.bodySmall.copyWith(color: theme.colorScheme.error),
                         ),
                       ),
                       TextButton(
                         onPressed: () => ref.refresh(cragsProvider),
-                        child: const Text('Retry', style: TextStyle(color: AppColors.primary)),
+                        child: Text('Retry', style: context.textStyles.labelMedium.copyWith(color: context.palette.accent)),
                       ),
                     ],
                   ),
@@ -259,12 +259,12 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: context.palette.surface,
                         borderRadius: BorderRadius.circular(AppRadius.lg),
                         border: Border.all(
                           color: isSelected
-                              ? AppColors.primary.withValues(alpha: 0.6)
-                              : AppColors.borderSubtle,
+                              ? context.palette.accent.withValues(alpha: 0.6)
+                              : context.palette.borderSubtle,
                         ),
                       ),
                       child: Row(
@@ -272,7 +272,7 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                           Icon(
                             Icons.location_on_outlined,
                             size: 20,
-                            color: isSelected ? AppColors.primary : AppColors.textMuted,
+                            color: isSelected ? context.palette.accent : context.palette.textMuted,
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -284,10 +284,10 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                                   isSelected
                                       ? '${outdoorState.selectedCrag!.name} (${outdoorState.selectedCrag!.state})'
                                       : 'Select Climbing Area & Route...',
-                                  style: AppTextStyles.bodyMedium.copyWith(
+                                  style: context.textStyles.bodyMedium.copyWith(
                                     color: isSelected
-                                        ? AppColors.textPrimary
-                                        : AppColors.textMuted,
+                                        ? context.palette.textPrimary
+                                        : context.palette.textMuted,
                                     fontWeight: isSelected
                                         ? FontWeight.w600
                                         : FontWeight.w400,
@@ -299,17 +299,17 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                                   const SizedBox(height: 4),
                                   Row(
                                     children: [
-                                      const Icon(
+                                      Icon(
                                         Icons.route_outlined,
                                         size: 14,
-                                        color: AppColors.primary,
+                                        color: context.palette.accent,
                                       ),
                                       const SizedBox(width: 4),
                                       Expanded(
                                         child: Text(
                                           'Route: ${outdoorState.routeName} • ${outdoorState.grade}',
-                                          style: AppTextStyles.caption.copyWith(
-                                            color: AppColors.textSecondary,
+                                          style: context.textStyles.caption.copyWith(
+                                            color: context.palette.textSecondary,
                                             fontWeight: FontWeight.w500,
                                           ),
                                           maxLines: 1,
@@ -322,10 +322,10 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                               ],
                             ),
                           ),
-                          const Icon(
+                          Icon(
                             Icons.keyboard_arrow_down_rounded,
                             size: 20,
-                            color: AppColors.textMuted,
+                            color: context.palette.textMuted,
                           ),
                         ],
                       ),
@@ -354,8 +354,8 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
             children: [
               Text(
                 'DATE OF CLIMB',
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.textMuted,
+                style: context.textStyles.labelSmall.copyWith(
+                  color: context.palette.textMuted,
                   letterSpacing: 1.0,
                   fontWeight: FontWeight.w600,
                 ),
@@ -369,31 +369,31 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
-                    color: AppColors.surface,
+                    color: context.palette.surface,
                     borderRadius: BorderRadius.circular(AppRadius.lg),
-                    border: Border.all(color: AppColors.borderSubtle),
+                    border: Border.all(color: context.palette.borderSubtle),
                   ),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.calendar_today_rounded,
                         size: 18,
-                        color: AppColors.textMuted,
+                        color: context.palette.textMuted,
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           _formatDate(outdoorState.date),
-                          style: AppTextStyles.bodyMedium.copyWith(
-                            color: AppColors.textPrimary,
+                          style: context.textStyles.bodyMedium.copyWith(
+                            color: context.palette.textPrimary,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
-                      const Icon(
+                      Icon(
                         Icons.edit_calendar_rounded,
                         size: 18,
-                        color: AppColors.textMuted,
+                        color: context.palette.textMuted,
                       ),
                     ],
                   ),
@@ -413,8 +413,8 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                 children: [
                   Text(
                     'BETA, CONDITIONS & CRUX',
-                    style: AppTextStyles.labelSmall.copyWith(
-                      color: AppColors.textMuted,
+                    style: context.textStyles.labelSmall.copyWith(
+                      color: context.palette.textMuted,
                       letterSpacing: 1.0,
                       fontWeight: FontWeight.w600,
                     ),
@@ -426,23 +426,23 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                 controller: _notesController,
                 maxLines: 4,
                 minLines: 3,
-                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
+                style: context.textStyles.bodyMedium.copyWith(color: context.palette.textPrimary),
                 decoration: InputDecoration(
                   hintText: 'Crux sequence, weather conditions, micro-beta, gear used...',
-                  hintStyle: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textMuted,
+                  hintStyle: context.textStyles.bodySmall.copyWith(
+                    color: context.palette.textMuted,
                     height: 1.4,
                   ),
                   filled: true,
-                  fillColor: AppColors.surface,
+                  fillColor: context.palette.surface,
                   contentPadding: const EdgeInsets.all(14),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.lg),
-                    borderSide: const BorderSide(color: AppColors.borderSubtle),
+                    borderSide: BorderSide(color: context.palette.borderSubtle),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.lg),
-                    borderSide: const BorderSide(color: AppColors.borderSubtle),
+                    borderSide: BorderSide(color: context.palette.borderSubtle),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -462,20 +462,20 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
             child: ElevatedButton(
               onPressed: outdoorState.isSubmitting ? null : _handleSubmit,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.onPrimary,
+                backgroundColor: context.palette.primary,
+                foregroundColor: context.palette.onPrimary,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppRadius.lg),
                 ),
               ),
               child: outdoorState.isSubmitting
-                  ? const SizedBox(
+                  ? SizedBox(
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        color: AppColors.onPrimary,
+                        color: context.palette.onPrimary,
                       ),
                     )
                   : Row(
@@ -483,17 +483,17 @@ class _OutdoorFormState extends ConsumerState<OutdoorForm> {
                       children: [
                         Text(
                           'POST SEND',
-                          style: AppTextStyles.titleSmall.copyWith(
-                            color: AppColors.onPrimary,
+                          style: context.textStyles.titleSmall.copyWith(
+                            color: context.palette.onPrimary,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 0.8,
                           ),
                         ),
                         const SizedBox(width: 8),
-                        const Icon(
+                        Icon(
                           Icons.arrow_forward_rounded,
                           size: 18,
-                          color: AppColors.onPrimary,
+                          color: context.palette.onPrimary,
                         ),
                       ],
                     ),

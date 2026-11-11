@@ -37,14 +37,14 @@ class FilterChipBar extends ConsumerWidget {
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.primary : AppColors.surfaceInput,
+                color: isSelected ? context.palette.primary : context.palette.surfaceInput,
                 borderRadius: AppRadius.borderSm,
               ),
               child: Center(
                 child: Text(
                   state,
-                  style: AppTextStyles.labelMedium.copyWith(
-                    color: isSelected ? AppColors.onPrimary : AppColors.textPrimary,
+                  style: context.textStyles.labelMedium.copyWith(
+                    color: isSelected ? context.palette.onPrimary : context.palette.textPrimary,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                   ),
                 ),
